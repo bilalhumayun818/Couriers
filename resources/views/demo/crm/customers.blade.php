@@ -5,6 +5,7 @@
 
 @section('content')
 @php
+// [id, company, contact, email, phone, credit_limit, invoiced, outstanding]
 $customers = [
   ['C-001','Swift Retail Co','John Smith','john@swiftretail.com','+254 700 123456','$5,000.00','$4,200.00','$800.00'],
   ['C-002','Global Traders Ltd','Mary Kamau','mary@globaltraders.co.ke','+254 722 234567','$8,000.00','$6,500.00','$1,500.00'],
@@ -44,11 +45,11 @@ $customers = [
           <td class="px-5 py-3.5 font-semibold text-slate-800">{{ $c[1] }}</td>
           <td class="px-5 py-3.5 text-slate-600">{{ $c[2] }}</td>
           <td class="px-5 py-3.5 text-slate-500 text-xs">{{ $c[3] }}</td>
+          <td class="px-5 py-3.5 text-right text-slate-600">{{ $c[5] }}</td>
           <td class="px-5 py-3.5 text-right text-slate-600">{{ $c[6] }}</td>
-          <td class="px-5 py-3.5 text-right text-slate-600">{{ $c[7] }}</td>
           <td class="px-5 py-3.5 text-right">
-            @php $bal = (float)str_replace(['$',','],'',$c[8]); @endphp
-            <span class="font-semibold {{ $bal > 2000 ? 'text-red-600' : 'text-slate-800' }}">{{ $c[8] }}</span>
+            @php $bal = (float)str_replace(['$',','],'',$c[7]); @endphp
+            <span class="font-semibold {{ $bal > 2000 ? 'text-red-600' : 'text-slate-800' }}">{{ $c[7] }}</span>
           </td>
           <td class="px-5 py-3.5 text-right space-x-2">
             <button class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View</button>
