@@ -1,0 +1,23 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+// Demo routes — generic client presentation
+Route::get('/', fn() => redirect('/dashboard'));
+Route::get('/dashboard',         fn() => view('demo.dashboard'))->name('dashboard');
+Route::get('/fleet/vans',        fn() => view('demo.fleet.vans'))->name('fleet.vans');
+Route::get('/fleet/fixed-costs', fn() => view('demo.fleet.fixed-costs'))->name('fleet.fixed-costs');
+Route::get('/fleet/assignments', fn() => view('demo.fleet.assignments'))->name('fleet.assignments');
+Route::get('/operations/trips',   fn() => view('demo.operations.trips'))->name('operations.trips');
+Route::get('/operations/expenses',fn() => view('demo.operations.expenses'))->name('operations.expenses');
+Route::get('/operations/wages',   fn() => view('demo.operations.wages'))->name('operations.wages');
+Route::get('/crm/customers',     fn() => view('demo.crm.customers'))->name('crm.customers');
+Route::get('/crm/drivers',       fn() => view('demo.crm.drivers'))->name('crm.drivers');
+Route::get('/crm/investors',     fn() => view('demo.crm.investors'))->name('crm.investors');
+Route::get('/ledger/van-ledger',     fn() => view('demo.ledger.van-ledger'))->name('ledger.van');
+Route::get('/ledger/customer-ledger',fn() => view('demo.ledger.customer-ledger'))->name('ledger.customer');
+Route::get('/ledger/trial-balance',  fn() => view('demo.ledger.trial-balance'))->name('ledger.trial-balance');
+Route::get('/ledger/profit-loss',    fn() => view('demo.ledger.profit-loss'))->name('ledger.profit-loss');
+Route::get('/ledger/balance-sheet',  fn() => view('demo.ledger.balance-sheet'))->name('ledger.balance-sheet');
+Route::get('/settings/users',        fn() => view('demo.settings.users'))->name('settings.users');
+Route::get('/settings/tenant',       fn() => view('demo.settings.tenant'))->name('settings.tenant');
