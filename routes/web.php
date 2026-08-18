@@ -5,8 +5,17 @@ use Illuminate\Support\Facades\Route;
 // Demo routes — generic client presentation
 Route::get('/', fn() => redirect('/dashboard'));
 Route::get('/dashboard',         fn() => view('demo.dashboard'))->name('dashboard');
-Route::get('/fleet/vans',        fn() => view('demo.fleet.vans'))->name('fleet.vans');
-Route::get('/fleet/fixed-costs', fn() => view('demo.fleet.fixed-costs'))->name('fleet.fixed-costs');
+use App\Http\Controllers\Fleet\VanController;
+
+Route::get('/fleet/vans',                  [VanController::class, 'index'])->name('fleet.vans');
+Route::post('/fleet/vans',                 [VanController::class, 'store'])->name('fleet.vans.store');
+Route::put('/fleet/vans/{van}',            [VanController::class, 'update'])->name('fleet.vans.update');
+Route::delete('/fleet/vans/{van}',         [VanController::class, 'destroy'])->name('fleet.vans.destroy');
+Route::get('/fleet/vans/model/{model}',    [VanController::class, 'byModel'])->name('fleet.vans.model')->where('model', '.*');
+use App\Http\Controllers\Fleet\FixedCostController;
+
+Route::get('/fleet/fixed-costs',          [FixedCostController::class, 'index'])->name('fleet.fixed-costs');
+Route::post('/fleet/vans/{van}/fixed-costs', [FixedCostController::class, 'upsert'])->name('fleet.fixed-costs.upsert');
 Route::get('/fleet/assignments', fn() => view('demo.fleet.assignments'))->name('fleet.assignments');
 Route::get('/operations/trips',   fn() => view('demo.operations.trips'))->name('operations.trips');
 Route::get('/operations/expenses',fn() => view('demo.operations.expenses'))->name('operations.expenses');
