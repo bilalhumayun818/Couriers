@@ -52,7 +52,14 @@ Route::post('/crm/drivers',           [DriverController::class, 'store'])->name(
 Route::get('/crm/drivers/{driver}',   [DriverController::class, 'show'])->name('crm.drivers.show');
 Route::put('/crm/drivers/{driver}',   [DriverController::class, 'update'])->name('crm.drivers.update');
 Route::delete('/crm/drivers/{driver}',[DriverController::class, 'destroy'])->name('crm.drivers.destroy');
-Route::get('/crm/investors',     fn() => view('demo.crm.investors'))->name('crm.investors');
+use App\Http\Controllers\CRM\InvestorController;
+
+Route::get('/crm/investors',                           [InvestorController::class, 'index'])->name('crm.investors');
+Route::post('/crm/investors',                          [InvestorController::class, 'store'])->name('crm.investors.store');
+Route::put('/crm/investors/{investor}',                [InvestorController::class, 'update'])->name('crm.investors.update');
+Route::delete('/crm/investors/{investor}',             [InvestorController::class, 'destroy'])->name('crm.investors.destroy');
+Route::post('/crm/investors/{investor}/inject',        [InvestorController::class, 'inject'])->name('crm.investors.inject');
+Route::post('/crm/investors/{investor}/distribute',    [InvestorController::class, 'distribute'])->name('crm.investors.distribute');
 Route::get('/ledger/van-ledger',     fn() => view('demo.ledger.van-ledger'))->name('ledger.van');
 Route::get('/ledger/customer-ledger',fn() => view('demo.ledger.customer-ledger'))->name('ledger.customer');
 Route::get('/ledger/trial-balance',  fn() => view('demo.ledger.trial-balance'))->name('ledger.trial-balance');
