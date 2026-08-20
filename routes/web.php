@@ -60,7 +60,10 @@ Route::put('/crm/investors/{investor}',                [InvestorController::clas
 Route::delete('/crm/investors/{investor}',             [InvestorController::class, 'destroy'])->name('crm.investors.destroy');
 Route::post('/crm/investors/{investor}/inject',        [InvestorController::class, 'inject'])->name('crm.investors.inject');
 Route::post('/crm/investors/{investor}/distribute',    [InvestorController::class, 'distribute'])->name('crm.investors.distribute');
-Route::get('/ledger/van-ledger',     fn() => view('demo.ledger.van-ledger'))->name('ledger.van');
+use App\Http\Controllers\Ledger\VanLedgerController;
+
+Route::get('/ledger/van-ledger',              [VanLedgerController::class, 'index'])->name('ledger.van');
+Route::get('/ledger/van-ledger/{van}',         [VanLedgerController::class, 'show'])->name('ledger.van.detail');
 Route::get('/ledger/customer-ledger',fn() => view('demo.ledger.customer-ledger'))->name('ledger.customer');
 Route::get('/ledger/trial-balance',  fn() => view('demo.ledger.trial-balance'))->name('ledger.trial-balance');
 Route::get('/ledger/profit-loss',    fn() => view('demo.ledger.profit-loss'))->name('ledger.profit-loss');
