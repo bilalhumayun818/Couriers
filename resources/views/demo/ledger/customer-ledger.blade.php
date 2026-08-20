@@ -1,97 +1,126 @@
 @extends('demo.layout')
 @section('title','Customer Ledger')
-@section('page-title','Ledgers — Customer Account Statement')
-@section('page-subtitle','Bookings, payments and outstanding balances per customer')
+@section('page-title','Ledgers — Customer Ledger')
+@section('page-subtitle','Account statements showing bookings and outstanding balances per customer')
 
 @section('content')
-@php
-$summary = [
-  ['Swift Retail Co','12','$5,200.00','$4,800.00','$400.00'],
-  ['Global Traders Ltd','8','$3,600.00','$2,100.00','$1,500.00'],
-  ['Metro Supplies','6','$2,800.00','$2,600.00','$200.00'],
-  ['Apex Importers','10','$4,900.00','$4,700.00','$200.00'],
-  ['Zenith Cargo','5','$2,100.00','-','$2,100.00'],
-];
-$txns = [
-  ['17 Jun 2025','T-00124','Trip — Nairobi→Mombasa','$453.60','—','$400.00'],
-  ['15 Jun 2025','T-00120','Trip — Mombasa→Nairobi','$432.00','—','$846.00'],
-  ['10 Jun 2025','PMT-0041','Payment Received','—','$432.00','$414.00'],
-  ['08 Jun 2025','T-00115','Trip — Nairobi→Kisumu','$378.00','—','$846.00'],
-  ['05 Jun 2025','PMT-0038','Payment Received','—','$756.00','$468.00'],
-  ['02 Jun 2025','T-00109','Trip — Kisumu→Nairobi','$421.20','—','$1,224.00'],
-];
-@endphp
 
-<div class="space-y-4">
-  {{-- Summary cards --}}
-  <div class="card overflow-hidden">
-    <div class="px-5 py-4 border-b border-slate-100 flex flex-wrap gap-3 items-center justify-between">
-      <div class="flex gap-2">
-        <select class="text-sm"><option>Swift Retail Co</option><option>Global Traders Ltd</option><option>Metro Supplies</option></select>
-        <input type="date" class="text-sm" value="2025-06-01">
-        <span class="text-slate-400 text-sm">to</span>
-        <input type="date" class="text-sm" value="2025-06-30">
-        <button class="btn-primary text-sm px-3 py-1.5">Apply</button>
+{{-- Filter bar --}}
+<div class="card px-5 py-4 mb-5">
+  <form method="GET" action="{{ route('ledger.customer') }}" id="filterForm"
+        class="flex flex-wrap gap-3 items-end justify-between">
+    <div class="flex flex-wrap gap-2 items-end">
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">Search Customer</label>
+        <input type="text" name="search" placeholder="Company name…"
+               value="{{ $search }}" class="text-sm w-48">
       </div>
-      <div class="flex gap-2">
-        <button class="btn-ghost text-sm px-3 py-1.5">Export CSV</button>
-        <button class="btn-ghost text-sm px-3 py-1.5">Export PDF</button>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">From</label>
+        <input type="date" name="from" class="text-sm" value="{{ $from->format('Y-m-d') }}" onchange="filterForm.submit()">
       </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">To</label>
+        <input type="date" name="to" class="text-sm" value="{{ $to->format('Y-m-d') }}" onchange="filterForm.submit()">
+      </div>
+      <button type="submit" class="btn-primary text-xs self-end px-3 py-2">Apply</button>
+      @if($search || request()->hasAny(['from','to']))
+        <a href="{{ route('ledger.customer') }}" class="btn-ghost text-xs self-end px-3 py-2">✕ Reset</a>
+      @endif
     </div>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead><tr class="table-header">
-          <th class="px-5 py-3 text-left">Customer</th>
-          <th class="px-5 py-3 text-right">Trips</th>
-          <th class="px-5 py-3 text-right">Invoiced</th>
-          <th class="px-5 py-3 text-right">Paid</th>
-          <th class="px-5 py-3 text-right">Outstanding</th>
-        </tr></thead>
-        <tbody class="divide-y divide-slate-50">
-          @foreach($summary as $s)
-          <tr class="table-row">
-            <td class="px-5 py-3.5 font-semibold text-slate-800">{{ $s[0] }}</td>
-            <td class="px-5 py-3.5 text-right text-slate-600">{{ $s[1] }}</td>
-            <td class="px-5 py-3.5 text-right text-slate-600">{{ $s[2] }}</td>
-            <td class="px-5 py-3.5 text-right text-emerald-700 font-medium">{{ $s[3] }}</td>
-            <td class="px-5 py-3.5 text-right font-bold {{ $s[4] !== '$200.00' && $s[4] !== '$400.00' ? 'text-red-600' : 'text-slate-700' }}">{{ $s[4] }}</td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
+    <div class="text-xs text-gray-400 self-end">
+      {{ $from->format('d M Y') }} – {{ $to->format('d M Y') }}
     </div>
+  </form>
+</div>
+
+{{-- Summary --}}
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
+  <div class="card p-4">
+    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Invoiced</p>
+    <p class="text-2xl font-bold mt-1" style="color:#16a34a;">${{ number_format($grandTotal,2) }}</p>
+    <p class="text-xs text-gray-400 mt-0.5">{{ $grandTrips }} active trips</p>
   </div>
+  <div class="card p-4">
+    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Active Customers</p>
+    <p class="text-2xl font-bold text-gray-900 mt-1">{{ $customers->where('total_trips','>', 0)->count() }}</p>
+    <p class="text-xs text-gray-400 mt-0.5">with trips in period</p>
+  </div>
+  <div class="card p-4">
+    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Customers</p>
+    <p class="text-2xl font-bold text-gray-900 mt-1">{{ $customers->count() }}</p>
+    <p class="text-xs text-gray-400 mt-0.5">registered</p>
+  </div>
+</div>
 
-  {{-- Transaction detail for selected customer --}}
-  <div class="card overflow-hidden">
-    <div class="px-5 py-4 border-b border-slate-100">
-      <h3 class="font-semibold text-slate-800 text-sm">Statement — Swift Retail Co &bull; June 2025</h3>
-      <p class="text-xs text-slate-400 mt-0.5">Running balance shown right-to-left</p>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead><tr class="table-header">
-          <th class="px-5 py-3 text-left">Date</th>
-          <th class="px-5 py-3 text-left">Reference</th>
-          <th class="px-5 py-3 text-left">Description</th>
-          <th class="px-5 py-3 text-right">Debit</th>
-          <th class="px-5 py-3 text-right">Credit</th>
-          <th class="px-5 py-3 text-right">Balance</th>
-        </tr></thead>
-        <tbody class="divide-y divide-slate-50">
-          @foreach($txns as $tx)
-          <tr class="table-row">
-            <td class="px-5 py-3.5 text-xs text-slate-500">{{ $tx[0] }}</td>
-            <td class="px-5 py-3.5 font-mono text-xs text-indigo-600 font-semibold">{{ $tx[1] }}</td>
-            <td class="px-5 py-3.5 text-slate-700">{{ $tx[2] }}</td>
-            <td class="px-5 py-3.5 text-right {{ $tx[3] !== '—' ? 'text-slate-800 font-semibold' : 'text-slate-300' }}">{{ $tx[3] }}</td>
-            <td class="px-5 py-3.5 text-right {{ $tx[4] !== '—' ? 'text-emerald-700 font-semibold' : 'text-slate-300' }}">{{ $tx[4] }}</td>
-            <td class="px-5 py-3.5 text-right font-bold text-slate-800">{{ $tx[5] }}</td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
+{{-- Customer table --}}
+<div class="card overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="table-header">
+          <th class="px-5 py-3 text-left">Customer</th>
+          <th class="px-5 py-3 text-left">Contact</th>
+          <th class="px-5 py-3 text-right">Trips</th>
+          <th class="px-5 py-3 text-right">Total Invoiced</th>
+          <th class="px-5 py-3 text-right">Credit Limit</th>
+          <th class="px-5 py-3 text-left">Last Trip</th>
+          <th class="px-5 py-3 text-right">Statement</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-50">
+        @forelse($customers as $row)
+        @php
+          $c = $row['customer'];
+          $utilizationPct = $c->credit_limit > 0
+            ? min(100, round(($row['total_invoiced'] / $c->credit_limit) * 100, 1))
+            : 0;
+        @endphp
+        <tr class="table-row">
+          <td class="px-5 py-3.5">
+            <div class="font-semibold text-gray-800">{{ $c->company_name }}</div>
+            <div class="text-xs text-gray-400 mt-0.5">{{ $c->email ?? '—' }}</div>
+          </td>
+          <td class="px-5 py-3.5 text-gray-600 text-xs">{{ $c->contact_name ?? '—' }}</td>
+          <td class="px-5 py-3.5 text-right text-gray-600">{{ $row['total_trips'] }}</td>
+          <td class="px-5 py-3.5 text-right">
+            <div class="font-semibold text-gray-800">${{ number_format($row['total_invoiced'],2) }}</div>
+            @if($c->credit_limit > 0)
+            <div class="mt-1" style="height:4px;background:#f1f5f9;border-radius:4px;width:80px;margin-left:auto;">
+              <div style="height:100%;width:{{ $utilizationPct }}%;background:{{ $utilizationPct>80?'#ef4444':($utilizationPct>50?'#f59e0b':'#6366f1') }};border-radius:4px;"></div>
+            </div>
+            @endif
+          </td>
+          <td class="px-5 py-3.5 text-right text-gray-500 text-xs">${{ number_format($c->credit_limit,2) }}</td>
+          <td class="px-5 py-3.5 text-xs text-gray-500">
+            {{ $row['last_trip_date'] ? $row['last_trip_date']->format('d M Y') : '—' }}
+          </td>
+          <td class="px-5 py-3.5 text-right">
+            <a href="{{ route('ledger.customer.statement', ['customer' => $c->id, 'from' => $from->format('Y-m-d'), 'to' => $to->format('Y-m-d')]) }}"
+               class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold">
+              View →
+            </a>
+          </td>
+        </tr>
+        @empty
+        <tr>
+          <td colspan="7" class="px-5 py-12 text-center text-gray-400 text-sm">
+            No customers found.
+          </td>
+        </tr>
+        @endforelse
+      </tbody>
+      @if($customers->isNotEmpty())
+      <tfoot style="background:#f8fafc;border-top:2px solid #e5e7eb;">
+        <tr>
+          <td colspan="2" class="px-5 py-3 font-bold text-gray-700 text-xs">TOTALS</td>
+          <td class="px-5 py-3 text-right font-bold text-gray-800">{{ $grandTrips }}</td>
+          <td class="px-5 py-3 text-right font-bold" style="color:#16a34a;">${{ number_format($grandTotal,2) }}</td>
+          <td colspan="3"></td>
+        </tr>
+      </tfoot>
+      @endif
+    </table>
   </div>
 </div>
 @endsection

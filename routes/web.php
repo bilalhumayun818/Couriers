@@ -64,7 +64,10 @@ use App\Http\Controllers\Ledger\VanLedgerController;
 
 Route::get('/ledger/van-ledger',              [VanLedgerController::class, 'index'])->name('ledger.van');
 Route::get('/ledger/van-ledger/{van}',         [VanLedgerController::class, 'show'])->name('ledger.van.detail');
-Route::get('/ledger/customer-ledger',fn() => view('demo.ledger.customer-ledger'))->name('ledger.customer');
+use App\Http\Controllers\Ledger\CustomerLedgerController;
+
+Route::get('/ledger/customer-ledger',                  [CustomerLedgerController::class, 'index'])->name('ledger.customer');
+Route::get('/ledger/customer-ledger/{customer}',       [CustomerLedgerController::class, 'show'])->name('ledger.customer.statement');
 Route::get('/ledger/trial-balance',  fn() => view('demo.ledger.trial-balance'))->name('ledger.trial-balance');
 Route::get('/ledger/profit-loss',    fn() => view('demo.ledger.profit-loss'))->name('ledger.profit-loss');
 Route::get('/ledger/balance-sheet',  fn() => view('demo.ledger.balance-sheet'))->name('ledger.balance-sheet');
