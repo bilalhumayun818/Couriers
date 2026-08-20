@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             FleetSeeder::class,
             TripSeeder::class,
             ExpenseSeeder::class,
+            WageSeeder::class,
         ]);
     }
 }

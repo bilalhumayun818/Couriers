@@ -31,8 +31,20 @@ Route::get('/operations/expenses',              [ExpenseController::class, 'inde
 Route::post('/operations/expenses',             [ExpenseController::class, 'store'])->name('operations.expenses.store');
 Route::put('/operations/expenses/{expense}',    [ExpenseController::class, 'update'])->name('operations.expenses.update');
 Route::delete('/operations/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('operations.expenses.destroy');
-Route::get('/operations/wages',   fn() => view('demo.operations.wages'))->name('operations.wages');
-Route::get('/crm/customers',     fn() => view('demo.crm.customers'))->name('crm.customers');
+use App\Http\Controllers\Operations\WageController;
+
+Route::get('/operations/wages',                    [WageController::class, 'index'])->name('operations.wages');
+Route::post('/operations/wages/advance',           [WageController::class, 'storeAdvance'])->name('operations.wages.advance');
+Route::delete('/operations/wages/advance/{advance}', [WageController::class, 'destroyAdvance'])->name('operations.wages.advance.destroy');
+Route::post('/operations/wages/preview',           [WageController::class, 'preview'])->name('operations.wages.preview');
+Route::post('/operations/wages/payout',            [WageController::class, 'storePayout'])->name('operations.wages.payout');
+use App\Http\Controllers\CRM\CustomerController;
+
+Route::get('/crm/customers',           [CustomerController::class, 'index'])->name('crm.customers');
+Route::post('/crm/customers',          [CustomerController::class, 'store'])->name('crm.customers.store');
+Route::get('/crm/customers/{customer}',[CustomerController::class, 'show'])->name('crm.customers.show');
+Route::put('/crm/customers/{customer}',[CustomerController::class, 'update'])->name('crm.customers.update');
+Route::delete('/crm/customers/{customer}',[CustomerController::class, 'destroy'])->name('crm.customers.destroy');
 Route::get('/crm/drivers',       fn() => view('demo.crm.drivers'))->name('crm.drivers');
 Route::get('/crm/investors',     fn() => view('demo.crm.investors'))->name('crm.investors');
 Route::get('/ledger/van-ledger',     fn() => view('demo.ledger.van-ledger'))->name('ledger.van');

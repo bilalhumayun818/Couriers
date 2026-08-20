@@ -1,20 +1,83 @@
 @extends('demo.layout')
 @section('title','Advances & Wages')
 @section('page-title','Operations — Advances & Wage Payouts')
-@section('page-subtitle','Record driver cash advances and calculate net wage payouts')
+@section('page-subtitle','Driver cash advances and monthly net wage calculations')
 
 @section('content')
+
+@if(session('success'))
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+  ✓ {{ session('success') }}
+</div>
+@endif
+
+{{-- Negative payout confirmation banner --}}
+@if(session('negative_warning'))
+@php $nw = session('negative_warning'); @endphp
+<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin-bottom:16px;">
+  <p class="text-sm font-semibold text-amber-800 mb-1">⚠ Negative Net Payout</p>
+  <p class="text-xs text-amber-700 mb-3">
+    Driver has advances of <strong>${{ number_format($nw['advances'],2) }}</strong> which exceed gross wage of
+    <strong>${{ number_format($nw['gross_wage'],2) }}</strong>.
+    Net payout would be <strong class="text-red-600">${{ number_format($nw['net'],2) }}</strong>.
+    Confirm to proceed.
+  </p>
+  <form method="POST" action="{{ route('operations.wages.payout') }}" class="inline">
+    @csrf
+    <input type="hidden" name="driver_id"  value="{{ $nw['driver_id'] }}">
+    <input type="hidden" name="pay_period" value="{{ $nw['pay_period'] }}">
+    <input type="hidden" name="gross_wage" value="{{ $nw['gross_wage'] }}">
+    <input type="hidden" name="confirmed"  value="1">
+    <button type="submit" class="btn-primary text-xs px-3 py-1.5 mr-2">Confirm & Save Payout</button>
+    <a href="{{ route('operations.wages') }}" class="btn-ghost text-xs px-3 py-1.5">Cancel</a>
+  </form>
+</div>
+@endif
+
+{{-- Period selector --}}
+<div class="card px-5 py-4 mb-5 flex flex-wrap items-center gap-4">
+  <span class="text-sm font-semibold text-gray-700">Pay Period:</span>
+  <form method="GET" action="{{ route('operations.wages') }}" class="flex gap-2 items-center">
+    <select name="pay_period" class="text-sm" onchange="this.form.submit()">
+      @foreach($periods as $p)
+        <option value="{{ $p['value'] }}" {{ $selectedPeriod===$p['value']?'selected':'' }}>{{ $p['label'] }}</option>
+      @endforeach
+    </select>
+  </form>
+  <span class="text-xs text-gray-400">Showing data for <strong>{{ \Carbon\Carbon::createFromFormat('Y-m',$selectedPeriod)->format('F Y') }}</strong></span>
+</div>
+
+{{-- Summary cards --}}
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-5">
+  <div class="card p-4">
+    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Advances</p>
+    <p class="text-2xl font-bold mt-1" style="color:#ef4444;">${{ number_format($totalAdvances,2) }}</p>
+    <p class="text-xs text-gray-400 mt-0.5">{{ $advances->count() }} advance{{ $advances->count()!==1?'s':'' }}</p>
+  </div>
+  <div class="card p-4">
+    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Gross Wages</p>
+    <p class="text-2xl font-bold text-gray-900 mt-1">${{ number_format($totalGross,2) }}</p>
+    <p class="text-xs text-gray-400 mt-0.5">{{ $payouts->count() }} payout{{ $payouts->count()!==1?'s':'' }} processed</p>
+  </div>
+  <div class="card p-4">
+    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Net Payouts</p>
+    <p class="text-2xl font-bold mt-1" style="color:#16a34a;">${{ number_format($totalNet,2) }}</p>
+    <p class="text-xs text-gray-400 mt-0.5">After deducting advances</p>
+  </div>
+</div>
+
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
 
-  {{-- Driver Advances --}}
+  {{-- ── Driver Advances ── --}}
   <div class="card overflow-hidden">
-    <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
       <div>
-        <h3 class="font-semibold text-slate-800 text-sm">Driver Advances</h3>
-        <p class="text-xs text-slate-400 mt-0.5">Cash advances issued to drivers</p>
+        <h3 class="font-semibold text-gray-800 text-sm">Driver Advances</h3>
+        <p class="text-xs text-gray-400 mt-0.5">Cash advances issued — {{ \Carbon\Carbon::createFromFormat('Y-m',$selectedPeriod)->format('F Y') }}</p>
       </div>
-      <button onclick="modal('advModal',true)" class="btn-primary text-xs px-3 py-1.5">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> New Advance
+      <button onclick="document.getElementById('advanceModal').classList.remove('hidden')" class="btn-primary text-xs px-3 py-1.5">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        New Advance
       </button>
     </div>
     <table class="w-full text-sm">
@@ -23,65 +86,70 @@
         <th class="px-4 py-3 text-left">Date</th>
         <th class="px-4 py-3 text-left">Purpose</th>
         <th class="px-4 py-3 text-right">Amount</th>
+        <th class="px-4 py-3 text-right">Action</th>
       </tr></thead>
-      <tbody class="divide-y divide-slate-50">
-        @php $advances = [
-          ['James Mwangi','10 Jun 2025','Fuel advance','$80.00'],
-          ['James Mwangi','14 Jun 2025','Expense float','$40.00'],
-          ['Peter Otieno','12 Jun 2025','Fuel advance','$60.00'],
-          ['Samuel Kamau','09 Jun 2025','Expense float','$50.00'],
-          ['David Njoroge','16 Jun 2025','Fuel advance','$75.00'],
-        ]; @endphp
-        @foreach($advances as $a)
+      <tbody class="divide-y divide-gray-50">
+        @forelse($advances as $adv)
         <tr class="table-row">
-          <td class="px-4 py-3 text-slate-700 font-medium">{{ $a[0] }}</td>
-          <td class="px-4 py-3 text-slate-500 text-xs">{{ $a[1] }}</td>
-          <td class="px-4 py-3 text-slate-500 text-xs">{{ $a[2] }}</td>
-          <td class="px-4 py-3 text-right font-semibold text-slate-800">{{ $a[3] }}</td>
+          <td class="px-4 py-3 font-medium text-gray-800">{{ $adv->driver->full_name }}</td>
+          <td class="px-4 py-3 text-xs text-gray-500">{{ $adv->advance_date->format('d M Y') }}</td>
+          <td class="px-4 py-3 text-xs text-gray-500">{{ $adv->purpose ?? '—' }}</td>
+          <td class="px-4 py-3 text-right font-semibold text-red-600">${{ number_format($adv->amount,2) }}</td>
+          <td class="px-4 py-3 text-right">
+            <form method="POST" action="{{ route('operations.wages.advance.destroy',$adv) }}" class="inline"
+                  onsubmit="return confirm('Remove this advance?')">
+              @csrf @method('DELETE')
+              <button type="submit" class="text-xs text-gray-400 hover:text-red-600 font-medium">Remove</button>
+            </form>
+          </td>
         </tr>
-        @endforeach
+        @empty
+        <tr><td colspan="5" class="px-4 py-8 text-center text-gray-400 text-xs">No advances for this period.</td></tr>
+        @endforelse
       </tbody>
     </table>
   </div>
 
-  {{-- Wage Payouts --}}
+  {{-- ── Wage Payouts ── --}}
   <div class="card overflow-hidden">
-    <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
       <div>
-        <h3 class="font-semibold text-slate-800 text-sm">Wage Payouts — June 2025</h3>
-        <p class="text-xs text-slate-400 mt-0.5">Net = Gross Wage − Total Advances</p>
+        <h3 class="font-semibold text-gray-800 text-sm">Wage Payouts</h3>
+        <p class="text-xs text-gray-400 mt-0.5">Net = Gross − Advances &bull; {{ \Carbon\Carbon::createFromFormat('Y-m',$selectedPeriod)->format('F Y') }}</p>
       </div>
-      <button onclick="modal('wageModal',true)" class="btn-primary text-xs px-3 py-1.5">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> Calculate Payout
+      <button onclick="document.getElementById('payoutModal').classList.remove('hidden')" class="btn-primary text-xs px-3 py-1.5">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Calculate Payout
       </button>
     </div>
     <table class="w-full text-sm">
       <thead><tr class="table-header">
         <th class="px-4 py-3 text-left">Driver</th>
-        <th class="px-4 py-3 text-right">Gross Wage</th>
+        <th class="px-4 py-3 text-right">Gross</th>
         <th class="px-4 py-3 text-right">Advances</th>
         <th class="px-4 py-3 text-right">Net Payout</th>
         <th class="px-4 py-3 text-center">Status</th>
       </tr></thead>
-      <tbody class="divide-y divide-slate-50">
-        @php $wages = [
-          ['James Mwangi','$1,200.00','$120.00','$1,080.00',false],
-          ['Peter Otieno','$1,100.00','$60.00','$1,040.00',false],
-          ['Samuel Kamau','$1,050.00','$50.00','$1,000.00',false],
-          ['David Njoroge','$900.00','$75.00','$825.00',false],
-          ['John Waweru','$950.00','$0.00','$950.00',false],
-        ]; @endphp
-        @foreach($wages as $w)
+      <tbody class="divide-y divide-gray-50">
+        @forelse($payouts as $payout)
         <tr class="table-row">
-          <td class="px-4 py-3 text-slate-700 font-medium">{{ $w[0] }}</td>
-          <td class="px-4 py-3 text-right text-slate-600">{{ $w[1] }}</td>
-          <td class="px-4 py-3 text-right text-red-500">−{{ $w[2] }}</td>
-          <td class="px-4 py-3 text-right font-bold text-emerald-700">{{ $w[3] }}</td>
+          <td class="px-4 py-3 font-medium text-gray-800">{{ $payout->driver->full_name }}</td>
+          <td class="px-4 py-3 text-right text-gray-600">${{ number_format($payout->gross_wage,2) }}</td>
+          <td class="px-4 py-3 text-right text-red-500">−${{ number_format($payout->total_advances,2) }}</td>
+          <td class="px-4 py-3 text-right font-bold {{ $payout->is_negative ? 'text-red-600' : 'text-emerald-700' }}">
+            {{ $payout->is_negative ? '−' : '' }}${{ number_format(abs($payout->net_wage),2) }}
+          </td>
           <td class="px-4 py-3 text-center">
-            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Paid</span>
+            @if($payout->is_negative)
+              <span style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;" class="text-xs font-semibold px-2 py-0.5 rounded-full">Negative</span>
+            @else
+              <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;" class="text-xs font-semibold px-2 py-0.5 rounded-full">Paid</span>
+            @endif
           </td>
         </tr>
-        @endforeach
+        @empty
+        <tr><td colspan="5" class="px-4 py-8 text-center text-gray-400 text-xs">No payouts calculated for this period.</td></tr>
+        @endforelse
       </tbody>
     </table>
   </div>
@@ -89,67 +157,128 @@
 @endsection
 
 @section('modals')
-<div id="advModal" class="hidden fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-4">
+{{-- New Advance Modal --}}
+<div id="advanceModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,.4);">
   <div class="bg-white rounded-xl w-full max-w-md shadow-xl">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-      <h2 class="font-semibold text-slate-800">New Driver Advance</h2>
-      <button onclick="modal('advModal',false)" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <h2 class="font-semibold text-gray-800 text-sm">Log Driver Advance</h2>
+      <button onclick="document.getElementById('advanceModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     </div>
-    <div class="p-5 space-y-4">
-      <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Driver</label>
-        <select class="w-full"><option>James Mwangi</option><option>Peter Otieno</option><option>Samuel Kamau</option></select></div>
-      <div class="grid grid-cols-2 gap-3">
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Date</label><input type="date" class="w-full"></div>
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Amount ($)</label><input type="number" placeholder="0.00" class="w-full"></div>
+    <form method="POST" action="{{ route('operations.wages.advance') }}">
+      @csrf
+      <div class="p-5 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Driver <span class="text-red-500">*</span></label>
+          <select name="driver_id" required class="w-full">
+            <option value="">— Select Driver —</option>
+            @foreach($drivers as $d)
+              <option value="{{ $d->id }}">{{ $d->full_name }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Date <span class="text-red-500">*</span></label>
+            <input type="date" name="advance_date" required class="w-full" value="{{ date('Y-m-d') }}">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Amount ($) <span class="text-red-500">*</span></label>
+            <input type="number" name="amount" required min="0.01" step="0.01" placeholder="0.00" class="w-full">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Purpose</label>
+          <input type="text" name="purpose" placeholder="e.g. Fuel advance" maxlength="255" class="w-full">
+        </div>
+        <input type="hidden" name="pay_period" value="{{ $selectedPeriod }}">
       </div>
-      <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Purpose</label>
-        <input type="text" placeholder="e.g. Fuel advance" class="w-full"></div>
-    </div>
-    <div class="px-5 py-4 border-t border-slate-100 flex justify-end gap-2">
-      <button onclick="modal('advModal',false)" class="btn-ghost">Cancel</button>
-      <button class="btn-primary">Save Advance</button>
-    </div>
+      <div class="px-5 py-4 border-t border-gray-100 flex justify-end gap-2">
+        <button type="button" onclick="document.getElementById('advanceModal').classList.add('hidden')" class="btn-ghost">Cancel</button>
+        <button type="submit" class="btn-primary">Save Advance</button>
+      </div>
+    </form>
   </div>
 </div>
 
-<div id="wageModal" class="hidden fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-4">
+{{-- Calculate Payout Modal --}}
+<div id="payoutModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,.4);">
   <div class="bg-white rounded-xl w-full max-w-md shadow-xl">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-      <h2 class="font-semibold text-slate-800">Calculate Wage Payout</h2>
-      <button onclick="modal('wageModal',false)" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <h2 class="font-semibold text-gray-800 text-sm">Calculate Wage Payout</h2>
+      <button onclick="document.getElementById('payoutModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     </div>
-    <div class="p-5 space-y-4">
-      <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Driver</label>
-        <select class="w-full" onchange="previewWage()"><option value="1200">James Mwangi (Advances: $120)</option><option value="1100">Peter Otieno (Advances: $60)</option></select></div>
-      <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Pay Period</label>
-        <select class="w-full"><option>June 2025</option><option>May 2025</option></select></div>
-      <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Gross Wage ($)</label>
-        <input type="number" id="grossWage" placeholder="0.00" class="w-full" oninput="previewWage()"></div>
-      <div class="bg-slate-50 rounded-lg px-4 py-3 border border-slate-200">
-        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>Gross Wage</span><span id="pw-gross">$0.00</span></div>
-        <div class="flex justify-between text-xs text-red-500 mb-1"><span>Total Advances</span><span id="pw-adv">−$120.00</span></div>
-        <div class="flex justify-between text-sm font-bold text-emerald-700 border-t border-slate-200 pt-2 mt-2"><span>Net Payout</span><span id="pw-net">$0.00</span></div>
+    <form method="POST" action="{{ route('operations.wages.payout') }}">
+      @csrf
+      <div class="p-5 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Driver <span class="text-red-500">*</span></label>
+          <select name="driver_id" id="po_driver" required class="w-full" onchange="fetchPreview()">
+            <option value="">— Select Driver —</option>
+            @foreach($drivers as $d)
+              <option value="{{ $d->id }}">{{ $d->full_name }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Gross Wage ($) <span class="text-red-500">*</span></label>
+          <input type="number" name="gross_wage" id="po_gross" required min="0" step="0.01" placeholder="0.00" class="w-full" oninput="fetchPreview()">
+        </div>
+        <input type="hidden" name="pay_period" value="{{ $selectedPeriod }}">
+
+        {{-- Live preview --}}
+        <div id="previewBox" style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;">
+          <div class="flex justify-between text-xs text-gray-500 mb-1.5"><span>Gross Wage</span><span id="pv_gross">$0.00</span></div>
+          <div class="flex justify-between text-xs text-gray-500 mb-1.5"><span>Total Advances</span><span id="pv_adv" class="text-red-500">−$0.00</span></div>
+          <div class="flex justify-between text-sm font-bold border-t border-gray-200 pt-2 mt-1" id="pv_net_row">
+            <span>Net Payout</span><span id="pv_net" class="text-emerald-700">$0.00</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="px-5 py-4 border-t border-slate-100 flex justify-end gap-2">
-      <button onclick="modal('wageModal',false)" class="btn-ghost">Cancel</button>
-      <button class="btn-primary">Save Payout</button>
-    </div>
+      <div class="px-5 py-4 border-t border-gray-100 flex justify-end gap-2">
+        <button type="button" onclick="document.getElementById('payoutModal').classList.add('hidden')" class="btn-ghost">Cancel</button>
+        <button type="submit" class="btn-primary">Save Payout</button>
+      </div>
+    </form>
   </div>
 </div>
 @endsection
+
 @section('scripts')
 <script>
-function modal(id,s){document.getElementById(id).classList.toggle('hidden',!s);}
-function previewWage(){
-  const gross=parseFloat(document.getElementById('grossWage').value)||0;
-  const adv=120;
-  document.getElementById('pw-gross').textContent='$'+gross.toFixed(2);
-  document.getElementById('pw-adv').textContent='−$'+adv.toFixed(2);
-  const net=gross-adv;
-  const netEl=document.getElementById('pw-net');
-  netEl.textContent=(net<0?'−$'+Math.abs(net).toFixed(2):'$'+net.toFixed(2));
-  netEl.className=net<0?'text-red-600 font-bold text-sm':'text-emerald-700 font-bold text-sm';
+const PREVIEW_URL  = '{{ route("operations.wages.preview") }}';
+const CSRF_TOKEN   = '{{ csrf_token() }}';
+const PAY_PERIOD   = '{{ $selectedPeriod }}';
+
+let previewTimer = null;
+
+function fetchPreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(doPreview, 300);
+}
+
+function doPreview() {
+  const driverId = document.getElementById('po_driver').value;
+  const gross    = document.getElementById('po_gross').value;
+  if (!driverId || !gross) return;
+
+  fetch(PREVIEW_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': CSRF_TOKEN },
+    body: JSON.stringify({ driver_id: driverId, pay_period: PAY_PERIOD, gross_wage: gross })
+  })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('pv_gross').textContent = '$' + data.gross_wage.toFixed(2);
+    document.getElementById('pv_adv').textContent   = '−$' + data.total_advances.toFixed(2);
+    const netEl = document.getElementById('pv_net');
+    netEl.textContent = (data.is_negative ? '−$' : '$') + Math.abs(data.net_wage).toFixed(2);
+    netEl.style.color = data.is_negative ? '#dc2626' : '#16a34a';
+  })
+  .catch(() => {});
 }
 </script>
 @endsection
