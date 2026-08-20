@@ -13,21 +13,35 @@ class CustomerController extends Controller
         $query = Customer::withCount('trips')
             ->withSum(['trips as total_invoiced' => function ($q) {
                 $q->where('status', 'active');
-            }], 'total_amount');
+            }], 'total_amount')
+            ->orderBy('company_name');
 
         if ($request->filled('search')) {
             $query->where('company_name', 'like', '%' . $request->search . '%');
         }
 
+        // Fetch all matching (search only), then filter by balance in PHP
+        $all = $query->get();
+
         if ($request->filled('balance')) {
-            if ($request->balance === 'with') {
-                $query->having('total_invoiced', '>', 0);
-            } elseif ($request->balance === 'none') {
-                $query->having('total_invoiced', '=', 0)->orWhereNull('total_invoiced');
-            }
+            $all = $all->filter(function ($c) use ($request) {
+                $invoiced = (float)($c->total_invoiced ?? 0);
+                if ($request->balance === 'with')  return $invoiced > 0;
+                if ($request->balance === 'none')  return $invoiced <= 0;
+                return true;
+            })->values();
         }
 
-        $customers = $query->orderBy('company_name')->paginate(15)->withQueryString();
+        // Manual pagination
+        $page     = (int)($request->get('page', 1));
+        $perPage  = 15;
+        $total    = $all->count();
+        $items    = $all->slice(($page - 1) * $perPage, $perPage)->values();
+
+        $customers = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items, $total, $perPage, $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         return view('demo.crm.customers', compact('customers'));
     }
@@ -43,7 +57,9 @@ class CustomerController extends Controller
             'credit_limit'   => 'nullable|numeric|min:0|max:999999999.99',
         ]);
 
-        Customer::create($data);
+        Customer::create(array_merge($data, [
+            'credit_limit' => $data['credit_limit'] ?? 0,
+        ]));
 
         return redirect()->route('crm.customers')
             ->with('success', 'Customer "' . $data['company_name'] . '" added successfully.');
@@ -74,7 +90,9 @@ class CustomerController extends Controller
             'credit_limit'   => 'nullable|numeric|min:0|max:999999999.99',
         ]);
 
-        $customer->update($data);
+        $customer->update(array_merge($data, [
+            'credit_limit' => $data['credit_limit'] ?? 0,
+        ]));
 
         return redirect()->route('crm.customers')
             ->with('success', 'Customer updated.');
