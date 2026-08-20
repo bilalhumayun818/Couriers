@@ -25,7 +25,12 @@ use App\Http\Controllers\Operations\TripController;
 Route::get('/operations/trips',              [TripController::class, 'index'])->name('operations.trips');
 Route::post('/operations/trips',             [TripController::class, 'store'])->name('operations.trips.store');
 Route::post('/operations/trips/{trip}/void', [TripController::class, 'void'])->name('operations.trips.void');
-Route::get('/operations/expenses',fn() => view('demo.operations.expenses'))->name('operations.expenses');
+use App\Http\Controllers\Operations\ExpenseController;
+
+Route::get('/operations/expenses',              [ExpenseController::class, 'index'])->name('operations.expenses');
+Route::post('/operations/expenses',             [ExpenseController::class, 'store'])->name('operations.expenses.store');
+Route::put('/operations/expenses/{expense}',    [ExpenseController::class, 'update'])->name('operations.expenses.update');
+Route::delete('/operations/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('operations.expenses.destroy');
 Route::get('/operations/wages',   fn() => view('demo.operations.wages'))->name('operations.wages');
 Route::get('/crm/customers',     fn() => view('demo.crm.customers'))->name('crm.customers');
 Route::get('/crm/drivers',       fn() => view('demo.crm.drivers'))->name('crm.drivers');
