@@ -16,7 +16,11 @@ use App\Http\Controllers\Fleet\FixedCostController;
 
 Route::get('/fleet/fixed-costs',          [FixedCostController::class, 'index'])->name('fleet.fixed-costs');
 Route::post('/fleet/vans/{van}/fixed-costs', [FixedCostController::class, 'upsert'])->name('fleet.fixed-costs.upsert');
-Route::get('/fleet/assignments', fn() => view('demo.fleet.assignments'))->name('fleet.assignments');
+use App\Http\Controllers\Fleet\AssignmentController;
+
+Route::get('/fleet/assignments',           [AssignmentController::class, 'index'])->name('fleet.assignments');
+Route::post('/fleet/assignments',          [AssignmentController::class, 'assign'])->name('fleet.assignments.assign');
+Route::delete('/fleet/assignments/{assignment}', [AssignmentController::class, 'end'])->name('fleet.assignments.end');
 Route::get('/operations/trips',   fn() => view('demo.operations.trips'))->name('operations.trips');
 Route::get('/operations/expenses',fn() => view('demo.operations.expenses'))->name('operations.expenses');
 Route::get('/operations/wages',   fn() => view('demo.operations.wages'))->name('operations.wages');
