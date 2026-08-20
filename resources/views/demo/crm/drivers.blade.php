@@ -4,91 +4,210 @@
 @section('page-subtitle','Driver profiles, licence details and assignment history')
 
 @section('content')
-@php
-$drivers = [
-  ['D-001','James Mwangi','DL-KE-20190234','04 Jul 2025',18,'ABC-001','active',true],
-  ['D-002','Peter Otieno','DL-KE-20180892','15 Nov 2025',150,'XYZ-202','active',false],
-  ['D-003','Samuel Kamau','DL-KE-20211045','22 Mar 2026',280,'DEF-303','active',false],
-  ['D-004','David Njoroge','DL-KE-20170563','08 Aug 2025',53,'KLM-505','active',false],
-  ['D-005','John Waweru','DL-KE-20201287','30 Sep 2025',105,'NOP-606','active',false],
-  ['D-006','Alice Wanjiku','DL-KE-20220341','12 Dec 2025',178,'QRS-707','active',false],
-  ['D-007','Grace Achieng','DL-KE-20190789','20 Jun 2025',3,'STU-808','active',true],
-];
-@endphp
+
+@if(session('success'))
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+  ✓ {{ session('success') }}
+</div>
+@endif
+@if($errors->any())
+<div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+  @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
+</div>
+@endif
 
 <div class="card overflow-hidden">
-  <div class="px-5 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-    <div class="flex gap-2 flex-wrap">
-      <input type="text" placeholder="Search name or licence…" class="w-52 text-sm">
-    </div>
-    <button onclick="modal('driverModal',true)" class="btn-primary">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+  {{-- Toolbar --}}
+  <div class="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-end gap-3 justify-between">
+    <form method="GET" action="{{ route('crm.drivers') }}" id="filterForm" class="flex gap-2 flex-wrap items-end">
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1">Search</label>
+        <input type="text" name="search" placeholder="Name or licence no…"
+               value="{{ request('search') }}" class="text-sm w-52"
+               onchange="filterForm.submit()">
+      </div>
+      @if(request('search'))
+        <a href="{{ route('crm.drivers') }}" class="btn-ghost text-xs self-end" style="padding:6px 12px;">✕ Clear</a>
+      @endif
+    </form>
+    <button onclick="openModal(null)" class="btn-primary self-end">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
       Add Driver
     </button>
   </div>
+
+  {{-- Table --}}
   <div class="overflow-x-auto">
     <table class="w-full text-sm">
-      <thead><tr class="table-header">
-        <th class="px-5 py-3 text-left">ID</th>
-        <th class="px-5 py-3 text-left">Full Name</th>
-        <th class="px-5 py-3 text-left">Licence No.</th>
-        <th class="px-5 py-3 text-left">Licence Expiry</th>
-        <th class="px-5 py-3 text-left">Days Left</th>
-        <th class="px-5 py-3 text-left">Assigned Van</th>
-        <th class="px-5 py-3 text-center">Status</th>
-        <th class="px-5 py-3 text-right">Actions</th>
-      </tr></thead>
-      <tbody class="divide-y divide-slate-50">
-        @foreach($drivers as $d)
+      <thead>
+        <tr class="table-header">
+          <th class="px-5 py-3 text-left">Driver</th>
+          <th class="px-5 py-3 text-left">Licence No.</th>
+          <th class="px-5 py-3 text-left">Licence Expiry</th>
+          <th class="px-5 py-3 text-left">Days Left</th>
+          <th class="px-5 py-3 text-left">Assigned Van</th>
+          <th class="px-5 py-3 text-left">Contact</th>
+          <th class="px-5 py-3 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-50">
+        @forelse($drivers as $driver)
+        @php
+          $expiry     = \Carbon\Carbon::parse($driver->licence_expiry_date);
+          $daysLeft   = (int) now()->diffInDays($expiry, false);
+          $expired    = $daysLeft < 0;
+          $expiringSoon = !$expired && $daysLeft <= 30;
+          $assignedVan  = $driver->vans->first();
+        @endphp
         <tr class="table-row">
-          <td class="px-5 py-3.5 font-mono text-xs text-indigo-600 font-semibold">{{ $d[0] }}</td>
-          <td class="px-5 py-3.5 font-semibold text-slate-800">
-            {{ $d[1] }}
-            @if($d[7])<span class="ml-1.5 text-xs bg-amber-100 text-amber-700 border border-amber-200 px-1.5 py-0.5 rounded-full">⚠ Expiring</span>@endif
+          <td class="px-5 py-3.5">
+            <a href="{{ route('crm.drivers.show', $driver) }}"
+               class="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">
+              {{ $driver->full_name }}
+            </a>
+            @if($expired)
+              <span class="ml-1 text-xs px-1.5 py-0.5 rounded-full" style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;">Expired</span>
+            @elseif($expiringSoon)
+              <span class="ml-1 text-xs px-1.5 py-0.5 rounded-full" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">⚠ Expiring</span>
+            @endif
           </td>
-          <td class="px-5 py-3.5 font-mono text-xs text-slate-600">{{ $d[2] }}</td>
-          <td class="px-5 py-3.5 text-xs {{ $d[7] ? 'text-red-600 font-semibold' : 'text-slate-500' }}">{{ $d[3] }}</td>
-          <td class="px-5 py-3.5 text-xs">
-            <span class="font-semibold {{ $d[4] <= 30 ? 'text-red-600' : ($d[4] <= 60 ? 'text-amber-600' : 'text-emerald-700') }}">{{ $d[4] }} days</span>
+          <td class="px-5 py-3.5 font-mono text-xs text-gray-600">{{ $driver->licence_number }}</td>
+          <td class="px-5 py-3.5 text-xs {{ $expired ? 'text-red-600 font-semibold' : ($expiringSoon ? 'text-amber-600 font-semibold' : 'text-gray-500') }}">
+            {{ $expiry->format('d M Y') }}
           </td>
-          <td class="px-5 py-3.5"><span class="font-mono text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-700">{{ $d[5] }}</span></td>
-          <td class="px-5 py-3.5 text-center">
-            <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>
+          <td class="px-5 py-3.5 text-xs font-semibold {{ $expired ? 'text-red-600' : ($expiringSoon ? 'text-amber-600' : ($daysLeft <= 90 ? 'text-gray-600' : 'text-emerald-600')) }}">
+            {{ $expired ? abs($daysLeft).' days ago' : $daysLeft.' days' }}
           </td>
+          <td class="px-5 py-3.5">
+            @if($assignedVan)
+              <span class="font-mono text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded font-semibold">{{ $assignedVan->plate_number }}</span>
+              <span class="text-xs text-gray-400 ml-1">{{ $assignedVan->make_model }}</span>
+            @else
+              <span class="text-xs text-gray-400">Unassigned</span>
+            @endif
+          </td>
+          <td class="px-5 py-3.5 text-xs text-gray-500">{{ $driver->contact_number ?? '—' }}</td>
           <td class="px-5 py-3.5 text-right space-x-2">
-            <button class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View</button>
-            <button class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Edit</button>
+            <a href="{{ route('crm.drivers.show', $driver) }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View</a>
+            <button onclick="openModal({{ json_encode(['id'=>$driver->id,'full_name'=>$driver->full_name,'national_id'=>$driver->national_id,'licence_number'=>$driver->licence_number,'licence_expiry_date'=>$driver->licence_expiry_date->format('Y-m-d'),'contact_number'=>$driver->contact_number,'emergency_contact'=>$driver->emergency_contact]) }})"
+              class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Edit</button>
+            <form method="POST" action="{{ route('crm.drivers.destroy',$driver) }}" class="inline"
+                  onsubmit="return confirm('Delete driver {{ addslashes($driver->full_name) }}?')">
+              @csrf @method('DELETE')
+              <button type="submit" class="text-xs text-gray-400 hover:text-red-600 font-medium">Delete</button>
+            </form>
           </td>
         </tr>
-        @endforeach
+        @empty
+        <tr>
+          <td colspan="7" class="px-5 py-12 text-center text-gray-400 text-sm">No drivers found.</td>
+        </tr>
+        @endforelse
       </tbody>
     </table>
+  </div>
+
+  {{-- Pagination --}}
+  <div class="px-5 py-3.5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+    <span>Showing <strong>{{ $drivers->firstItem() ?? 0 }}</strong>–<strong>{{ $drivers->lastItem() ?? 0 }}</strong> of <strong>{{ $drivers->total() }}</strong> drivers</span>
+    @if($drivers->hasPages())
+    <div class="flex gap-1">
+      @if($drivers->onFirstPage())
+        <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-300">‹</span>
+      @else
+        <a href="{{ $drivers->previousPageUrl() }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">‹</a>
+      @endif
+      @foreach($drivers->getUrlRange(max(1,$drivers->currentPage()-2),min($drivers->lastPage(),$drivers->currentPage()+2)) as $page=>$url)
+        @if($page==$drivers->currentPage())
+          <span class="px-3 py-1.5 border border-indigo-600 bg-indigo-600 text-white rounded-lg">{{ $page }}</span>
+        @else
+          <a href="{{ $url }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">{{ $page }}</a>
+        @endif
+      @endforeach
+      @if($drivers->hasMorePages())
+        <a href="{{ $drivers->nextPageUrl() }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">›</a>
+      @else
+        <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-300">›</span>
+      @endif
+    </div>
+    @endif
   </div>
 </div>
 @endsection
 
 @section('modals')
-<div id="driverModal" class="hidden fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-4">
-  <div class="bg-white rounded-xl w-full max-w-lg shadow-xl">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-      <h2 class="font-semibold text-slate-800">Add New Driver</h2>
-      <button onclick="modal('driverModal',false)" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+<div id="driverModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,.4);">
+  <div class="bg-white rounded-xl w-full max-w-lg shadow-xl" style="max-height:90vh;overflow-y:auto;">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <h2 id="dModalTitle" class="font-semibold text-gray-800 text-sm">Add Driver</h2>
+      <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     </div>
-    <div class="p-5 space-y-4">
-      <div class="grid grid-cols-2 gap-3">
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Full Name</label><input type="text" placeholder="First Last" class="w-full"></div>
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">National ID / Passport</label><input type="text" class="w-full"></div>
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Licence Number</label><input type="text" placeholder="DL-KE-XXXXXXXX" class="w-full"></div>
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Licence Expiry</label><input type="date" class="w-full"></div>
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Contact Number</label><input type="text" class="w-full"></div>
-        <div><label class="block text-xs font-semibold text-slate-600 mb-1.5">Emergency Contact</label><input type="text" class="w-full"></div>
+    <form id="driverForm" method="POST" action="{{ route('crm.drivers.store') }}">
+      @csrf
+      <span id="dMethodSpan"></span>
+      <div class="p-5 space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="col-span-2">
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Full Name <span class="text-red-500">*</span></label>
+            <input type="text" name="full_name" id="df_name" required maxlength="255" class="w-full">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">National ID / Passport</label>
+            <input type="text" name="national_id" id="df_nid" maxlength="100" class="w-full">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Licence Number <span class="text-red-500">*</span></label>
+            <input type="text" name="licence_number" id="df_licence" required maxlength="100" class="w-full">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Licence Expiry <span class="text-red-500">*</span></label>
+            <input type="date" name="licence_expiry_date" id="df_expiry" required class="w-full">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Contact Number</label>
+            <input type="text" name="contact_number" id="df_contact" maxlength="30" class="w-full">
+          </div>
+          <div class="col-span-2">
+            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Emergency Contact</label>
+            <input type="text" name="emergency_contact" id="df_emergency" maxlength="255" placeholder="Name — phone" class="w-full">
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="px-5 py-4 border-t border-slate-100 flex justify-end gap-2">
-      <button onclick="modal('driverModal',false)" class="btn-ghost">Cancel</button>
-      <button class="btn-primary">Save Driver</button>
-    </div>
+      <div class="px-5 py-4 border-t border-gray-100 flex justify-end gap-2">
+        <button type="button" onclick="closeModal()" class="btn-ghost">Cancel</button>
+        <button type="submit" class="btn-primary">Save Driver</button>
+      </div>
+    </form>
   </div>
 </div>
 @endsection
-@section('scripts')<script>function modal(id,s){document.getElementById(id).classList.toggle('hidden',!s);}</script>@endsection
+
+@section('scripts')
+<script>
+function openModal(data) {
+  const form = document.getElementById('driverForm');
+  const ms   = document.getElementById('dMethodSpan');
+  if (data) {
+    document.getElementById('dModalTitle').textContent = 'Edit Driver';
+    form.action = '/crm/drivers/' + data.id;
+    ms.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+    document.getElementById('df_name').value      = data.full_name       || '';
+    document.getElementById('df_nid').value       = data.national_id     || '';
+    document.getElementById('df_licence').value   = data.licence_number  || '';
+    document.getElementById('df_expiry').value    = data.licence_expiry_date || '';
+    document.getElementById('df_contact').value   = data.contact_number  || '';
+    document.getElementById('df_emergency').value = data.emergency_contact || '';
+  } else {
+    document.getElementById('dModalTitle').textContent = 'Add Driver';
+    form.action = '{{ route("crm.drivers.store") }}';
+    ms.innerHTML = '';
+    form.reset();
+  }
+  document.getElementById('driverModal').classList.remove('hidden');
+}
+function closeModal() { document.getElementById('driverModal').classList.add('hidden'); }
+@if($errors->any()) document.addEventListener('DOMContentLoaded', () => openModal(null)); @endif
+</script>
+@endsection

@@ -45,7 +45,13 @@ Route::post('/crm/customers',          [CustomerController::class, 'store'])->na
 Route::get('/crm/customers/{customer}',[CustomerController::class, 'show'])->name('crm.customers.show');
 Route::put('/crm/customers/{customer}',[CustomerController::class, 'update'])->name('crm.customers.update');
 Route::delete('/crm/customers/{customer}',[CustomerController::class, 'destroy'])->name('crm.customers.destroy');
-Route::get('/crm/drivers',       fn() => view('demo.crm.drivers'))->name('crm.drivers');
+use App\Http\Controllers\CRM\DriverController;
+
+Route::get('/crm/drivers',            [DriverController::class, 'index'])->name('crm.drivers');
+Route::post('/crm/drivers',           [DriverController::class, 'store'])->name('crm.drivers.store');
+Route::get('/crm/drivers/{driver}',   [DriverController::class, 'show'])->name('crm.drivers.show');
+Route::put('/crm/drivers/{driver}',   [DriverController::class, 'update'])->name('crm.drivers.update');
+Route::delete('/crm/drivers/{driver}',[DriverController::class, 'destroy'])->name('crm.drivers.destroy');
 Route::get('/crm/investors',     fn() => view('demo.crm.investors'))->name('crm.investors');
 Route::get('/ledger/van-ledger',     fn() => view('demo.ledger.van-ledger'))->name('ledger.van');
 Route::get('/ledger/customer-ledger',fn() => view('demo.ledger.customer-ledger'))->name('ledger.customer');
