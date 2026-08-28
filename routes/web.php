@@ -71,7 +71,9 @@ Route::get('/ledger/customer-ledger/{customer}',       [CustomerLedgerController
 use App\Http\Controllers\Ledger\TrialBalanceController;
 
 Route::get('/ledger/trial-balance', [TrialBalanceController::class, 'index'])->name('ledger.trial-balance');
-Route::get('/ledger/profit-loss',    fn() => view('demo.ledger.profit-loss'))->name('ledger.profit-loss');
+use App\Http\Controllers\Ledger\ProfitLossController;
+
+Route::get('/ledger/profit-loss', [ProfitLossController::class, 'index'])->name('ledger.profit-loss');
 Route::get('/ledger/balance-sheet',  fn() => view('demo.ledger.balance-sheet'))->name('ledger.balance-sheet');
 Route::get('/settings/users',        fn() => view('demo.settings.users'))->name('settings.users');
 Route::get('/settings/tenant',       fn() => view('demo.settings.tenant'))->name('settings.tenant');
