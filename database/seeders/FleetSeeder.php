@@ -29,7 +29,7 @@ class FleetSeeder extends Seeder
 
         $driverModels = [];
         foreach ($drivers as $d) {
-            $driverModels[] = Driver::firstOrCreate(
+            $driver = Driver::withTrashed()->firstOrCreate(
                 ['licence_number' => $d[2]],
                 [
                     'full_name'            => $d[0],
@@ -39,6 +39,10 @@ class FleetSeeder extends Seeder
                     'emergency_contact'    => $d[5],
                 ]
             );
+            if ($driver->trashed()) {
+                $driver->restore();
+            }
+            $driverModels[] = $driver;
         }
 
         // ── Vans ─────────────────────────────────
@@ -61,7 +65,7 @@ class FleetSeeder extends Seeder
         foreach ($vansData as $vd) {
             $driverId = $vd[4] !== null ? $driverModels[$vd[4]]->id : null;
 
-            $van = Van::firstOrCreate(
+            $van = Van::withTrashed()->firstOrCreate(
                 ['plate_number' => $vd[0]],
                 [
                     'make_model' => $vd[1],
@@ -70,6 +74,9 @@ class FleetSeeder extends Seeder
                     'driver_id'  => $driverId,
                 ]
             );
+            if ($van->trashed()) {
+                $van->restore();
+            }
 
             // Fixed costs
             VanFixedCost::firstOrCreate(

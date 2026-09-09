@@ -6,22 +6,22 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 @if($errors->any())
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
 </div>
 @endif
 
 <div class="card overflow-hidden">
   {{-- Toolbar --}}
-  <div class="px-5 py-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-end gap-3 justify-between">
+  <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-end gap-3 justify-between" style="border-bottom:1px solid rgba(255,255,255,0.07);">
     <form method="GET" action="{{ route('crm.drivers') }}" id="filterForm" class="flex gap-2 flex-wrap items-end">
       <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Search</label>
+        <label class="block text-xs font-semibold text-slate-500 mb-1">Search</label>
         <input type="text" name="search" placeholder="Name or licence no…"
                value="{{ request('search') }}" class="text-sm w-52"
                onchange="filterForm.submit()">
@@ -50,7 +50,7 @@
           <th class="px-5 py-3 text-right">Actions</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-50">
+      <tbody>
         @forelse($drivers as $driver)
         @php
           $expiry     = \Carbon\Carbon::parse($driver->licence_expiry_date);
@@ -62,45 +62,45 @@
         <tr class="table-row">
           <td class="px-5 py-3.5">
             <a href="{{ route('crm.drivers.show', $driver) }}"
-               class="font-semibold text-indigo-600 hover:text-indigo-800 hover:underline">
+               class="font-semibold text-sky-400 hover:text-sky-300 hover:underline">
               {{ $driver->full_name }}
             </a>
             @if($expired)
-              <span class="ml-1 text-xs px-1.5 py-0.5 rounded-full" style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;">Expired</span>
+              <span class="ml-1 badge-red">Expired</span>
             @elseif($expiringSoon)
-              <span class="ml-1 text-xs px-1.5 py-0.5 rounded-full" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">⚠ Expiring</span>
+              <span class="ml-1 badge-blue">⚠ Expiring</span>
             @endif
           </td>
-          <td class="px-5 py-3.5 font-mono text-xs text-gray-600">{{ $driver->licence_number }}</td>
-          <td class="px-5 py-3.5 text-xs {{ $expired ? 'text-red-600 font-semibold' : ($expiringSoon ? 'text-amber-600 font-semibold' : 'text-gray-500') }}">
+          <td class="px-5 py-3.5 font-mono text-xs text-slate-400">{{ $driver->licence_number }}</td>
+          <td class="px-5 py-3.5 text-xs {{ $expired ? 'text-red-400 font-semibold' : ($expiringSoon ? 'text-sky-400 font-semibold' : 'text-slate-500') }}">
             {{ $expiry->format('d M Y') }}
           </td>
-          <td class="px-5 py-3.5 text-xs font-semibold {{ $expired ? 'text-red-600' : ($expiringSoon ? 'text-amber-600' : ($daysLeft <= 90 ? 'text-gray-600' : 'text-emerald-600')) }}">
+          <td class="px-5 py-3.5 text-xs font-semibold {{ $expired ? 'text-red-400' : ($expiringSoon ? 'text-sky-400' : ($daysLeft <= 90 ? 'text-slate-400' : 'text-emerald-400')) }}">
             {{ $expired ? abs($daysLeft).' days ago' : $daysLeft.' days' }}
           </td>
           <td class="px-5 py-3.5">
             @if($assignedVan)
-              <span class="font-mono text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded font-semibold">{{ $assignedVan->plate_number }}</span>
-              <span class="text-xs text-gray-400 ml-1">{{ $assignedVan->make_model }}</span>
+              <span class="font-mono text-xs px-2 py-0.5 rounded font-semibold" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">{{ $assignedVan->plate_number }}</span>
+              <span class="text-xs text-slate-500 ml-1">{{ $assignedVan->make_model }}</span>
             @else
-              <span class="text-xs text-gray-400">Unassigned</span>
+              <span class="text-xs text-slate-600">Unassigned</span>
             @endif
           </td>
-          <td class="px-5 py-3.5 text-xs text-gray-500">{{ $driver->contact_number ?? '—' }}</td>
+          <td class="px-5 py-3.5 text-xs text-slate-500">{{ $driver->contact_number ?? '—' }}</td>
           <td class="px-5 py-3.5 text-right space-x-2">
-            <a href="{{ route('crm.drivers.show', $driver) }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View</a>
+            <a href="{{ route('crm.drivers.show', $driver) }}" class="text-xs text-sky-400 hover:text-sky-300 font-medium">View</a>
             <button onclick="openModal({{ json_encode(['id'=>$driver->id,'full_name'=>$driver->full_name,'national_id'=>$driver->national_id,'licence_number'=>$driver->licence_number,'licence_expiry_date'=>$driver->licence_expiry_date->format('Y-m-d'),'contact_number'=>$driver->contact_number,'emergency_contact'=>$driver->emergency_contact]) }})"
-              class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Edit</button>
+              class="text-xs text-sky-400 hover:text-sky-300 font-medium">Edit</button>
             <form method="POST" action="{{ route('crm.drivers.destroy',$driver) }}" class="inline"
                   onsubmit="return confirm('Delete driver {{ addslashes($driver->full_name) }}?')">
               @csrf @method('DELETE')
-              <button type="submit" class="text-xs text-gray-400 hover:text-red-600 font-medium">Delete</button>
+              <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium">Delete</button>
             </form>
           </td>
         </tr>
         @empty
         <tr>
-          <td colspan="7" class="px-5 py-12 text-center text-gray-400 text-sm">No drivers found.</td>
+          <td colspan="7" class="px-5 py-12 text-center text-slate-500 text-sm">No drivers found.</td>
         </tr>
         @endforelse
       </tbody>
@@ -108,26 +108,26 @@
   </div>
 
   {{-- Pagination --}}
-  <div class="px-5 py-3.5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
-    <span>Showing <strong>{{ $drivers->firstItem() ?? 0 }}</strong>–<strong>{{ $drivers->lastItem() ?? 0 }}</strong> of <strong>{{ $drivers->total() }}</strong> drivers</span>
+  <div class="px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500" style="border-top:1px solid rgba(255,255,255,0.07);">
+    <span>Showing <strong class="text-slate-300">{{ $drivers->firstItem() ?? 0 }}</strong>–<strong class="text-slate-300">{{ $drivers->lastItem() ?? 0 }}</strong> of <strong class="text-slate-300">{{ $drivers->total() }}</strong> drivers</span>
     @if($drivers->hasPages())
     <div class="flex gap-1">
       @if($drivers->onFirstPage())
-        <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-300">‹</span>
+        <span class="px-3 py-1.5 rounded-lg text-slate-600" style="border:1px solid rgba(255,255,255,0.07);">‹</span>
       @else
-        <a href="{{ $drivers->previousPageUrl() }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">‹</a>
+        <a href="{{ $drivers->previousPageUrl() }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">‹</a>
       @endif
       @foreach($drivers->getUrlRange(max(1,$drivers->currentPage()-2),min($drivers->lastPage(),$drivers->currentPage()+2)) as $page=>$url)
         @if($page==$drivers->currentPage())
-          <span class="px-3 py-1.5 border border-indigo-600 bg-indigo-600 text-white rounded-lg">{{ $page }}</span>
+          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#6366f1);border:none;">{{ $page }}</span>
         @else
-          <a href="{{ $url }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">{{ $page }}</a>
+          <a href="{{ $url }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">{{ $page }}</a>
         @endif
       @endforeach
       @if($drivers->hasMorePages())
-        <a href="{{ $drivers->nextPageUrl() }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">›</a>
+        <a href="{{ $drivers->nextPageUrl() }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">›</a>
       @else
-        <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-300">›</span>
+        <span class="px-3 py-1.5 rounded-lg text-slate-600" style="border:1px solid rgba(255,255,255,0.07);">›</span>
       @endif
     </div>
     @endif
@@ -136,11 +136,11 @@
 @endsection
 
 @section('modals')
-<div id="driverModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,.4);">
-  <div class="bg-white rounded-xl w-full max-w-lg shadow-xl" style="max-height:90vh;overflow-y:auto;">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-      <h2 id="dModalTitle" class="font-semibold text-gray-800 text-sm">Add Driver</h2>
-      <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+<div id="driverModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+  <div class="modal-box w-full max-w-lg" style="max-height:90vh;overflow-y:auto;">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 id="dModalTitle" class="font-semibold text-slate-100 text-sm">Add Driver</h2>
+      <button onclick="closeModal()" class="text-slate-500 hover:text-slate-300">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
@@ -150,32 +150,32 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
           <div class="col-span-2">
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Full Name <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Full Name <span class="text-red-400">*</span></label>
             <input type="text" name="full_name" id="df_name" required maxlength="255" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">National ID / Passport</label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">National ID / Passport</label>
             <input type="text" name="national_id" id="df_nid" maxlength="100" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Licence Number <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Licence Number <span class="text-red-400">*</span></label>
             <input type="text" name="licence_number" id="df_licence" required maxlength="100" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Licence Expiry <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Licence Expiry <span class="text-red-400">*</span></label>
             <input type="date" name="licence_expiry_date" id="df_expiry" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Contact Number</label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Contact Number</label>
             <input type="text" name="contact_number" id="df_contact" maxlength="30" class="w-full">
           </div>
           <div class="col-span-2">
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Emergency Contact</label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Emergency Contact</label>
             <input type="text" name="emergency_contact" id="df_emergency" maxlength="255" placeholder="Name — phone" class="w-full">
           </div>
         </div>
       </div>
-      <div class="px-5 py-4 border-t border-gray-100 flex justify-end gap-2">
+      <div class="px-5 py-4 flex justify-end gap-2" style="border-top:1px solid rgba(255,255,255,0.08);">
         <button type="button" onclick="closeModal()" class="btn-ghost">Cancel</button>
         <button type="submit" class="btn-primary">Save Driver</button>
       </div>

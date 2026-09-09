@@ -1,185 +1,553 @@
 @extends('demo.layout')
-@section('title','Dashboard')
-@section('page-title','Dashboard')
-@section('page-subtitle','Real-time overview — Acme Logistics Ltd')
+@section('title','Fleet Royale Dashboard')
+@section('page-title','Ocean Royale • Courier Fleet Dashboard')
+@section('page-subtitle','AI-Powered Dispatch & Fleet Telematics Engine')
 
 @section('content')
 
-{{-- Alerts --}}
-<div class="space-y-2 mb-5">
-  <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
-    <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-    <span><strong>Service Due:</strong> Van GHJ-441 is due for scheduled maintenance on <strong>20 Jun 2025</strong> (3 days).</span>
-  </div>
-  <div class="flex items-start gap-3 bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-800">
-    <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/></svg>
-    <span><strong>Licence Expiry:</strong> Driver <strong>James Mwangi's</strong> licence expires in 18 days (04 Jul 2025).</span>
-  </div>
-</div>
+{{-- ════════════════ TOP GRID ════════════════ --}}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-{{-- KPI Cards --}}
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
+  {{-- ── LEFT MAIN WORKSPACE (8 COLUMNS) ── --}}
+  <div class="lg:col-span-8 space-y-5">
 
-  @php
-  $cards = [
-    ['Active Fleet',    '12 Vehicles',  '+2 this month',    true,  'M9 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0zM1 1h4l2.68 13.39a2 2 0 001.98 1.61h9.72a2 2 0 001.98-1.61L23 6H6'],
-    ['Monthly Revenue', '$48,320',      '+12% vs last month', true, 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'],
-    ['Total Expenses',  '$31,140',      '−4% vs last month',  true, 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M9 12h6M9 16h4'],
-    ['Net Profit Margin','35.5%',       '+3.2pp vs last month', true,'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z'],
-  ];
-  @endphp
+    {{-- ── AI DISPATCH ANALYSIS CARD ── --}}
+    <div class="glass-panel p-5 relative overflow-hidden group">
+      {{-- Glow accent --}}
+      <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(56,189,248,0.15) 0%,transparent 70%);pointer-events:none;"></div>
 
-  @foreach($cards as $i => $c)
-  <div class="card p-5">
-    <div class="flex items-start justify-between">
-      <div>
-        <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">{{ $c[0] }}</p>
-        <p class="text-2xl font-bold text-slate-800 mt-1.5 leading-none">{{ $c[1] }}</p>
-      </div>
-      <div class="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0">
-        <svg class="w-4.5 h-4.5 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="{{ $c[3] }}"/></svg>
-      </div>
-    </div>
-    <div class="mt-3 flex items-center gap-1.5">
-      <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-      <span class="text-xs text-emerald-600 font-medium">{{ $c[2] }}</span>
-    </div>
-  </div>
-  @endforeach
-</div>
-
-{{-- Charts row --}}
-<div class="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-5">
-
-  {{-- Revenue vs Expenses bar chart --}}
-  <div class="card xl:col-span-2 p-5">
-    <div class="flex items-center justify-between mb-4">
-      <div>
-        <h3 class="font-semibold text-slate-800 text-sm">Revenue vs Expenses — Per Van</h3>
-        <p class="text-xs text-slate-400 mt-0.5">June 2025 &bull; All active vehicles</p>
-      </div>
-      <select class="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-300">
-        <option>This Month</option>
-        <option>Last Month</option>
-        <option>Last 3 Months</option>
-      </select>
-    </div>
-    <canvas id="revenueChart" height="200"></canvas>
-  </div>
-
-  {{-- Fleet status doughnut --}}
-  <div class="card p-5">
-    <h3 class="font-semibold text-slate-800 text-sm mb-1">Fleet Status</h3>
-    <p class="text-xs text-slate-400 mb-4">12 total vehicles</p>
-    <canvas id="fleetChart" height="180"></canvas>
-    <div class="mt-4 space-y-2.5">
-      @php
-      $status = [['Active','9','bg-indigo-500'],['Maintenance','2','bg-amber-400'],['Leased','1','bg-slate-400']];
-      @endphp
-      @foreach($status as $s)
-      <div class="flex items-center justify-between text-sm">
-        <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full {{ $s[2] }}"></span>
-          <span class="text-slate-600">{{ $s[0] }}</span>
+      {{-- Card Header --}}
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-sm font-bold text-slate-100 tracking-wide">AI Charter Analysis &bull; Express Dispatch</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Live telematics feed • Mercedes Sprinter EV</p>
         </div>
-        <span class="font-semibold text-slate-800">{{ $s[1] }}</span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;">
+          <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span> LIVE DISPATCH
+        </span>
+      </div>
+
+      {{-- Card Content Grid --}}
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+
+        {{-- Van Image --}}
+        <div class="md:col-span-6 relative">
+          <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900/70 group-hover:border-sky-400/40 transition-all duration-300">
+            <img src="/images/van_ai_card.png" alt="AI Van Analysis" class="w-full h-48 object-cover object-center transform group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(4,7,17,0.85) 0%, transparent 60%);"></div>
+            <div class="absolute bottom-3 left-3">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(56,189,248,0.2);backdrop-filter:blur(10px);border:1px solid rgba(56,189,248,0.4);color:#38bdf8;">
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+                Mercedes Sprinter EV
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {{-- Telematics Specs --}}
+        <div class="md:col-span-6 space-y-2.5 text-xs">
+          <div class="flex justify-between py-2" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+            <span class="text-slate-400 font-medium">Departure</span>
+            <span class="text-slate-100 font-semibold">Monaco Marina (London Hub)</span>
+          </div>
+          <div class="flex justify-between py-2" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+            <span class="text-slate-400 font-medium">Destination</span>
+            <span class="text-slate-100 font-semibold">Ibiza Coast (Manchester)</span>
+          </div>
+          <div class="flex justify-between py-2" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+            <span class="text-slate-400 font-medium">Duration</span>
+            <span class="text-slate-100 font-semibold">6 Hours</span>
+          </div>
+          <div class="flex justify-between py-2" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+            <span class="text-slate-400 font-medium">Distance</span>
+            <span class="text-slate-100 font-semibold">185 Miles</span>
+          </div>
+          <div class="flex justify-between py-2">
+            <span class="text-slate-400 font-medium">Battery &amp; Energy</span>
+            <span class="text-emerald-400 font-semibold">320 L (42 kWh)</span>
+          </div>
+        </div>
+      </div>
+
+      {{-- Bottom Glass Control Bar --}}
+      <div class="mt-5 grid grid-cols-3 gap-3 glass-card p-3 px-5 items-center">
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sky-400" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </span>
+          <div>
+            <span class="block text-xs font-bold text-slate-100">Optimal</span>
+            <span class="block text-[10px] text-slate-400">Road Condition</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center text-sky-400" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+          </div>
+          <div>
+            <span class="block text-xs font-bold text-slate-100">12 Vans</span>
+            <span class="block text-[10px] text-sky-400 font-bold uppercase tracking-wider">Active Fleet</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3">
+          <span class="w-8 h-8 rounded-lg flex items-center justify-center text-emerald-400" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </span>
+          <div>
+            <span class="block text-xs font-bold text-slate-100">98%</span>
+            <span class="block text-[10px] text-slate-400">AI Efficiency</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{-- ── BOTTOM ROW: 2 CHART CARDS ── --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+      {{-- Booking Scatter Matrix --}}
+      <div class="glass-panel p-4 flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-bold text-slate-100 text-xs tracking-wide">Booking Distribution</h3>
+          <select class="glass-input text-[11px] px-2 py-1" style="width:auto;padding:4px 8px;">
+            <option>This Month</option>
+            <option>Last Month</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-3 text-[11px] mb-3 text-slate-400">
+          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-400"></span><span><b class="text-slate-200">64%</b> Charters</span></div>
+          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-indigo-400"></span><span><b class="text-slate-200">22%</b> Express</span></div>
+          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-500"></span><span><b class="text-slate-200">14%</b> Direct</span></div>
+        </div>
+        <div class="relative flex-1" style="height:160px;">
+          <canvas id="matrixScatterChart" class="w-full h-full"></canvas>
+        </div>
+      </div>
+
+      {{-- Analytics Waveform --}}
+      <div class="glass-panel p-4 flex flex-col">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-bold text-slate-100 text-xs tracking-wide">Booking Analytics</h3>
+          <select class="glass-input text-[11px] px-2 py-1" style="width:auto;padding:4px 8px;">
+            <option>This Year</option>
+            <option>All Time</option>
+          </select>
+        </div>
+        <div class="flex justify-between items-center text-[10px] text-slate-400 px-1 mb-2">
+          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#cbd5e1;">118 <span class="text-slate-400">±0%</span></span>
+          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;">76 <span>-8%</span></span>
+          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#cbd5e1;">118 <span class="text-slate-400">±0%</span></span>
+          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;">68 <span>-12%</span></span>
+        </div>
+        <div class="relative flex-1" style="height:148px;">
+          <canvas id="analyticsChart" class="w-full h-full"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {{-- ── RIGHT SIDEBAR COLUMN (4 COLUMNS) ── --}}
+  <div class="lg:col-span-4 space-y-5">
+
+    {{-- Fleet Status --}}
+    <div class="glass-panel p-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-bold text-slate-100 text-sm">Fleet Status</h3>
+        <a href="{{ route('fleet.vans') }}" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-sky-400 transition-colors" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+
+      @php
+      $fleet = [
+        ['Ocean Majesty','Luxury Motor Van','Available','text-emerald-400','bg-emerald-400','/images/van_fleet_1.png'],
+        ['Blue Horizon','Sport Cargo Van','In Transit','text-sky-400','bg-sky-400','/images/van_hero_bg.png'],
+        ['Royal Escape','Super Cargo Van','Maintenance','text-sky-400','bg-sky-400','/images/van_fleet_2.png'],
+        ['Sea Pearl','Luxury Courier Van','In Transit','text-sky-400','bg-sky-400','/images/van_ai_card.png'],
+        ['Azure Dream','Luxury EV Cargo','Available','text-emerald-400','bg-emerald-400','/images/van_fleet_1.png'],
+      ];
+      @endphp
+
+      <div class="space-y-2">
+        @foreach($fleet as $v)
+        <div class="glass-card p-2.5 flex items-center justify-between group hover:border-sky-400/40">
+          <div class="flex items-center gap-3">
+            <div class="w-14 h-10 rounded-lg overflow-hidden flex-shrink-0" style="border:1px solid rgba(255,255,255,0.1);background:#040711;">
+              <img src="{{ $v[5] }}" alt="{{ $v[0] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-100 group-hover:text-sky-300 transition-colors">{{ $v[0] }}</h4>
+              <p class="text-[10px] text-slate-400">{{ $v[1] }}</p>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <span class="w-1.5 h-1.5 rounded-full {{ $v[4] }}"></span>
+                <span class="text-[10px] {{ $v[3] }} font-semibold">{{ $v[2] }}</span>
+              </div>
+            </div>
+          </div>
+          <svg class="w-3.5 h-3.5 text-slate-500 group-hover:text-sky-400 flex-shrink-0 transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </div>
+        @endforeach
+      </div>
+    </div>
+
+    {{-- KPI Stats --}}
+    <div class="glass-panel p-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-bold text-slate-100 text-sm">Performance Metrics</h3>
+        <select class="glass-input text-[10px]" style="width:auto;padding:3px 8px;">
+          <option>Today</option>
+          <option>This Week</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+
+        <div class="glass-card p-3">
+          <span class="block text-[10px] font-semibold text-slate-400">Today's Bookings</span>
+          <div class="flex items-baseline justify-between mt-1">
+            <span class="text-xl font-extrabold text-slate-100">124</span>
+            <span class="text-[10px] font-bold text-emerald-400">+15%</span>
+          </div>
+          <div style="height:28px;margin-top:6px;"><canvas id="sparkline1" class="w-full h-full"></canvas></div>
+        </div>
+
+        <div class="glass-card p-3">
+          <span class="block text-[10px] font-semibold text-slate-400">Active Charters</span>
+          <div class="flex items-baseline justify-between mt-1">
+            <span class="text-xl font-extrabold text-slate-100">86</span>
+            <span class="text-[10px] font-bold text-sky-400">+8%</span>
+          </div>
+          <div style="height:28px;margin-top:6px;"><canvas id="sparkline2" class="w-full h-full"></canvas></div>
+        </div>
+
+        <div class="glass-card p-3">
+          <span class="block text-[10px] font-semibold text-slate-400">Pending Requests</span>
+          <div class="flex items-baseline justify-between mt-1">
+            <span class="text-xl font-extrabold text-slate-100">32</span>
+            <span class="text-[10px] font-bold text-sky-400">-2%</span>
+          </div>
+          <div style="height:28px;margin-top:6px;"><canvas id="sparkline3" class="w-full h-full"></canvas></div>
+        </div>
+
+        <div class="glass-card p-3">
+          <span class="block text-[10px] font-semibold text-slate-400">Available Vans</span>
+          <div class="flex items-baseline justify-between mt-1">
+            <span class="text-xl font-extrabold text-slate-100">412</span>
+            <span class="text-[10px] font-bold text-emerald-400">+5%</span>
+          </div>
+          <div style="height:28px;margin-top:6px;"><canvas id="sparkline4" class="w-full h-full"></canvas></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{{-- ════════════════ BOTTOM TABLES SECTION ════════════════ --}}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-5">
+
+  {{-- ── RECENT TRIPS TABLE (8 cols) ── --}}
+  <div class="lg:col-span-8 glass-panel overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div>
+        <h3 class="text-sm font-bold text-slate-100">Recent Trip Entries</h3>
+        <p class="text-[11px] text-slate-400 mt-0.5">Last 10 dispatched routes</p>
+      </div>
+      <a href="{{ route('operations.trips') }}" class="btn-ghost text-xs" style="padding:5px 14px;">View All</a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs">
+        <thead>
+          <tr class="table-header">
+            <th class="px-5 py-3 text-left">Trip ID</th>
+            <th class="px-4 py-3 text-left">Van</th>
+            <th class="px-4 py-3 text-left">Driver</th>
+            <th class="px-4 py-3 text-left">Route</th>
+            <th class="px-4 py-3 text-right">Revenue</th>
+            <th class="px-4 py-3 text-right">Expense</th>
+            <th class="px-4 py-3 text-center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @php
+          $trips = [
+            ['TR-2401','Ocean Majesty','James Carter','London → Manchester','£ 1,240','£ 380','Completed'],
+            ['TR-2402','Blue Horizon','Liam Hassan','Birmingham → Leeds','£ 890','£ 270','In Transit'],
+            ['TR-2403','Royal Escape','Sofia Patel','Edinburgh → Glasgow','£ 560','£ 190','Completed'],
+            ['TR-2404','Sea Pearl','David Nguyen','Bristol → Cardiff','£ 420','£ 145','Completed'],
+            ['TR-2405','Azure Dream','Amara Osei','Sheffield → Nottm','£ 710','£ 230','In Transit'],
+            ['TR-2406','Ocean Majesty','James Carter','Liverpool → Hull','£ 980','£ 310','Pending'],
+            ['TR-2407','Blue Horizon','Liam Hassan','London → Brighton','£ 370','£ 125','Completed'],
+            ['TR-2408','Royal Escape','Sofia Patel','Manchester → Leeds','£ 640','£ 200','In Transit'],
+            ['TR-2409','Sea Pearl','David Nguyen','Newcastle → Durham','£ 280','£ 95','Completed'],
+            ['TR-2410','Azure Dream','Amara Osei','London → Oxford','£ 530','£ 175','Pending'],
+          ];
+          $statusCls = ['Completed'=>'badge-green','In Transit'=>'badge-blue','Pending'=>'badge-amber'];
+          @endphp
+          @foreach($trips as $i => $t)
+          <tr class="table-row">
+            <td class="px-5 py-3 font-mono font-bold text-sky-400">{{ $t[0] }}</td>
+            <td class="px-4 py-3 text-slate-200 font-medium">{{ $t[1] }}</td>
+            <td class="px-4 py-3 text-slate-300">{{ $t[2] }}</td>
+            <td class="px-4 py-3 text-slate-400">{{ $t[3] }}</td>
+            <td class="px-4 py-3 text-right text-emerald-400 font-bold">{{ $t[4] }}</td>
+            <td class="px-4 py-3 text-right text-red-400 font-semibold">{{ $t[5] }}</td>
+            <td class="px-4 py-3 text-center"><span class="{{ $statusCls[$t[6]] }}">{{ $t[6] }}</span></td>
+          </tr>
+          @endforeach
+        </tbody>
+        <tfoot>
+          <tr style="background:rgba(56,189,248,0.05);border-top:1px solid rgba(56,189,248,0.2);">
+            <td colspan="4" class="px-5 py-3 text-xs font-bold text-slate-300">Total (10 Trips)</td>
+            <td class="px-4 py-3 text-right text-emerald-400 font-extrabold text-sm">£ 6,620</td>
+            <td class="px-4 py-3 text-right text-red-400 font-bold text-sm">£ 2,120</td>
+            <td class="px-4 py-3 text-center text-sky-400 font-bold text-xs">Net: £ 4,500</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  {{-- ── TOP CUSTOMERS (4 cols) ── --}}
+  <div class="lg:col-span-4 glass-panel overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div>
+        <h3 class="text-sm font-bold text-slate-100">Top Customers</h3>
+        <p class="text-[11px] text-slate-400 mt-0.5">By revenue this month</p>
+      </div>
+      <a href="{{ route('crm.customers') }}" class="btn-ghost text-xs" style="padding:5px 14px;">All</a>
+    </div>
+    <div class="p-4 space-y-3">
+      @php
+      $customers = [
+        ['Apex Logistics Ltd','34 trips','£ 18,450',92,'bg-sky-400'],
+        ['BlueStar Retail','28 trips','£ 14,220',78,'bg-sky-400'],
+        ['NovaMed Supplies','21 trips','£ 10,800',60,'bg-sky-400'],
+        ['Horizon Foods','18 trips','£ 8,960',50,'bg-emerald-400'],
+        ['Sterling Motors','15 trips','£ 7,340',41,'bg-emerald-400'],
+        ['Prime Express UK','12 trips','£ 5,670',32,'bg-slate-500'],
+      ];
+      @endphp
+      @foreach($customers as $c)
+      <div class="glass-card p-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-100">{{ $c[0] }}</span>
+          <span class="text-xs font-bold text-emerald-400">{{ $c[2] }}</span>
+        </div>
+        <div class="flex items-center justify-between text-[10px] text-slate-400 mb-1.5">
+          <span>{{ $c[1] }}</span>
+          <span>{{ $c[3] }}%</span>
+        </div>
+        <div class="h-1 rounded-full" style="background:rgba(255,255,255,0.08);">
+          <div class="h-1 rounded-full {{ $c[4] }}" style="width:{{ $c[3] }}%;"></div>
+        </div>
       </div>
       @endforeach
     </div>
   </div>
+
 </div>
 
-{{-- Recent Trips table --}}
-<div class="card overflow-hidden">
-  <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-    <div>
-      <h3 class="font-semibold text-slate-800 text-sm">Recent Trips</h3>
-      <p class="text-xs text-slate-400 mt-0.5">Last 5 trip entries</p>
+{{-- ════════════════ THIRD ROW ════════════════ --}}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-5">
+
+  {{-- ── RECENT EXPENSES TABLE (6 cols) ── --}}
+  <div class="lg:col-span-6 glass-panel overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div>
+        <h3 class="text-sm font-bold text-slate-100">Recent Expenses</h3>
+        <p class="text-[11px] text-slate-400 mt-0.5">Daily operational costs</p>
+      </div>
+      <a href="{{ route('operations.expenses') }}" class="btn-ghost text-xs" style="padding:5px 14px;">View All</a>
     </div>
-    <a href="{{ route('operations.trips') }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">View all trips →</a>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs">
+        <thead>
+          <tr class="table-header">
+            <th class="px-5 py-3 text-left">Date</th>
+            <th class="px-4 py-3 text-left">Van</th>
+            <th class="px-4 py-3 text-left">Category</th>
+            <th class="px-4 py-3 text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          @php
+          $expenses = [
+            ['09 Sep 2026','Ocean Majesty','Fuel','£ 145'],
+            ['09 Sep 2026','Blue Horizon','Motorway Toll','£ 38'],
+            ['08 Sep 2026','Royal Escape','Maintenance','£ 310'],
+            ['08 Sep 2026','Sea Pearl','Fuel','£ 128'],
+            ['08 Sep 2026','Azure Dream','Driver Wage','£ 220'],
+            ['07 Sep 2026','Ocean Majesty','Parking','£ 24'],
+            ['07 Sep 2026','Blue Horizon','Fuel','£ 152'],
+            ['07 Sep 2026','Royal Escape','Motorway Toll','£ 45'],
+          ];
+          @endphp
+          @foreach($expenses as $e)
+          <tr class="table-row">
+            <td class="px-5 py-3 text-slate-400">{{ $e[0] }}</td>
+            <td class="px-4 py-3 text-slate-200 font-medium">{{ $e[1] }}</td>
+            <td class="px-4 py-3">
+              @php
+              $catColor = match($e[2]) {
+                'Fuel' => 'badge-blue',
+                'Maintenance' => 'badge-red',
+                'Driver Wage' => 'badge-green',
+                default => 'badge-slate'
+              };
+              @endphp
+              <span class="{{ $catColor }}">{{ $e[2] }}</span>
+            </td>
+            <td class="px-4 py-3 text-right text-red-400 font-bold">{{ $e[3] }}</td>
+          </tr>
+          @endforeach
+        </tbody>
+        <tfoot>
+          <tr style="background:rgba(239,68,68,0.05);border-top:1px solid rgba(239,68,68,0.2);">
+            <td colspan="3" class="px-5 py-3 text-xs font-bold text-slate-300">Total Expenses</td>
+            <td class="px-4 py-3 text-right text-red-400 font-extrabold">£ 1,062</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
-  <div class="overflow-x-auto">
-    <table class="w-full text-sm">
-      <thead>
-        <tr class="table-header">
-          <th class="px-5 py-3 text-left">Date</th>
-          <th class="px-5 py-3 text-left">Van</th>
-          <th class="px-5 py-3 text-left">Customer</th>
-          <th class="px-5 py-3 text-left">Route</th>
-          <th class="px-5 py-3 text-right">Fare</th>
-          <th class="px-5 py-3 text-center">Status</th>
-        </tr>
-      </thead>
-      <tbody class="divide-y divide-slate-50">
-        @php
-        $trips = [
-          ['17 Jun 2025','ABC-001','Swift Retail Co','Nairobi → Mombasa','$420.00','active'],
-          ['17 Jun 2025','XYZ-202','Global Traders Ltd','Nakuru → Nairobi','$180.00','active'],
-          ['16 Jun 2025','DEF-303','Metro Supplies','Kisumu → Nakuru','$260.00','active'],
-          ['16 Jun 2025','GHJ-441','Apex Importers','Nairobi → Eldoret','$350.00','voided'],
-          ['15 Jun 2025','ABC-001','Swift Retail Co','Mombasa → Nairobi','$400.00','active'],
-        ];
-        @endphp
-        @foreach($trips as $t)
-        <tr class="table-row">
-          <td class="px-5 py-3.5 text-slate-500 text-xs">{{ $t[0] }}</td>
-          <td class="px-5 py-3.5"><span class="font-mono font-semibold text-slate-700 text-xs bg-slate-100 px-2 py-0.5 rounded">{{ $t[1] }}</span></td>
-          <td class="px-5 py-3.5 text-slate-700">{{ $t[2] }}</td>
-          <td class="px-5 py-3.5 text-slate-500 text-xs">{{ $t[3] }}</td>
-          <td class="px-5 py-3.5 text-right font-semibold text-slate-800">{{ $t[4] }}</td>
-          <td class="px-5 py-3.5 text-center">
-            @if($t[5]==='active')
-              <span class="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium px-2 py-0.5 rounded-full">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
-              </span>
-            @else
-              <span class="inline-flex items-center gap-1 bg-red-50 text-red-600 border border-red-200 text-xs font-medium px-2 py-0.5 rounded-full">
-                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Voided
-              </span>
-            @endif
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
+
+  {{-- ── DRIVER PERFORMANCE TABLE (6 cols) ── --}}
+  <div class="lg:col-span-6 glass-panel overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+      <div>
+        <h3 class="text-sm font-bold text-slate-100">Driver Performance</h3>
+        <p class="text-[11px] text-slate-400 mt-0.5">Efficiency & earnings this month</p>
+      </div>
+      <a href="{{ route('crm.drivers') }}" class="btn-ghost text-xs" style="padding:5px 14px;">All Drivers</a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs">
+        <thead>
+          <tr class="table-header">
+            <th class="px-5 py-3 text-left">Driver</th>
+            <th class="px-4 py-3 text-left">Van</th>
+            <th class="px-4 py-3 text-center">Trips</th>
+            <th class="px-4 py-3 text-right">Revenue</th>
+            <th class="px-4 py-3 text-center">Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          @php
+          $drivers = [
+            ['James Carter','Ocean Majesty','34','£ 18,450','★★★★★','text-sky-400'],
+            ['Liam Hassan','Blue Horizon','28','£ 14,220','★★★★☆','text-sky-400'],
+            ['Sofia Patel','Royal Escape','21','£ 10,800','★★★★★','text-emerald-400'],
+            ['David Nguyen','Sea Pearl','18','£ 8,960','★★★★☆','text-sky-400'],
+            ['Amara Osei','Azure Dream','15','£ 7,340','★★★☆☆','text-slate-400'],
+            ['Raj Mehta','Blue Horizon','12','£ 5,670','★★★★☆','text-sky-400'],
+          ];
+          @endphp
+          @foreach($drivers as $d)
+          <tr class="table-row">
+            <td class="px-5 py-3">
+              <div class="flex items-center gap-2.5">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-extrabold flex-shrink-0 {{ $d[5] }}" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.25);">
+                  {{ strtoupper(substr($d[0],0,1).substr(explode(' ',$d[0])[1],0,1)) }}
+                </div>
+                <span class="font-semibold text-slate-200">{{ $d[0] }}</span>
+              </div>
+            </td>
+            <td class="px-4 py-3 text-slate-400">{{ $d[1] }}</td>
+            <td class="px-4 py-3 text-center font-bold text-slate-100">{{ $d[2] }}</td>
+            <td class="px-4 py-3 text-right text-emerald-400 font-bold">{{ $d[3] }}</td>
+            <td class="px-4 py-3 text-center text-sky-400 text-[11px] tracking-wider">{{ $d[4] }}</td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
   </div>
+
 </div>
+
 @endsection
 
 @section('scripts')
 <script>
-Chart.defaults.font.family = 'Inter, sans-serif';
-Chart.defaults.color = '#64748b';
+Chart.defaults.font.family = 'Plus Jakarta Sans, sans-serif';
+Chart.defaults.color = '#94a3b8';
 
-new Chart(document.getElementById('revenueChart'), {
-  type: 'bar',
+// 1. Scatter bubble grid
+const ctxMatrix = document.getElementById('matrixScatterChart').getContext('2d');
+const scatterData = [];
+for (let x = 1; x <= 14; x++) {
+  for (let y = 1; y <= 7; y++) {
+    const r = Math.random();
+    if (r > 0.38) {
+      scatterData.push({ x, y, r: r > 0.8 ? 5 : (r > 0.6 ? 3.5 : 2) });
+    }
+  }
+}
+new Chart(ctxMatrix, {
+  type: 'bubble',
+  data: { datasets: [{ data: scatterData,
+    backgroundColor: ctx => {
+      const v = ctx.raw ? ctx.raw.r : 3;
+      return v > 4 ? '#38bdf8' : (v > 3 ? '#818cf8' : 'rgba(255,255,255,0.22)');
+    },
+    borderColor: 'transparent'
+  }]},
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    scales: {
+      x: { display: false, min: 0, max: 15 },
+      y: { display: false, min: 0, max: 8 }
+    }
+  }
+});
+
+// 2. Analytics waveform
+const ctxA = document.getElementById('analyticsChart').getContext('2d');
+const grad = ctxA.createLinearGradient(0, 0, 0, 140);
+grad.addColorStop(0, 'rgba(56,189,248,0.25)');
+grad.addColorStop(1, 'rgba(56,189,248,0)');
+new Chart(ctxA, {
+  type: 'line',
   data: {
-    labels: ['ABC-001','XYZ-202','DEF-303','GHJ-441','KLM-505','NOP-606','QRS-707','STU-808'],
+    labels: ['Jan','Feb','Mar','Apr','May','Jun'],
     datasets: [
-      { label: 'Revenue ($)', data: [8200,6400,5100,4800,7300,6100,5500,4920],
-        backgroundColor: '#6366f1', borderRadius: 4, borderSkipped: false },
-      { label: 'Expenses ($)', data: [5100,4200,3800,3100,4600,3900,3400,3140],
-        backgroundColor: '#e0e7ff', borderRadius: 4, borderSkipped: false }
+      { data: [118,76,127,118,68,118], borderColor: '#f8fafc', borderWidth: 2.5,
+        pointBackgroundColor: '#38bdf8', pointBorderColor: '#ffffff', pointRadius: 3.5, tension: 0.1 },
+      { data: [100,110,85,125,90,115], borderColor: '#38bdf8', borderWidth: 1.5,
+        fill: true, backgroundColor: grad, pointRadius: 0, tension: 0.45 }
     ]
   },
   options: {
-    responsive: true,
-    plugins: { legend: { position: 'top', labels: { boxWidth: 12, font: { size: 12 } } } },
-    scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } }
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#94a3b8', font: { size: 9 } } },
+      y: { beginAtZero: false, min: 40, max: 140, grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#94a3b8', font: { size: 9 } } }
+    }
   }
 });
 
-new Chart(document.getElementById('fleetChart'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Active','Maintenance','Leased'],
-    datasets: [{ data: [9,2,1], backgroundColor: ['#6366f1','#fbbf24','#94a3b8'], borderWidth: 0 }]
-  },
-  options: {
-    responsive: true,
-    cutout: '68%',
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} vehicles` } } }
-  }
-});
+// 3. Sparklines
+function sparkline(id, data, color) {
+  new Chart(document.getElementById(id).getContext('2d'), {
+    type: 'line',
+    data: { labels: data.map((_,i) => i), datasets: [{ data, borderColor: color, borderWidth: 1.8, pointRadius: 0, tension: 0.4 }]},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      scales: { x: { display: false }, y: { display: false } }
+    }
+  });
+}
+sparkline('sparkline1', [12,19,14,25,22,30,28,35], '#34d399');
+sparkline('sparkline2', [15,12,20,18,24,22,29,31], '#38bdf8');
+sparkline('sparkline3', [25,22,18,20,16,14,15,12], '#38bdf8');
+sparkline('sparkline4', [30,32,28,35,38,42,40,45], '#34d399');
 </script>
 @endsection

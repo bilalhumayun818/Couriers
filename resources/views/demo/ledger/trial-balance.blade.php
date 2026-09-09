@@ -11,11 +11,11 @@
         class="flex flex-wrap gap-3 items-end justify-between">
     <div class="flex flex-wrap gap-2 items-end">
       <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">From</label>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">From</label>
         <input type="date" name="from" class="text-sm" value="{{ $from->format('Y-m-d') }}">
       </div>
       <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">To</label>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">To</label>
         <input type="date" name="to" class="text-sm" value="{{ $to->format('Y-m-d') }}">
       </div>
       <button type="submit" class="btn-primary text-xs self-end px-3 py-2">Generate</button>
@@ -23,7 +23,7 @@
     </div>
     <div class="self-end">
       @if($balanced)
-        <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;"
+        <span style="background:rgba(16,185,129,0.12);color:#4ade80;border:1px solid rgba(16,185,129,0.3);"
               class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
@@ -31,7 +31,7 @@
           Balanced — Debits = Credits
         </span>
       @else
-        <span style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;"
+        <span style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3);"
               class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -46,19 +46,19 @@
 {{-- Summary cards --}}
 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
   <div class="card p-4">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Debits</p>
-    <p class="text-2xl font-bold text-gray-900 mt-1">${{ number_format($totalDebit,2) }}</p>
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Debits</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($totalDebit,2) }}</p>
   </div>
   <div class="card p-4">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Credits</p>
-    <p class="text-2xl font-bold text-gray-900 mt-1">${{ number_format($totalCredit,2) }}</p>
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Credits</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($totalCredit,2) }}</p>
   </div>
   <div class="card p-4">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Difference</p>
-    <p class="text-2xl font-bold mt-1" style="color:{{ $balanced ? '#16a34a' : '#ef4444' }};">
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Difference</p>
+    <p class="text-2xl font-bold mt-1 {{ $balanced ? 'text-emerald-400' : 'text-red-400' }}">
       ${{ number_format(abs($totalDebit - $totalCredit),2) }}
     </p>
-    <p class="text-xs mt-0.5" style="color:{{ $balanced ? '#16a34a' : '#ef4444' }};">
+    <p class="text-xs mt-0.5 {{ $balanced ? 'text-emerald-400' : 'text-red-400' }}">
       {{ $balanced ? '✓ Balanced' : '⚠ Discrepancy' }}
     </p>
   </div>
@@ -66,8 +66,8 @@
 
 {{-- Trial balance table --}}
 <div class="card overflow-hidden">
-  <div class="px-5 py-4 border-b border-gray-100">
-    <h3 class="font-semibold text-gray-800 text-sm">Trial Balance — {{ $from->format('d M Y') }} to {{ $to->format('d M Y') }}</h3>
+  <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+    <h3 class="font-semibold text-slate-100 text-sm">Trial Balance — {{ $from->format('d M Y') }} to {{ $to->format('d M Y') }}</h3>
   </div>
   <div class="overflow-x-auto">
     <table class="w-full text-sm">
@@ -79,35 +79,35 @@
           <th class="px-5 py-3 text-right">Credit ($)</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-50">
+      <tbody>
         @php
         $typeColors = [
-          'Revenue'  => 'background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;',
-          'Asset'    => 'background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;',
-          'Expense'  => 'background:#fef2f2;color:#991b1b;border:1px solid #fecaca;',
-          'Equity'   => 'background:#f5f3ff;color:#5b21b6;border:1px solid #ddd6fe;',
-          'Liability'=> 'background:#fffbeb;color:#b45309;border:1px solid #fde68a;',
+          'Revenue'  => 'background:rgba(16,185,129,0.15);color:#4ade80;border:1px solid rgba(16,185,129,0.3);',
+          'Asset'    => 'background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);',
+          'Expense'  => 'background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);',
+          'Equity'   => 'background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);',
+          'Liability'=> 'background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);',
         ];
         @endphp
         @forelse($accounts as $acc)
         <tr class="table-row">
-          <td class="px-5 py-3.5 font-medium text-gray-800">{{ $acc['name'] }}</td>
+          <td class="px-5 py-3.5 font-medium text-slate-200">{{ $acc['name'] }}</td>
           <td class="px-5 py-3.5">
             <span class="text-xs font-semibold px-2.5 py-1 rounded-full"
-                  style="{{ $typeColors[$acc['type']] ?? 'background:#f3f4f6;color:#374151;' }}">
+                  style="{{ $typeColors[$acc['type']] ?? 'background:rgba(255,255,255,0.06);color:#cbd5e1;' }}">
               {{ $acc['type'] }}
             </span>
           </td>
-          <td class="px-5 py-3.5 text-right font-mono {{ $acc['debit'] > 0 ? 'font-semibold text-gray-800' : 'text-gray-300' }}">
+          <td class="px-5 py-3.5 text-right font-mono {{ $acc['debit'] > 0 ? 'font-semibold text-slate-100' : 'text-slate-600' }}">
             {{ $acc['debit'] > 0 ? '$'.number_format($acc['debit'],2) : '—' }}
           </td>
-          <td class="px-5 py-3.5 text-right font-mono {{ $acc['credit'] > 0 ? 'font-semibold text-gray-800' : 'text-gray-300' }}">
+          <td class="px-5 py-3.5 text-right font-mono {{ $acc['credit'] > 0 ? 'font-semibold text-slate-100' : 'text-slate-600' }}">
             {{ $acc['credit'] > 0 ? '$'.number_format($acc['credit'],2) : '—' }}
           </td>
         </tr>
         @empty
         <tr>
-          <td colspan="4" class="px-5 py-12 text-center text-gray-400 text-sm">
+          <td colspan="4" class="px-5 py-12 text-center text-slate-400 text-sm">
             No financial activity found for the selected period.
           </td>
         </tr>
@@ -116,20 +116,20 @@
 
       {{-- Totals row --}}
       @if(count($accounts) > 0)
-      <tfoot style="border-top:2px solid {{ $balanced ? '#bbf7d0' : '#fecaca' }};background:{{ $balanced ? '#f0fdf4' : '#fef2f2' }};">
+      <tfoot style="border-top:2px solid {{ $balanced ? 'rgba(16,185,129,0.4)' : 'rgba(239,68,68,0.4)' }};background:{{ $balanced ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)' }};">
         <tr>
-          <td class="px-5 py-4 font-bold text-gray-800">TOTALS</td>
+          <td class="px-5 py-4 font-bold text-slate-100">TOTALS</td>
           <td class="px-5 py-4">
             @if($balanced)
-              <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;" class="text-xs font-semibold px-2 py-0.5 rounded-full">✓ Balanced</span>
+              <span style="background:rgba(16,185,129,0.15);color:#4ade80;border:1px solid rgba(16,185,129,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">✓ Balanced</span>
             @else
-              <span style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;" class="text-xs font-semibold px-2 py-0.5 rounded-full">⚠ Unbalanced</span>
+              <span style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">⚠ Unbalanced</span>
             @endif
           </td>
-          <td class="px-5 py-4 text-right font-extrabold text-lg text-gray-900 font-mono">
+          <td class="px-5 py-4 text-right font-extrabold text-lg text-slate-100 font-mono">
             ${{ number_format($totalDebit,2) }}
           </td>
-          <td class="px-5 py-4 text-right font-extrabold text-lg text-gray-900 font-mono">
+          <td class="px-5 py-4 text-right font-extrabold text-lg text-slate-100 font-mono">
             ${{ number_format($totalCredit,2) }}
           </td>
         </tr>
@@ -139,7 +139,7 @@
   </div>
 </div>
 
-<p class="text-xs text-gray-400 mt-3">
+<p class="text-xs text-slate-400 mt-3">
   * This trial balance is computed from actual transaction records (trips, expenses, advances, wages, capital injections and distributions) for the selected period.
 </p>
 @endsection

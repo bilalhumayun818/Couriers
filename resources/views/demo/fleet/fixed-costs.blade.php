@@ -6,13 +6,13 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 
 @if($errors->any())
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   <strong>Validation errors:</strong>
   @foreach($errors->all() as $error)
     <div>• {{ $error }}</div>
@@ -21,8 +21,8 @@
 @endif
 
 <div class="card overflow-hidden">
-  <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-    <p class="text-sm text-gray-500">Fixed costs are prorated daily when computing Van-Wise Ledger reports.</p>
+  <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+    <p class="text-sm text-slate-400">Fixed costs are prorated daily when computing Van-Wise Ledger reports.</p>
     <button onclick="openPicker()" class="btn-primary">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
@@ -45,7 +45,7 @@
           <th class="px-5 py-3 text-right">Actions</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-50">
+      <tbody>
         @forelse($vans as $van)
         @php
           $fc          = $van->fixedCost;
@@ -57,42 +57,40 @@
         @endphp
         <tr class="table-row">
           <td class="px-5 py-3.5">
-            <span class="font-mono font-semibold text-xs bg-gray-100 text-gray-800 px-2.5 py-1 rounded-md">
+            <span class="font-mono font-semibold text-xs px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#cbd5e1;">
               {{ $van->plate_number }}
             </span>
           </td>
-          <td class="px-5 py-3.5 text-gray-700">{{ $van->make_model }}</td>
-          <td class="px-5 py-3.5 text-right text-gray-600">
+          <td class="px-5 py-3.5 text-slate-300">{{ $van->make_model }}</td>
+          <td class="px-5 py-3.5 text-right text-slate-400">
             {{ $fc ? '$'.number_format($fc->monthly_lease, 2) : '—' }}
           </td>
-          <td class="px-5 py-3.5 text-right text-gray-600">
+          <td class="px-5 py-3.5 text-right text-slate-400">
             {{ $fc ? '$'.number_format($fc->road_tax_annual, 2) : '—' }}
           </td>
-          <td class="px-5 py-3.5 text-right text-gray-600">
+          <td class="px-5 py-3.5 text-right text-slate-400">
             {{ $fc ? '$'.number_format($fc->insurance_monthly, 2) : '—' }}
           </td>
-          <td class="px-5 py-3.5 text-right font-bold {{ $totalFixed > 0 ? 'text-gray-900' : 'text-gray-400' }}">
+          <td class="px-5 py-3.5 text-right font-bold {{ $totalFixed > 0 ? 'text-slate-100' : 'text-slate-500' }}">
             {{ $totalFixed > 0 ? '$'.number_format($totalFixed, 2) : '—' }}
           </td>
-          <td class="px-5 py-3.5 text-xs {{ $serviceSoon ? 'font-semibold' : 'text-gray-500' }}"
-              style="{{ $serviceSoon ? 'color:#b45309;' : '' }}">
+          <td class="px-5 py-3.5 text-xs {{ $serviceSoon ? 'font-semibold text-amber-400' : 'text-slate-400' }}">
             {{ $serviceDate ? $serviceDate->format('d M Y') : '—' }}
             @if($serviceSoon)
-              <span class="ml-1 text-xs px-1.5 py-0.5 rounded-full"
-                    style="background:#fef9c3;color:#92400e;border:1px solid #fde68a;">⚠ Soon</span>
+              <span class="ml-1 badge-amber">⚠ Soon</span>
             @endif
           </td>
           <td class="px-5 py-3.5 text-right">
             <button onclick="openCostModal({ id: {{ $van->id }}, plate: '{{ $van->plate_number }}', model: '{{ addslashes($van->make_model) }}', lease: '{{ $fc?->monthly_lease ?? '' }}', road_tax: '{{ $fc?->road_tax_annual ?? '' }}', insurance: '{{ $fc?->insurance_monthly ?? '' }}', service: '{{ $serviceDate ? $serviceDate->format('Y-m-d') : '' }}' })"
-              class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">
+              class="text-xs text-sky-400 hover:text-sky-300 font-medium">
               {{ $fc ? 'Edit' : 'Set Costs' }}
             </button>
           </td>
         </tr>
         @empty
         <tr>
-          <td colspan="8" class="px-5 py-10 text-center text-gray-400 text-sm">
-            No vehicles found. <a href="{{ route('fleet.vans') }}" class="text-indigo-600 hover:underline">Add vehicles first →</a>
+          <td colspan="8" class="px-5 py-10 text-center text-slate-500 text-sm">
+            No vehicles found. <a href="{{ route('fleet.vans') }}" class="text-sky-400 hover:underline">Add vehicles first →</a>
           </td>
         </tr>
         @endforelse
@@ -100,13 +98,13 @@
 
       {{-- Fleet totals footer --}}
       @if($vans->isNotEmpty())
-      <tfoot style="background:#f8fafc;border-top:2px solid #e5e7eb;">
+      <tfoot style="background:rgba(15,23,42,0.7);border-top:1px solid rgba(255,255,255,0.12);">
         <tr>
-          <td class="px-5 py-3.5 font-bold text-gray-700 text-xs" colspan="2">FLEET TOTALS / MONTH</td>
-          <td class="px-5 py-3.5 text-right font-bold text-gray-800">${{ number_format($fleetTotals['lease'], 2) }}</td>
-          <td class="px-5 py-3.5 text-right font-bold text-gray-800">${{ number_format($fleetTotals['road_tax'] * 12, 2) }}<span class="text-xs font-normal text-gray-400 ml-1">(annual)</span></td>
-          <td class="px-5 py-3.5 text-right font-bold text-gray-800">${{ number_format($fleetTotals['insurance'], 2) }}</td>
-          <td class="px-5 py-3.5 text-right font-extrabold text-indigo-700 text-base">${{ number_format($fleetTotals['total'], 2) }}</td>
+          <td class="px-5 py-3.5 font-bold text-slate-300 text-xs" colspan="2">FLEET TOTALS / MONTH</td>
+          <td class="px-5 py-3.5 text-right font-bold text-slate-200">${{ number_format($fleetTotals['lease'], 2) }}</td>
+          <td class="px-5 py-3.5 text-right font-bold text-slate-200">${{ number_format($fleetTotals['road_tax'] * 12, 2) }}<span class="text-xs font-normal text-slate-500 ml-1">(annual)</span></td>
+          <td class="px-5 py-3.5 text-right font-bold text-slate-200">${{ number_format($fleetTotals['insurance'], 2) }}</td>
+          <td class="px-5 py-3.5 text-right font-extrabold text-sky-400 text-base">${{ number_format($fleetTotals['total'], 2) }}</td>
           <td colspan="2"></td>
         </tr>
       </tfoot>
@@ -119,11 +117,11 @@
 @section('modals')
 
 {{-- ── Van Picker Modal (top "Update Costs" button) ── --}}
-<div id="pickerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,.4);">
-  <div class="bg-white rounded-xl w-full max-w-md shadow-xl">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-      <h2 class="font-semibold text-gray-800 text-sm">Select a Van to Update</h2>
-      <button onclick="document.getElementById('pickerModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+<div id="pickerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+  <div class="modal-box w-full max-w-md">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 class="font-semibold text-slate-100 text-sm">Select a Van to Update</h2>
+      <button onclick="document.getElementById('pickerModal').classList.add('hidden')" class="text-slate-500 hover:text-slate-300">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
@@ -131,12 +129,13 @@
       @foreach($vans as $van)
       @php $fc = $van->fixedCost; @endphp
       <button onclick="pickVan({{ $van->id }})"
-        class="w-full flex items-center justify-between px-4 py-3 rounded-lg text-left hover:bg-indigo-50 border border-gray-100 hover:border-indigo-200 transition-colors">
+        class="w-full flex items-center justify-between px-4 py-3 rounded-lg text-left transition-colors"
+        style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
         <div>
-          <span class="font-mono font-semibold text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded">{{ $van->plate_number }}</span>
-          <span class="ml-2 text-sm text-gray-700">{{ $van->make_model }}</span>
+          <span class="font-mono font-semibold text-xs px-2 py-0.5 rounded" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">{{ $van->plate_number }}</span>
+          <span class="ml-2 text-sm text-slate-200">{{ $van->make_model }}</span>
         </div>
-        <span class="text-xs {{ $fc ? 'text-emerald-600 font-medium' : 'text-gray-400' }}">
+        <span class="text-xs {{ $fc ? 'text-emerald-400 font-medium' : 'text-slate-500' }}">
           {{ $fc ? '$'.number_format($fc->total_monthly, 2).'/mo' : 'No costs set' }}
         </span>
       </button>
@@ -146,14 +145,14 @@
 </div>
 
 {{-- ── Edit Fixed Costs Modal ── --}}
-<div id="costModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,.4);">
-  <div class="bg-white rounded-xl w-full max-w-lg shadow-xl">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+<div id="costModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+  <div class="modal-box w-full max-w-lg">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
       <div>
-        <h2 class="font-semibold text-gray-800 text-sm">Update Fixed Costs</h2>
-        <p id="modalVanLabel" class="text-xs text-gray-400 mt-0.5"></p>
+        <h2 class="font-semibold text-slate-100 text-sm">Update Fixed Costs</h2>
+        <p id="modalVanLabel" class="text-xs text-slate-400 mt-0.5"></p>
       </div>
-      <button onclick="closeCostModal()" class="text-gray-400 hover:text-gray-600">
+      <button onclick="closeCostModal()" class="text-slate-500 hover:text-slate-300">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
         </svg>
@@ -164,33 +163,33 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Monthly Lease ($) <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Monthly Lease ($) <span class="text-red-400">*</span></label>
             <input type="number" name="monthly_lease" id="f_lease" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Road Tax Annual ($) <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Road Tax Annual ($) <span class="text-red-400">*</span></label>
             <input type="number" name="road_tax_annual" id="f_road_tax" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Insurance Monthly ($) <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Insurance Monthly ($) <span class="text-red-400">*</span></label>
             <input type="number" name="insurance_monthly" id="f_insurance" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Next Service Date</label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Next Service Date</label>
             <input type="date" name="next_service_date" id="f_service" class="w-full">
           </div>
         </div>
         {{-- Live total preview --}}
-        <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px;">
-          <div class="flex justify-between text-xs text-gray-500 mb-1"><span>Monthly Lease</span><span id="p_lease">$0.00</span></div>
-          <div class="flex justify-between text-xs text-gray-500 mb-1"><span>Road Tax (÷12)</span><span id="p_road_tax">$0.00</span></div>
-          <div class="flex justify-between text-xs text-gray-500"><span>Insurance</span><span id="p_insurance">$0.00</span></div>
-          <div class="flex justify-between text-sm font-bold text-gray-900 border-t border-gray-200 mt-2 pt-2">
-            <span>Total Fixed / Month</span><span id="p_total">$0.00</span>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;">
+          <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Monthly Lease</span><span id="p_lease" class="text-slate-200">$0.00</span></div>
+          <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Road Tax (÷12)</span><span id="p_road_tax" class="text-slate-200">$0.00</span></div>
+          <div class="flex justify-between text-xs text-slate-400"><span>Insurance</span><span id="p_insurance" class="text-slate-200">$0.00</span></div>
+          <div class="flex justify-between text-sm font-bold text-slate-100 border-t mt-2 pt-2" style="border-color:rgba(255,255,255,0.08);">
+            <span>Total Fixed / Month</span><span id="p_total" class="text-sky-400">$0.00</span>
           </div>
         </div>
       </div>
-      <div class="px-5 py-4 border-t border-gray-100 flex justify-end gap-2">
+      <div class="px-5 py-4 flex justify-end gap-2" style="border-top:1px solid rgba(255,255,255,0.08);">
         <button type="button" onclick="closeCostModal()" class="btn-ghost">Cancel</button>
         <button type="submit" class="btn-primary">Save Changes</button>
       </div>
@@ -270,3 +269,4 @@ function calcTotal() {
 });
 </script>
 @endsection
+

@@ -7,17 +7,17 @@
 
 {{-- ── Success / Error banners ── --}}
 @if(session('success'))
-<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 @if(session('error'))
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✕ {{ session('error') }}
 </div>
 @endif
 @if($errors->any())
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   <strong>Please fix the following errors:</strong>
   <ul style="margin:6px 0 0 18px;list-style:disc;">
     @foreach($errors->all() as $error)
@@ -30,9 +30,9 @@
 <div class="card overflow-hidden">
 
   {{-- ── Filter bar + Log Trip button ── --}}
-  <div class="px-5 py-4 border-b border-slate-100">
+  <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-end gap-3 flex-wrap justify-between" style="border-bottom:1px solid rgba(255,255,255,0.07);">
     <form method="GET" action="{{ route('operations.trips') }}" id="filterForm"
-          class="flex flex-col sm:flex-row sm:items-end gap-3 flex-wrap justify-between">
+          class="flex flex-col sm:flex-row sm:items-end gap-3 flex-wrap justify-between w-full">
 
       <div class="flex gap-2 flex-wrap items-end">
         {{-- Van filter --}}
@@ -119,66 +119,61 @@
           <th class="px-5 py-3 text-right">Actions</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-slate-50">
+      <tbody>
         @forelse($trips as $trip)
-        <tr class="table-row {{ $trip->status === 'voided' ? 'opacity-60' : '' }}"
-            style="{{ $trip->status === 'voided' ? 'text-decoration-line: none;' : '' }}">
+        <tr class="table-row {{ $trip->status === 'voided' ? 'opacity-60' : '' }}">
 
           {{-- Trip ID --}}
           <td class="px-5 py-3.5">
-            <span class="font-mono text-xs text-indigo-600 font-semibold"
+            <span class="font-mono text-xs text-sky-400 font-semibold"
                   style="{{ $trip->status === 'voided' ? 'text-decoration:line-through;' : '' }}">
               T-{{ str_pad($trip->id, 5, '0', STR_PAD_LEFT) }}
             </span>
           </td>
 
           {{-- Date --}}
-          <td class="px-5 py-3.5 text-xs text-slate-500">
+          <td class="px-5 py-3.5 text-xs text-slate-400">
             {{ $trip->trip_date->format('d M Y') }}
           </td>
 
           {{-- Van plate --}}
           <td class="px-5 py-3.5">
-            <span class="font-mono text-xs bg-slate-100 px-2 py-0.5 rounded font-semibold text-slate-800">
+            <span class="font-mono text-xs px-2 py-0.5 rounded font-semibold text-slate-300" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);">
               {{ $trip->van->plate_number ?? '—' }}
             </span>
           </td>
 
           {{-- Customer --}}
-          <td class="px-5 py-3.5 text-slate-700 text-xs font-medium">
+          <td class="px-5 py-3.5 text-slate-200 text-xs font-medium">
             {{ $trip->customer->company_name ?? '—' }}
           </td>
 
           {{-- Route --}}
-          <td class="px-5 py-3.5 text-xs text-slate-500">
+          <td class="px-5 py-3.5 text-xs text-slate-400">
             {{ $trip->origin }} → {{ $trip->destination }}
           </td>
 
           {{-- Fare --}}
-          <td class="px-5 py-3.5 text-right text-slate-600 text-xs">
-            {{ number_format($trip->fare_amount, 2) }}
+          <td class="px-5 py-3.5 text-right text-slate-300 text-xs">
+            ${{ number_format($trip->fare_amount, 2) }}
           </td>
 
           {{-- Tax --}}
           <td class="px-5 py-3.5 text-right text-slate-400 text-xs">
-            {{ number_format($trip->tax_amount, 2) }}
+            ${{ number_format($trip->tax_amount, 2) }}
           </td>
 
           {{-- Total --}}
-          <td class="px-5 py-3.5 text-right font-semibold text-slate-800 text-xs">
-            {{ number_format($trip->total_amount, 2) }}
+          <td class="px-5 py-3.5 text-right font-semibold text-slate-100 text-xs">
+            ${{ number_format($trip->total_amount, 2) }}
           </td>
 
           {{-- Status badge --}}
           <td class="px-5 py-3.5 text-center">
             @if($trip->status === 'active')
-              <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;flex-shrink:0;"></span>Active
-              </span>
+              <span class="badge-green">Active</span>
             @else
-              <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
-                <span style="width:6px;height:6px;border-radius:50%;background:#ef4444;display:inline-block;flex-shrink:0;"></span>Voided
-              </span>
+              <span class="badge-red">Voided</span>
             @endif
           </td>
 
@@ -190,19 +185,19 @@
                   style="display:inline;">
               @csrf
               <button type="submit"
-                      class="text-xs text-slate-400 hover:text-red-600 font-medium transition-colors">
+                      class="text-xs text-slate-500 hover:text-red-400 font-medium transition-colors">
                 Void
               </button>
             </form>
             @else
-            <span class="text-xs text-slate-300">—</span>
+            <span class="text-xs text-slate-600">—</span>
             @endif
           </td>
         </tr>
         @empty
         <tr>
-          <td colspan="10" class="px-5 py-12 text-center text-slate-400 text-sm">
-            <svg width="40" height="40" fill="none" stroke="#d1d5db" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 10px;">
+          <td colspan="10" class="px-5 py-12 text-center text-slate-500 text-sm">
+            <svg width="40" height="40" fill="none" stroke="#475569" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 10px;">
               <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
               <circle cx="12" cy="11" r="3"/>
             </svg>
@@ -215,35 +210,35 @@
   </div>
 
   {{-- ── Pagination footer ── --}}
-  <div class="px-5 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+  <div class="px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500" style="border-top:1px solid rgba(255,255,255,0.07);">
     <span>
       Showing
-      <strong>{{ $trips->firstItem() ?? 0 }}</strong>–<strong>{{ $trips->lastItem() ?? 0 }}</strong>
-      of <strong>{{ $trips->total() }}</strong> trip{{ $trips->total() !== 1 ? 's' : '' }}
+      <strong class="text-slate-300">{{ $trips->firstItem() ?? 0 }}</strong>–<strong class="text-slate-300">{{ $trips->lastItem() ?? 0 }}</strong>
+      of <strong class="text-slate-300">{{ $trips->total() }}</strong> trip{{ $trips->total() !== 1 ? 's' : '' }}
     </span>
     @if($trips->hasPages())
     <div class="flex gap-1">
       {{-- Previous --}}
       @if($trips->onFirstPage())
-        <span class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-300 cursor-default">‹</span>
+        <span class="px-3 py-1.5 rounded-lg text-slate-600" style="border:1px solid rgba(255,255,255,0.07);">‹</span>
       @else
-        <a href="{{ $trips->previousPageUrl() }}" class="px-3 py-1.5 border border-slate-200 rounded-lg hover:bg-slate-50">‹</a>
+        <a href="{{ $trips->previousPageUrl() }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">‹</a>
       @endif
 
       {{-- Page numbers --}}
       @foreach($trips->getUrlRange(max(1, $trips->currentPage()-2), min($trips->lastPage(), $trips->currentPage()+2)) as $page => $url)
         @if($page == $trips->currentPage())
-          <span class="px-3 py-1.5 border border-indigo-600 bg-indigo-600 text-white rounded-lg">{{ $page }}</span>
+          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#6366f1);border:none;">{{ $page }}</span>
         @else
-          <a href="{{ $url }}" class="px-3 py-1.5 border border-slate-200 rounded-lg hover:bg-slate-50">{{ $page }}</a>
+          <a href="{{ $url }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">{{ $page }}</a>
         @endif
       @endforeach
 
       {{-- Next --}}
       @if($trips->hasMorePages())
-        <a href="{{ $trips->nextPageUrl() }}" class="px-3 py-1.5 border border-slate-200 rounded-lg hover:bg-slate-50">›</a>
+        <a href="{{ $trips->nextPageUrl() }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">›</a>
       @else
-        <span class="px-3 py-1.5 border border-slate-200 rounded-lg text-slate-300 cursor-default">›</span>
+        <span class="px-3 py-1.5 rounded-lg text-slate-600" style="border:1px solid rgba(255,255,255,0.07);">›</span>
       @endif
     </div>
     @endif
@@ -254,14 +249,13 @@
 
 {{-- ════════════════ MODALS ════════════════ --}}
 @section('modals')
-<div id="tripModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4"
-     style="background:rgba(15,23,42,0.45);">
-  <div class="bg-white rounded-xl w-full max-w-lg shadow-xl" style="max-height:90vh;overflow-y:auto;">
+<div id="tripModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+  <div class="modal-box w-full max-w-lg" style="max-height:90vh;overflow-y:auto;">
 
     {{-- Modal header --}}
-    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-      <h2 class="font-semibold text-slate-800 text-sm">Log New Trip</h2>
-      <button onclick="modal('tripModal',false)" class="text-slate-400 hover:text-slate-600">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h2 class="font-semibold text-slate-100 text-sm">Log New Trip</h2>
+      <button onclick="modal('tripModal',false)" class="text-slate-500 hover:text-slate-300">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
         </svg>
@@ -276,8 +270,8 @@
         {{-- Van + Date --}}
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1.5">
-              Van (Active only) <span class="text-red-500">*</span>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">
+              Van (Active only) <span class="text-red-400">*</span>
             </label>
             <select name="van_id" required class="w-full">
               <option value="">— Select Van —</option>
@@ -289,8 +283,8 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1.5">
-              Trip Date <span class="text-red-500">*</span>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">
+              Trip Date <span class="text-red-400">*</span>
             </label>
             <input type="date" name="trip_date" required class="w-full"
                    value="{{ old('trip_date', date('Y-m-d')) }}">
@@ -299,8 +293,8 @@
 
         {{-- Customer --}}
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1.5">
-            Customer <span class="text-red-500">*</span>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">
+            Customer <span class="text-red-400">*</span>
           </label>
           <select name="customer_id" required class="w-full">
             <option value="">— Select Customer —</option>
@@ -315,16 +309,16 @@
         {{-- Origin + Destination --}}
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1.5">
-              Origin <span class="text-red-500">*</span>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">
+              Origin <span class="text-red-400">*</span>
             </label>
             <input type="text" name="origin" required maxlength="255"
                    placeholder="e.g. Nairobi CBD"
                    value="{{ old('origin') }}" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1.5">
-              Destination <span class="text-red-500">*</span>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">
+              Destination <span class="text-red-400">*</span>
             </label>
             <input type="text" name="destination" required maxlength="255"
                    placeholder="e.g. Mombasa"
@@ -334,8 +328,8 @@
 
         {{-- Fare amount + live tax preview --}}
         <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1.5">
-            Fare Amount <span class="text-red-500">*</span>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">
+            Fare Amount <span class="text-red-400">*</span>
           </label>
           <input type="number" name="fare_amount" id="fareInput" required
                  min="0.01" max="9999999" step="0.01" placeholder="0.00"
@@ -343,18 +337,18 @@
                  class="w-full" oninput="calcTax(this)">
 
           {{-- Live tax/total preview --}}
-          <div style="margin-top:8px;background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:10px 14px;">
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:4px;">
+          <div style="margin-top:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-bottom:4px;">
               <span>Pre-tax fare</span>
-              <span id="previewFare">0.00</span>
+              <span id="previewFare" class="text-slate-200">0.00</span>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;margin-bottom:4px;">
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-bottom:4px;">
               <span>Tax (8%)</span>
-              <span id="previewTax" style="color:#f59e0b;">+ 0.00</span>
+              <span id="previewTax" style="color:#fbbf24;">+ 0.00</span>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#111827;border-top:1px solid #e5e7eb;padding-top:6px;margin-top:4px;">
+            <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#f8fafc;border-top:1px solid rgba(255,255,255,0.08);padding-top:6px;margin-top:4px;">
               <span>Total</span>
-              <span id="previewTotal">0.00</span>
+              <span id="previewTotal" class="text-sky-400">0.00</span>
             </div>
           </div>
         </div>
@@ -362,7 +356,7 @@
       </div>
 
       {{-- Modal footer --}}
-      <div class="px-5 py-4 border-t border-slate-100 flex justify-end gap-2">
+      <div class="px-5 py-4 flex justify-end gap-2" style="border-top:1px solid rgba(255,255,255,0.08);">
         <button type="button" onclick="modal('tripModal',false)" class="btn-ghost">Cancel</button>
         <button type="submit" class="btn-primary">Save Trip</button>
       </div>
@@ -404,3 +398,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endsection
+

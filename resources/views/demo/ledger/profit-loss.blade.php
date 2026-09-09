@@ -11,17 +11,17 @@
         class="flex flex-wrap gap-3 items-end justify-between">
     <div class="flex flex-wrap gap-2 items-end">
       <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">From</label>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">From</label>
         <input type="date" name="from" class="text-sm" value="{{ $from->format('Y-m-d') }}">
       </div>
       <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">To</label>
+        <label class="block text-xs font-semibold text-slate-400 mb-1">To</label>
         <input type="date" name="to" class="text-sm" value="{{ $to->format('Y-m-d') }}">
       </div>
       <button type="submit" class="btn-primary text-xs self-end px-3 py-2">Generate</button>
       <a href="{{ route('ledger.profit-loss') }}" class="btn-ghost text-xs self-end px-3 py-2">Reset</a>
     </div>
-    <div class="text-xs text-gray-400 self-end">
+    <div class="text-xs text-slate-400 self-end">
       {{ $from->format('d M Y') }} – {{ $to->format('d M Y') }} &bull; {{ $daysInRange }} days
     </div>
   </form>
@@ -30,26 +30,26 @@
 {{-- KPI cards --}}
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
   <div class="card p-4">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Gross Revenue</p>
-    <p class="text-2xl font-bold mt-1" style="color:#16a34a;">${{ number_format($tripRevenue,2) }}</p>
-    <p class="text-xs text-gray-400 mt-0.5">{{ $tripCount }} active trips</p>
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Gross Revenue</p>
+    <p class="text-2xl font-bold mt-1 text-emerald-400">${{ number_format($tripRevenue,2) }}</p>
+    <p class="text-xs text-slate-400 mt-0.5">{{ $tripCount }} active trips</p>
   </div>
   <div class="card p-4">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Expenses</p>
-    <p class="text-2xl font-bold mt-1" style="color:#ef4444;">${{ number_format($totalExpenses,2) }}</p>
-    <p class="text-xs text-gray-400 mt-0.5">All cost categories</p>
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Expenses</p>
+    <p class="text-2xl font-bold mt-1 text-red-400">${{ number_format($totalExpenses,2) }}</p>
+    <p class="text-xs text-slate-400 mt-0.5">All cost categories</p>
   </div>
   <div class="card p-4">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Net {{ $netProfit >= 0 ? 'Profit' : 'Loss' }}</p>
-    <p class="text-2xl font-bold mt-1" style="color:{{ $netProfit >= 0 ? '#16a34a' : '#ef4444' }};">
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Net {{ $netProfit >= 0 ? 'Profit' : 'Loss' }}</p>
+    <p class="text-2xl font-bold mt-1 {{ $netProfit >= 0 ? 'text-emerald-400' : 'text-red-400' }}">
       {{ $netProfit < 0 ? '−' : '' }}${{ number_format(abs($netProfit),2) }}
     </p>
-    <p class="text-xs text-gray-400 mt-0.5">Margin: {{ $margin }}%</p>
+    <p class="text-xs text-slate-400 mt-0.5">Margin: {{ $margin }}%</p>
   </div>
   <div class="card p-4">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Profit Margin</p>
-    <p class="text-2xl font-bold mt-1" style="color:{{ $margin >= 0 ? '#6366f1' : '#ef4444' }};">{{ $margin }}%</p>
-    <p class="text-xs text-gray-400 mt-0.5">{{ $voidedCount }} voided trips</p>
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Profit Margin</p>
+    <p class="text-2xl font-bold mt-1 {{ $margin >= 0 ? 'text-indigo-400' : 'text-red-400' }}">{{ $margin }}%</p>
+    <p class="text-xs text-slate-400 mt-0.5">{{ $voidedCount }} voided trips</p>
   </div>
 </div>
 
@@ -57,29 +57,29 @@
 
   {{-- P&L Statement --}}
   <div class="xl:col-span-2 card overflow-hidden">
-    <div class="px-5 py-4 border-b border-gray-100">
-      <h3 class="font-semibold text-gray-800 text-sm">Profit & Loss Statement</h3>
-      <p class="text-xs text-gray-400 mt-0.5">{{ $from->format('d M Y') }} to {{ $to->format('d M Y') }}</p>
+    <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+      <h3 class="font-semibold text-slate-100 text-sm">Profit & Loss Statement</h3>
+      <p class="text-xs text-slate-400 mt-0.5">{{ $from->format('d M Y') }} to {{ $to->format('d M Y') }}</p>
     </div>
 
-    <div class="divide-y divide-gray-50">
+    <div>
 
       {{-- Revenue --}}
-      <div class="px-5 py-4" style="background:#f0fdf4;">
-        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Revenue</p>
+      <div class="px-5 py-4" style="background:rgba(16,185,129,0.08);border-bottom:1px solid rgba(255,255,255,0.07);">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">Revenue</p>
         <div class="flex justify-between text-sm mb-2">
-          <span class="text-gray-700">Trip Revenue ({{ $tripCount }} trips)</span>
-          <span class="font-semibold text-gray-800">${{ number_format($tripRevenue,2) }}</span>
+          <span class="text-slate-300">Trip Revenue ({{ $tripCount }} trips)</span>
+          <span class="font-semibold text-slate-100">${{ number_format($tripRevenue,2) }}</span>
         </div>
-        <div class="flex justify-between text-sm font-bold border-t border-green-200 pt-2 mt-1">
-          <span class="text-gray-800">Gross Revenue</span>
-          <span style="color:#16a34a;" class="text-base">${{ number_format($tripRevenue,2) }}</span>
+        <div class="flex justify-between text-sm font-bold pt-2 mt-1" style="border-top:1px solid rgba(16,185,129,0.25);">
+          <span class="text-slate-100">Gross Revenue</span>
+          <span class="text-base text-emerald-400">${{ number_format($tripRevenue,2) }}</span>
         </div>
       </div>
 
       {{-- Variable Expenses --}}
-      <div class="px-5 py-4">
-        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Variable Expenses</p>
+      <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">Variable Expenses</p>
         @php
         $varItems = [
           ['Fuel',                 $fuelAmt],
@@ -91,23 +91,23 @@
         @foreach($varItems as [$label, $amt])
         @if($amt > 0)
         <div class="flex justify-between text-sm mb-1.5">
-          <span class="text-gray-600">{{ $label }}</span>
-          <span class="text-red-500">${{ number_format($amt,2) }}</span>
+          <span class="text-slate-300">{{ $label }}</span>
+          <span class="text-red-400">${{ number_format($amt,2) }}</span>
         </div>
         @endif
         @endforeach
         @if($totalVariable == 0)
-        <p class="text-xs text-gray-400">No variable expenses in this period.</p>
+        <p class="text-xs text-slate-400">No variable expenses in this period.</p>
         @endif
-        <div class="flex justify-between text-sm font-semibold border-t border-gray-200 pt-2 mt-1">
-          <span class="text-gray-700">Total Variable</span>
-          <span class="text-red-500">${{ number_format($totalVariable,2) }}</span>
+        <div class="flex justify-between text-sm font-semibold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
+          <span class="text-slate-300">Total Variable</span>
+          <span class="text-red-400">${{ number_format($totalVariable,2) }}</span>
         </div>
       </div>
 
       {{-- Fixed Expenses --}}
-      <div class="px-5 py-4">
-        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Fixed Costs ({{ $daysInRange }}-day proration)</p>
+      <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">Fixed Costs ({{ $daysInRange }}-day proration)</p>
         @foreach([
           ['Monthly Lease (prorated)',     $totalLease],
           ['Road Tax (prorated)',          $totalRoadTax],
@@ -115,58 +115,58 @@
         ] as [$label, $amt])
         @if($amt > 0)
         <div class="flex justify-between text-sm mb-1.5">
-          <span class="text-gray-600">{{ $label }}</span>
-          <span class="text-red-500">${{ number_format($amt,2) }}</span>
+          <span class="text-slate-300">{{ $label }}</span>
+          <span class="text-red-400">${{ number_format($amt,2) }}</span>
         </div>
         @endif
         @endforeach
-        <div class="flex justify-between text-sm font-semibold border-t border-gray-200 pt-2 mt-1">
-          <span class="text-gray-700">Total Fixed</span>
-          <span class="text-red-500">${{ number_format($totalFixed,2) }}</span>
+        <div class="flex justify-between text-sm font-semibold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
+          <span class="text-slate-300">Total Fixed</span>
+          <span class="text-red-400">${{ number_format($totalFixed,2) }}</span>
         </div>
       </div>
 
       {{-- Wages & Advances --}}
       @if($totalWages > 0 || $totalAdvances > 0)
-      <div class="px-5 py-4">
-        <p class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Staff Costs</p>
+      <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.07);">
+        <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">Staff Costs</p>
         @if($totalWages > 0)
         <div class="flex justify-between text-sm mb-1.5">
-          <span class="text-gray-600">Driver Wages (Gross)</span>
-          <span class="text-red-500">${{ number_format($totalWages,2) }}</span>
+          <span class="text-slate-300">Driver Wages (Gross)</span>
+          <span class="text-red-400">${{ number_format($totalWages,2) }}</span>
         </div>
         @endif
         @if($totalAdvances > 0)
         <div class="flex justify-between text-sm mb-1.5">
-          <span class="text-gray-600">Driver Advances</span>
-          <span class="text-red-500">${{ number_format($totalAdvances,2) }}</span>
+          <span class="text-slate-300">Driver Advances</span>
+          <span class="text-red-400">${{ number_format($totalAdvances,2) }}</span>
         </div>
         @endif
-        <div class="flex justify-between text-sm font-semibold border-t border-gray-200 pt-2 mt-1">
-          <span class="text-gray-700">Total Staff Costs</span>
-          <span class="text-red-500">${{ number_format($totalWages + $totalAdvances,2) }}</span>
+        <div class="flex justify-between text-sm font-semibold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
+          <span class="text-slate-300">Total Staff Costs</span>
+          <span class="text-red-400">${{ number_format($totalWages + $totalAdvances,2) }}</span>
         </div>
       </div>
       @endif
 
       {{-- Net result --}}
-      <div class="px-5 py-5" style="background:{{ $netProfit >= 0 ? '#f0fdf4' : '#fef2f2' }};">
+      <div class="px-5 py-5" style="background:{{ $netProfit >= 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)' }};">
         <div class="flex justify-between text-sm mb-2">
-          <span class="text-gray-600">Gross Revenue</span>
-          <span class="font-semibold text-gray-800">${{ number_format($tripRevenue,2) }}</span>
+          <span class="text-slate-300">Gross Revenue</span>
+          <span class="font-semibold text-slate-100">${{ number_format($tripRevenue,2) }}</span>
         </div>
         <div class="flex justify-between text-sm mb-2">
-          <span class="text-gray-600">Total Expenses</span>
-          <span class="font-semibold text-red-500">−${{ number_format($totalExpenses,2) }}</span>
+          <span class="text-slate-300">Total Expenses</span>
+          <span class="font-semibold text-red-400">−${{ number_format($totalExpenses,2) }}</span>
         </div>
         <div class="flex justify-between font-bold text-base border-t-2 pt-3 mt-2"
-             style="border-color:{{ $netProfit >= 0 ? '#bbf7d0' : '#fecaca' }};">
-          <span class="text-gray-900">Net {{ $netProfit >= 0 ? 'Profit' : 'Loss' }}</span>
-          <span style="color:{{ $netProfit >= 0 ? '#16a34a' : '#ef4444' }};" class="text-xl">
+             style="border-color:{{ $netProfit >= 0 ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)' }};">
+          <span class="text-slate-100">Net {{ $netProfit >= 0 ? 'Profit' : 'Loss' }}</span>
+          <span style="color:{{ $netProfit >= 0 ? '#4ade80' : '#f87171' }};" class="text-xl">
             {{ $netProfit < 0 ? '−' : '' }}${{ number_format(abs($netProfit),2) }}
           </span>
         </div>
-        <p class="text-xs mt-1" style="color:{{ $netProfit >= 0 ? '#16a34a' : '#ef4444' }};">
+        <p class="text-xs mt-1" style="color:{{ $netProfit >= 0 ? '#4ade80' : '#f87171' }};">
           Profit margin: {{ $margin }}%
         </p>
       </div>
@@ -178,13 +178,13 @@
 
     {{-- Expense pie chart --}}
     <div class="card p-5">
-      <h3 class="font-semibold text-gray-800 text-sm mb-3">Expense Breakdown</h3>
+      <h3 class="font-semibold text-slate-100 text-sm mb-3">Expense Breakdown</h3>
       <canvas id="expPie" height="200"></canvas>
     </div>
 
     {{-- 6-month trend --}}
     <div class="card p-5">
-      <h3 class="font-semibold text-gray-800 text-sm mb-3">6-Month Trend</h3>
+      <h3 class="font-semibold text-slate-100 text-sm mb-3">6-Month Trend</h3>
       <canvas id="trendChart" height="200"></canvas>
     </div>
 
@@ -195,7 +195,7 @@
 @section('scripts')
 <script>
 Chart.defaults.font.family = 'Inter, sans-serif';
-Chart.defaults.color = '#6b7280';
+Chart.defaults.color = '#94a3b8';
 
 // Expense breakdown pie
 new Chart(document.getElementById('expPie'), {
@@ -209,7 +209,7 @@ new Chart(document.getElementById('expPie'), {
         {{ $totalLease }}, {{ $totalRoadTax }}, {{ $totalInsurance }}
       ],
       backgroundColor: [
-        '#f59e0b','#6b7280','#6366f1','#ef4444',
+        '#f59e0b','#94a3b8','#6366f1','#ef4444',
         '#3b82f6','#8b5cf6','#10b981','#14b8a6','#f97316'
       ],
       borderWidth: 0,
@@ -218,7 +218,7 @@ new Chart(document.getElementById('expPie'), {
   options: {
     responsive: true, cutout: '60%',
     plugins: {
-      legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } }
+      legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 }, color: '#94a3b8' } }
     }
   }
 });
@@ -230,13 +230,13 @@ new Chart(document.getElementById('trendChart'), {
     labels: {!! json_encode(collect($trend)->pluck('label')) !!},
     datasets: [
       { label: 'Revenue', data: {!! json_encode(collect($trend)->pluck('revenue')) !!}, backgroundColor: '#6366f1', borderRadius: 4 },
-      { label: 'Expenses', data: {!! json_encode(collect($trend)->pluck('expenses')) !!}, backgroundColor: '#f3f4f6', borderRadius: 4, borderColor: '#e5e7eb', borderWidth: 1 },
+      { label: 'Expenses', data: {!! json_encode(collect($trend)->pluck('expenses')) !!}, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 4, borderColor: 'rgba(255,255,255,0.2)', borderWidth: 1 },
     ]
   },
   options: {
     responsive: true,
-    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 } } } },
-    scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } }
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 }, color: '#94a3b8' } } },
+    scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } }
   }
 });
 </script>

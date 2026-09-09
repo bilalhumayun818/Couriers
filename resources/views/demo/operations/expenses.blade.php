@@ -6,12 +6,12 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 @if($errors->any())
-<div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   <strong>Please fix:</strong>
   @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
 </div>
@@ -23,29 +23,29 @@
   $catTotals = \App\Models\Expense::where('status','active')
     ->selectRaw('category, SUM(amount) as total')
     ->groupBy('category')->pluck('total','category');
-  $colors = ['Fuel'=>'#f59e0b','Tolls'=>'#6b7280','Spare Parts'=>'#6366f1','Maintenance/Repairs'=>'#ef4444'];
+  $colors = ['Fuel'=>'#38bdf8','Tolls'=>'#cbd5e1','Spare Parts'=>'#818cf8','Maintenance/Repairs'=>'#f87171'];
   @endphp
   <div class="card p-4 col-span-2 sm:col-span-1">
-    <p class="text-xs text-gray-500 uppercase font-semibold tracking-wide">Total Expenses</p>
-    <p class="text-2xl font-bold text-gray-900 mt-1">${{ number_format($totalAmount,2) }}</p>
-    <p class="text-xs text-gray-400 mt-0.5">{{ $totalCount }} record{{ $totalCount!==1?'s':'' }}</p>
+    <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Expenses</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($totalAmount,2) }}</p>
+    <p class="text-xs text-slate-500 mt-0.5">{{ $totalCount }} record{{ $totalCount!==1?'s':'' }}</p>
   </div>
   @foreach($categories as $cat)
   <div class="card p-4">
-    <p class="text-xs font-semibold tracking-wide" style="color:{{ $colors[$cat] ?? '#6b7280' }};text-transform:uppercase;">{{ $cat }}</p>
-    <p class="text-xl font-bold text-gray-900 mt-1">${{ number_format($catTotals[$cat] ?? 0,2) }}</p>
+    <p class="text-xs font-semibold tracking-wide" style="color:{{ $colors[$cat] ?? '#cbd5e1' }};text-transform:uppercase;">{{ $cat }}</p>
+    <p class="text-xl font-bold text-slate-100 mt-1">${{ number_format($catTotals[$cat] ?? 0,2) }}</p>
   </div>
   @endforeach
 </div>
 
 <div class="card overflow-hidden">
   {{-- Filter bar --}}
-  <div class="px-5 py-4 border-b border-gray-100">
+  <div class="px-5 py-4 flex flex-wrap gap-3 items-end justify-between" style="border-bottom:1px solid rgba(255,255,255,0.07);">
     <form method="GET" action="{{ route('operations.expenses') }}" id="filterForm"
-          class="flex flex-wrap gap-3 items-end justify-between">
+          class="flex flex-wrap gap-3 items-end justify-between w-full">
       <div class="flex flex-wrap gap-2 items-end">
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Van</label>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Van</label>
           <select name="van_id" class="text-sm" onchange="filterForm.submit()">
             <option value="">All Vans</option>
             @foreach($vans as $van)
@@ -54,7 +54,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Category</label>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Category</label>
           <select name="category" class="text-sm" onchange="filterForm.submit()">
             <option value="">All Categories</option>
             @foreach($categories as $cat)
@@ -63,7 +63,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Status</label>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Status</label>
           <select name="status" class="text-sm" onchange="filterForm.submit()">
             <option value="">All</option>
             <option value="active"  {{ request('status')==='active'?'selected':'' }}>Active</option>
@@ -71,11 +71,11 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">From</label>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">From</label>
           <input type="date" name="from" class="text-sm" value="{{ request('from') }}" onchange="filterForm.submit()">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">To</label>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">To</label>
           <input type="date" name="to" class="text-sm" value="{{ request('to') }}" onchange="filterForm.submit()">
         </div>
         @if(request()->hasAny(['van_id','category','status','from','to']))
@@ -104,59 +104,56 @@
           <th class="px-5 py-3 text-right">Actions</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-50">
+      <tbody>
         @forelse($expenses as $exp)
-        @php
-          $catStyle = match($exp->category) {
-            'Fuel'                => 'background:#fffbeb;color:#b45309;border:1px solid #fde68a;',
-            'Tolls'               => 'background:#f9fafb;color:#374151;border:1px solid #e5e7eb;',
-            'Spare Parts'         => 'background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;',
-            'Maintenance/Repairs' => 'background:#fef2f2;color:#991b1b;border:1px solid #fecaca;',
-            default               => 'background:#f3f4f6;color:#374151;',
-          };
-        @endphp
         <tr class="table-row {{ $exp->status==='deleted'?'opacity-60':'' }}">
           <td class="px-5 py-3.5">
-            <span class="font-mono text-xs text-indigo-600 font-semibold"
+            <span class="font-mono text-xs text-sky-400 font-semibold"
                   style="{{ $exp->status==='deleted'?'text-decoration:line-through;':'' }}">
               E-{{ str_pad($exp->id,5,'0',STR_PAD_LEFT) }}
             </span>
           </td>
-          <td class="px-5 py-3.5 text-xs text-gray-500">{{ $exp->expense_date->format('d M Y') }}</td>
+          <td class="px-5 py-3.5 text-xs text-slate-400">{{ $exp->expense_date->format('d M Y') }}</td>
           <td class="px-5 py-3.5">
-            <span class="font-mono text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded font-semibold">
+            <span class="font-mono text-xs px-2 py-0.5 rounded font-semibold text-slate-300" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);">
               {{ $exp->van->plate_number ?? '—' }}
             </span>
           </td>
           <td class="px-5 py-3.5">
-            <span class="text-xs font-semibold px-2.5 py-1 rounded-full" style="{{ $catStyle }}">
-              {{ $exp->category }}
-            </span>
+            @if($exp->category === 'Fuel')
+              <span class="badge-blue">{{ $exp->category }}</span>
+            @elseif($exp->category === 'Spare Parts')
+              <span class="badge-blue">{{ $exp->category }}</span>
+            @elseif($exp->category === 'Maintenance/Repairs')
+              <span class="badge-red">{{ $exp->category }}</span>
+            @else
+              <span class="badge-slate">{{ $exp->category }}</span>
+            @endif
           </td>
-          <td class="px-5 py-3.5 text-xs text-gray-500">{{ $exp->description ?? '—' }}</td>
-          <td class="px-5 py-3.5 text-right font-semibold text-gray-800">${{ number_format($exp->amount,2) }}</td>
+          <td class="px-5 py-3.5 text-xs text-slate-400">{{ $exp->description ?? '—' }}</td>
+          <td class="px-5 py-3.5 text-right font-semibold text-slate-200">${{ number_format($exp->amount,2) }}</td>
           <td class="px-5 py-3.5 text-center">
             @if($exp->status==='active')
-              <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;" class="text-xs font-semibold px-2 py-0.5 rounded-full">Active</span>
+              <span class="badge-green">Active</span>
             @else
-              <span style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca;" class="text-xs font-semibold px-2 py-0.5 rounded-full">Deleted</span>
+              <span class="badge-red">Deleted</span>
             @endif
           </td>
           <td class="px-5 py-3.5 text-right space-x-2">
             @if($exp->status==='active')
               <button onclick="openModal({{ json_encode(['id'=>$exp->id,'van_id'=>$exp->van_id,'category'=>$exp->category,'date'=>$exp->expense_date->format('Y-m-d'),'amount'=>$exp->amount,'description'=>$exp->description]) }})"
-                class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Edit</button>
+                class="text-xs text-sky-400 hover:text-sky-300 font-medium">Edit</button>
               <form method="POST" action="{{ route('operations.expenses.destroy',$exp) }}" class="inline"
                     onsubmit="return confirm('Delete expense E-{{ str_pad($exp->id,5,'0',STR_PAD_LEFT) }}?')">
                 @csrf @method('DELETE')
-                <button type="submit" class="text-xs text-gray-400 hover:text-red-600 font-medium">Delete</button>
+                <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium">Delete</button>
               </form>
             @endif
           </td>
         </tr>
         @empty
         <tr>
-          <td colspan="8" class="px-5 py-12 text-center text-gray-400 text-sm">
+          <td colspan="8" class="px-5 py-12 text-center text-slate-500 text-sm">
             No expenses found. Adjust filters or log a new expense.
           </td>
         </tr>
@@ -166,26 +163,26 @@
   </div>
 
   {{-- Pagination --}}
-  <div class="px-5 py-3.5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
-    <span>Showing <strong>{{ $expenses->firstItem() ?? 0 }}</strong>–<strong>{{ $expenses->lastItem() ?? 0 }}</strong> of <strong>{{ $expenses->total() }}</strong> records</span>
+  <div class="px-5 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500" style="border-top:1px solid rgba(255,255,255,0.07);">
+    <span>Showing <strong class="text-slate-300">{{ $expenses->firstItem() ?? 0 }}</strong>–<strong class="text-slate-300">{{ $expenses->lastItem() ?? 0 }}</strong> of <strong class="text-slate-300">{{ $expenses->total() }}</strong> records</span>
     @if($expenses->hasPages())
     <div class="flex gap-1">
       @if($expenses->onFirstPage())
-        <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-300">‹</span>
+        <span class="px-3 py-1.5 rounded-lg text-slate-600" style="border:1px solid rgba(255,255,255,0.07);">‹</span>
       @else
-        <a href="{{ $expenses->previousPageUrl() }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">‹</a>
+        <a href="{{ $expenses->previousPageUrl() }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">‹</a>
       @endif
       @foreach($expenses->getUrlRange(max(1,$expenses->currentPage()-2),min($expenses->lastPage(),$expenses->currentPage()+2)) as $page=>$url)
         @if($page==$expenses->currentPage())
-          <span class="px-3 py-1.5 border border-indigo-600 bg-indigo-600 text-white rounded-lg">{{ $page }}</span>
+          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#6366f1);border:none;">{{ $page }}</span>
         @else
-          <a href="{{ $url }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">{{ $page }}</a>
+          <a href="{{ $url }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">{{ $page }}</a>
         @endif
       @endforeach
       @if($expenses->hasMorePages())
-        <a href="{{ $expenses->nextPageUrl() }}" class="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">›</a>
+        <a href="{{ $expenses->nextPageUrl() }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">›</a>
       @else
-        <span class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-300">›</span>
+        <span class="px-3 py-1.5 rounded-lg text-slate-600" style="border:1px solid rgba(255,255,255,0.07);">›</span>
       @endif
     </div>
     @endif
@@ -194,14 +191,14 @@
 @endsection
 
 @section('modals')
-<div id="expenseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background:rgba(0,0,0,.4);">
-  <div class="bg-white rounded-xl w-full max-w-md shadow-xl">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+<div id="expenseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+  <div class="modal-box w-full max-w-md">
+    <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.08);">
       <div>
-        <h2 id="modalTitle" class="font-semibold text-gray-800 text-sm">Log Expense</h2>
-        <p id="modalSubtitle" class="text-xs text-gray-400 mt-0.5"></p>
+        <h2 id="modalTitle" class="font-semibold text-slate-100 text-sm">Log Expense</h2>
+        <p id="modalSubtitle" class="text-xs text-slate-400 mt-0.5"></p>
       </div>
-      <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+      <button onclick="closeModal()" class="text-slate-500 hover:text-slate-300">
         <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
@@ -211,7 +208,7 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Van <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Van <span class="text-red-400">*</span></label>
             <select name="van_id" id="f_van" required class="w-full">
               <option value="">— Select —</option>
               @foreach($vans as $van)
@@ -220,12 +217,12 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-gray-600 mb-1.5">Expense Date <span class="text-red-500">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Expense Date <span class="text-red-400">*</span></label>
             <input type="date" name="expense_date" id="f_date" required class="w-full" value="{{ date('Y-m-d') }}">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Category <span class="text-red-500">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Category <span class="text-red-400">*</span></label>
           <select name="category" id="f_category" required class="w-full">
             <option value="">— Select Category —</option>
             @foreach($categories as $cat)
@@ -234,15 +231,15 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Amount ($) <span class="text-red-500">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-red-400">*</span></label>
           <input type="number" name="amount" id="f_amount" required min="0.01" max="999999.99" step="0.01" placeholder="0.00" class="w-full">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-600 mb-1.5">Description <span class="text-gray-400 font-normal">(optional)</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Description <span class="text-slate-500 font-normal">(optional)</span></label>
           <textarea name="description" id="f_description" rows="2" maxlength="500" placeholder="Brief note…" class="w-full resize-none"></textarea>
         </div>
       </div>
-      <div class="px-5 py-4 border-t border-gray-100 flex justify-end gap-2">
+      <div class="px-5 py-4 flex justify-end gap-2" style="border-top:1px solid rgba(255,255,255,0.08);">
         <button type="button" onclick="closeModal()" class="btn-ghost">Cancel</button>
         <button type="submit" class="btn-primary">Save Expense</button>
       </div>
@@ -289,3 +286,4 @@ document.addEventListener('DOMContentLoaded', () => openModal(null));
 @endif
 </script>
 @endsection
+
