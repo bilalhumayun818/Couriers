@@ -4,13 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasDemoToken;
+
 class VanFixedCost extends Model
 {
+    use HasDemoToken;
+
     protected $table = 'van_fixed_costs';
 
     protected $fillable = [
         'van_id', 'monthly_lease', 'road_tax_annual',
-        'insurance_monthly', 'next_service_date',
+        'insurance_monthly', 'next_service_date', 'demo_token',
     ];
 
     protected $casts = [

@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Traits\HasDemoToken;
+
 class Investor extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasDemoToken;
 
     protected $fillable = [
         'full_name', 'role', 'bank_account_name',
-        'bank_account_number', 'bank_name', 'initial_capital',
+        'bank_account_number', 'bank_name', 'initial_capital', 'demo_token',
     ];
 
     protected $casts = [
@@ -43,5 +45,11 @@ class Investor extends Model
     public function getTotalDistributionsAttribute(): float
     {
         return (float) $this->transactions->where('type', 'distribution')->sum('amount');
+    }
+
+    /** Scope to only records belonging to this demo token. */
+    public function scopeForDemo($query, string $token)
+    {
+        return $query->where('demo_token', $token);
     }
 }

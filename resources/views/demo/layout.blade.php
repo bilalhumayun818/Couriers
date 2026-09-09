@@ -231,6 +231,39 @@ label { color: #94a3b8 !important; }
 </head>
 <body style="margin:0;">
 
+@if(request()->is('demo*') || (isset($isDemoMode) && $isDemoMode))
+{{-- Demo mode top bar banner --}}
+<div style="background: linear-gradient(90deg, rgba(8,14,30,0.85) 0%, rgba(56,189,248,0.2) 50%, rgba(8,14,30,0.85) 100%); border-bottom: 1px solid rgba(56,189,248,0.3); padding: 8px 20px; font-size: 12.5px; color: #cbd5e1; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); z-index: 100; position: relative;">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span style="background: rgba(56,189,248,0.2); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4); border-radius: 9999px; padding: 2px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">🎯 Demo Mode Active</span>
+    <span>Each browser session is strictly isolated with up to 10 records per entity.</span>
+  </div>
+  <div style="font-size:11.5px;color:#94a3b8;">
+    Quota: <span style="color:#34d399;font-weight:700;">10 Max Per Entity</span>
+  </div>
+</div>
+
+@if(session('demo_limit_error'))
+{{-- Limit error toast --}}
+<div id="demoLimitToast" style="position: fixed; top: 24px; right: 24px; z-index: 99999; max-width: 420px; background: rgba(8, 14, 30, 0.95); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 12px; padding: 16px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 20px rgba(248, 113, 113, 0.2); backdrop-filter: blur(16px); color: #f8fafc; display: flex; align-items: flex-start; gap: 14px;">
+  <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(248, 113, 113, 0.15); border: 1px solid rgba(248, 113, 113, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #f87171;">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+    </svg>
+  </div>
+  <div style="flex: 1;">
+    <div style="font-weight: 700; font-size: 14px; color: #f87171; margin-bottom: 3px;">Demo Limit Reached</div>
+    <div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.4;">{{ session('demo_limit_error') }}</div>
+  </div>
+  <button onclick="document.getElementById('demoLimitToast').remove()" style="background: none; border: none; color: #64748b; cursor: pointer; padding: 2px; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+</div>
+@endif
+@endif
+
 <div style="display:flex;height:100vh;overflow:hidden;position:relative;">
 
 {{-- ════════════════ SIDEBAR ════════════════ --}}

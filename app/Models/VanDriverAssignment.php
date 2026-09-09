@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasDemoToken;
+
 class VanDriverAssignment extends Model
 {
+    use HasDemoToken;
+
     protected $table = 'van_driver_assignments';
 
     protected $fillable = [
-        'van_id', 'driver_id', 'start_date', 'end_date',
+        'van_id', 'driver_id', 'start_date', 'end_date', 'demo_token',
     ];
 
     protected $casts = [

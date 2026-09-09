@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasDemoToken;
+
 class Trip extends Model
 {
+    use HasDemoToken;
     protected $fillable = [
         'van_id',
         'customer_id',
@@ -17,6 +20,7 @@ class Trip extends Model
         'total_amount',
         'status',
         'created_by',
+        'demo_token',
     ];
 
     protected $casts = [
@@ -48,5 +52,11 @@ class Trip extends Model
     public function scopeVoided($query)
     {
         return $query->where('status', 'voided');
+    }
+
+    /** Scope to only records belonging to this demo token. */
+    public function scopeForDemo($query, string $token)
+    {
+        return $query->where('demo_token', $token);
     }
 }

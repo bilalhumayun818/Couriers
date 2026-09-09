@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Traits\HasDemoToken;
+
 class Van extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasDemoToken;
 
     protected $fillable = [
-        'plate_number', 'make_model', 'year', 'status', 'driver_id',
+        'plate_number', 'make_model', 'year', 'status', 'driver_id', 'demo_token',
     ];
 
     protected $casts = [
@@ -44,6 +46,12 @@ class Van extends Model
     public function scopeByModel($query, string $model)
     {
         return $query->where('make_model', $model);
+    }
+
+    /** Scope to only records belonging to this demo token. */
+    public function scopeForDemo($query, string $token)
+    {
+        return $query->where('demo_token', $token);
     }
 
     // ── Helpers ──

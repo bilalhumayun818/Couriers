@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Traits\HasDemoToken;
+
 class Driver extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasDemoToken;
 
     protected $fillable = [
         'full_name', 'national_id', 'licence_number',
-        'licence_expiry_date', 'contact_number', 'emergency_contact',
+        'licence_expiry_date', 'contact_number', 'emergency_contact', 'demo_token',
     ];
 
     protected $casts = [
@@ -26,5 +28,11 @@ class Driver extends Model
     public function assignments()
     {
         return $this->hasMany(VanDriverAssignment::class);
+    }
+
+    /** Scope to only records belonging to this demo token. */
+    public function scopeForDemo($query, string $token)
+    {
+        return $query->where('demo_token', $token);
     }
 }

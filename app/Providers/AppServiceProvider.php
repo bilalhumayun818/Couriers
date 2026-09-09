@@ -32,9 +32,17 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // 3. Automatically run database migrations on desktop launch
-        if (config('nativephp.version')) {
-            Artisan::call('migrate', ['--force' => true]);
-        }
+        // 4. Register custom DemoUrlGenerator to automatically resolve route names in demo mode
+        $this->app->extend('url', function ($url, $app) {
+            $custom = new \App\Services\DemoUrlGenerator(
+                $app['router']->getRoutes(),
+                $app['request']
+            );
+            if ($app->bound('session.store')) {
+                $custom->setSessionResolver(fn () => $app['session.store']);
+            }
+            return $custom;
+        });
     }
 }
 

@@ -4,11 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasDemoToken;
+
 class WagePayout extends Model
 {
+    use HasDemoToken;
+
     protected $fillable = [
         'driver_id', 'pay_period', 'gross_wage',
-        'total_advances', 'net_wage', 'is_negative', 'confirmed',
+        'total_advances', 'net_wage', 'is_negative', 'confirmed', 'demo_token',
     ];
 
     protected $casts = [
