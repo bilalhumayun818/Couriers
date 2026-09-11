@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
                 $app['router']->getRoutes(),
                 $app['request']
             );
+            $custom->forceRootUrl(config('app.url'));
             if ($app->bound('session.store')) {
                 $custom->setSessionResolver(fn () => $app['session.store']);
             }

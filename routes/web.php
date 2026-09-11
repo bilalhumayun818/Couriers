@@ -17,8 +17,7 @@ use App\Http\Controllers\Operations\WageController;
 
 // Demo routes — generic client presentation
 // Route::get('/', fn() => redirect('/dashboard'));
-Route::get('/', fn() => redirect('/courier/dashboard'));
-Route::prefix('courier')->group(function () {
+Route::get('/', fn() => redirect()->route('dashboard'));
 Route::get('/dashboard',         fn() => view('demo.dashboard'))->name('dashboard');
 Route::get('/fleet/vans',                  [VanController::class, 'index'])->name('fleet.vans');
 Route::post('/fleet/vans',                 [VanController::class, 'store'])->name('fleet.vans.store');
@@ -67,11 +66,11 @@ Route::get('/ledger/profit-loss', [ProfitLossController::class, 'index'])->name(
 Route::get('/ledger/balance-sheet',  fn() => view('demo.ledger.balance-sheet'))->name('ledger.balance-sheet');
 Route::get('/settings/users',        fn() => view('demo.settings.users'))->name('settings.users');
 Route::get('/settings/tenant',       fn() => view('demo.settings.tenant'))->name('settings.tenant');
-});
+
 
 // ── Isolated Demo Mode Group ──────────────────────────────────────────
 Route::prefix('demo/courier')->name('demo.')->middleware(['demo.mode', 'demo.limit'])->group(function () {
-    Route::get('/', fn() => redirect('/demo/courier/dashboard'));
+    Route::get('/', fn() => redirect()->route('demo.dashboard'));
     Route::get('/dashboard',         fn() => view('demo.dashboard'))->name('dashboard');
 
     Route::get('/fleet/vans',                  [VanController::class, 'index'])->name('fleet.vans');
