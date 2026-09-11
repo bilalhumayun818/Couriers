@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 // Demo routes — generic client presentation
-Route::get('/', fn() => redirect('/dashboard'));
+// Route::get('/', fn() => redirect('/dashboard'));
+Route::get('/', fn() => redirect('/courier/dashboard'));
 Route::get('/dashboard',         fn() => view('demo.dashboard'))->name('dashboard');
 use App\Http\Controllers\Fleet\VanController;
 
