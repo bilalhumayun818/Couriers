@@ -237,7 +237,7 @@ function modal(id, vanId, data) {
 }
 
 function openCostModal(data) {
-  document.getElementById('costForm').action = '/fleet/vans/' + data.id + '/fixed-costs';
+  document.getElementById('costForm').action = '/courier/fleet/vans/' + data.id + '/fixed-costs';
   document.getElementById('modalVanLabel').textContent = data.plate + ' — ' + data.model;
   document.getElementById('f_lease').value     = data.lease     || '';
   document.getElementById('f_road_tax').value  = data.road_tax  || '';

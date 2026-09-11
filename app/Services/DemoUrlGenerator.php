@@ -21,18 +21,6 @@ class DemoUrlGenerator extends BaseUrlGenerator
 
         $url = parent::route($name, $parameters, $absolute);
 
-        if (request() && request()->is('courier*')) {
-            if ($absolute) {
-                $url = str_replace(
-                    'http://187.127.204.45/',
-                    'http://187.127.204.45/courier/',
-                    $url
-                );
-            } else {
-                $url = '/courier' . $url;
-            }
-        }
-
         return $url;
     }
 }
