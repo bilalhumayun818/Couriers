@@ -30,7 +30,11 @@ class AppServiceProvider extends ServiceProvider
             File::ensureDirectoryExists(dirname($dbPath));
             File::put($dbPath, '');
         }
-
+        if (request()->is('courier*')) {
+    \Illuminate\Support\Facades\URL::forceRootUrl(
+        config('app.url')
+    );
+}
         // 3. Automatically run database migrations on desktop launch
         // 4. Register custom DemoUrlGenerator to automatically resolve route names in demo mode
         $this->app->extend('url', function ($url, $app) {
