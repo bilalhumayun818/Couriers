@@ -12,7 +12,7 @@ class DemoUrlGenerator extends BaseUrlGenerator
             is_string($name) &&
             !str_starts_with($name, 'demo.') &&
             request() &&
-            request()->is('demo*')
+            request()->is('courier/demo*')
         ) {
             if ($this->routes->getByName('demo.' . $name)) {
                 $name = 'demo.' . $name;
