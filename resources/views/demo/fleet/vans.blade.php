@@ -42,7 +42,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
   @foreach($models as $m)
   @php $slug = rawurlencode($m['model']); @endphp
-  <a href="/fleet/vans/model/{{ $slug }}"
+  <a href="{{ url('/courier/fleet/vans/model/'.$slug) }}"
      style="text-decoration:none;"
      class="card p-5 flex flex-col gap-4 cursor-pointer group" style="transition:all .2s;">
 
