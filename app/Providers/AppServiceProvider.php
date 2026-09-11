@@ -37,7 +37,13 @@ class AppServiceProvider extends ServiceProvider
                 $app['router']->getRoutes(),
                 $app['request']
             );
-            $custom->forceRootUrl(config('app.url'));
+            $appUrl = config('app.url');
+            $urlParts = parse_url($appUrl);
+            $rootUrl = isset($urlParts['scheme'], $urlParts['host'])
+                ? $urlParts['scheme'] . '://' . $urlParts['host']
+                    . (isset($urlParts['port']) ? ':' . $urlParts['port'] : '')
+                : $appUrl;
+            $custom->forceRootUrl($rootUrl);
             if ($app->bound('session.store')) {
                 $custom->setSessionResolver(fn () => $app['session.store']);
             }
