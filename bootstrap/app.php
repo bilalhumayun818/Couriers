@@ -12,6 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(prepend: [\App\Http\Middleware\PersistentSession::class]);
+        $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->redirectUsersTo(fn () => route('dashboard'));
         $middleware->alias([
             'demo.mode'  => \App\Http\Middleware\DemoMode::class,
             'demo.limit' => \App\Http\Middleware\DemoLimit::class,

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CRM\CustomerController;
 use App\Http\Controllers\CRM\DriverController;
 use App\Http\Controllers\CRM\InvestorController;
@@ -15,9 +16,14 @@ use App\Http\Controllers\Operations\ExpenseController;
 use App\Http\Controllers\Operations\TripController;
 use App\Http\Controllers\Operations\WageController;
 
-// Demo routes — generic client presentation
-// Route::get('/', fn() => redirect('/dashboard'));
-Route::get('/', fn() => redirect('/courier/dashboard'));
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'create'])->name('login');
+    Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+});
+
+Route::middleware('auth')->group(function () {
+Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+Route::get('/', fn() => redirect()->route('dashboard'));
 Route::get('/dashboard',         fn() => view('demo.dashboard'))->name('dashboard');
 Route::get('/fleet/vans',                  [VanController::class, 'index'])->name('fleet.vans');
 Route::post('/fleet/vans',                 [VanController::class, 'store'])->name('fleet.vans.store');
@@ -66,11 +72,12 @@ Route::get('/ledger/profit-loss', [ProfitLossController::class, 'index'])->name(
 Route::get('/ledger/balance-sheet',  fn() => view('demo.ledger.balance-sheet'))->name('ledger.balance-sheet');
 Route::get('/settings/users',        fn() => view('demo.settings.users'))->name('settings.users');
 Route::get('/settings/tenant',       fn() => view('demo.settings.tenant'))->name('settings.tenant');
+});
 
 
 // ── Isolated Demo Mode Group ──────────────────────────────────────────
 Route::prefix('demo')->name('demo.')->middleware(['demo.mode', 'demo.limit'])->group(function () {
-    Route::get('/', fn() => redirect('/courier/demo/dashboard'));
+    Route::get('/', fn() => redirect()->route('demo.dashboard'));
     Route::get('/dashboard',         fn() => view('demo.dashboard'))->name('dashboard');
 
     Route::get('/fleet/vans',                  [VanController::class, 'index'])->name('fleet.vans');

@@ -21,17 +21,20 @@ class DemoUrlGenerator extends BaseUrlGenerator
 
         $url = parent::route($name, $parameters, $absolute);
 
-        if (!str_contains($url, '/courier')) {
+        $basePath = '/' . trim(parse_url(config('app.url'), PHP_URL_PATH) ?? '', '/');
+        $urlPath = parse_url($url, PHP_URL_PATH) ?? '';
+
+        if ($basePath !== '/' && $urlPath !== $basePath && !str_starts_with($urlPath, $basePath . '/')) {
             if ($absolute) {
                 $parts = parse_url($url);
-                $path = '/courier/' . ltrim($parts['path'] ?? '', '/');
+                $path = $basePath . '/' . ltrim($parts['path'] ?? '', '/');
                 $url = ($parts['scheme'] ?? '') . '://' . ($parts['host'] ?? '')
                     . (isset($parts['port']) ? ':' . $parts['port'] : '')
                     . $path
                     . (isset($parts['query']) ? '?' . $parts['query'] : '')
                     . (isset($parts['fragment']) ? '#' . $parts['fragment'] : '');
             } else {
-                $url = '/courier/' . ltrim($url, '/');
+                $url = $basePath . '/' . ltrim($url, '/');
             }
         }
 

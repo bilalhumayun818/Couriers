@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(fn () => $this->call([
+            AdminUserSeeder::class,
             FleetSeeder::class,
             TripSeeder::class,
             ExpenseSeeder::class,
