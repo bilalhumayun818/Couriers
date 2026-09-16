@@ -50,24 +50,24 @@
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Revenue</p>
-    <p class="text-2xl font-bold mt-1 text-emerald-400">${{ number_format($grandRevenue,2) }}</p>
+    <p class="text-2xl font-bold mt-1 text-emerald-400">{{ $currencySymbol }}{{ number_format($grandRevenue,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">All active trips</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Variable Expenses</p>
-    <p class="text-2xl font-bold mt-1 text-red-400">${{ number_format($grandVariable,2) }}</p>
+    <p class="text-2xl font-bold mt-1 text-red-400">{{ $currencySymbol }}{{ number_format($grandVariable,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">Fuel, tolls, parts, repairs</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Fixed Costs (Prorated)</p>
-    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($grandFixed,2) }}</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">{{ $currencySymbol }}{{ number_format($grandFixed,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">{{ $daysInRange }}-day proration</p>
   </div>
   <div class="card p-4">
     @php $margin = $grandRevenue > 0 ? round(($grandNet / $grandRevenue) * 100, 1) : 0; @endphp
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Net Profit / Loss</p>
     <p class="text-2xl font-bold mt-1 {{ $grandNet >= 0 ? 'text-emerald-400' : 'text-red-400' }}">
-      {{ $grandNet < 0 ? '−' : '' }}${{ number_format(abs($grandNet),2) }}
+      {{ $grandNet < 0 ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($grandNet),2) }}
     </p>
     <p class="text-xs text-slate-400 mt-0.5">Margin: {{ $margin }}%</p>
   </div>
@@ -100,25 +100,25 @@
               <span class="text-xs text-slate-400 ml-1.5">{{ $row['van']->make_model }}</span>
             </td>
             <td class="px-5 py-3.5 text-right font-semibold text-sky-400">
-              ${{ number_format($row['revenue'],2) }}
+              {{ $currencySymbol }}{{ number_format($row['revenue'],2) }}
             </td>
             <td class="px-5 py-3.5 text-right text-slate-400">{{ $row['trip_count'] }}</td>
-            <td class="px-5 py-3.5 text-right text-red-400">${{ number_format($row['variable_expenses'],2) }}</td>
+            <td class="px-5 py-3.5 text-right text-red-400">{{ $currencySymbol }}{{ number_format($row['variable_expenses'],2) }}</td>
             @if(!$category)
               <td class="px-5 py-3.5 text-right text-slate-300 text-xs">
-                <div>${{ number_format($row['fixed_total'],2) }}</div>
+                <div>{{ $currencySymbol }}{{ number_format($row['fixed_total'],2) }}</div>
                 <div class="text-slate-400 mt-0.5">
-                  L:${{ number_format($row['fixed_lease'],0) }}
-                  T:${{ number_format($row['fixed_road_tax'],0) }}
-                  I:${{ number_format($row['fixed_insurance'],0) }}
+                  L:{{ $currencySymbol }}{{ number_format($row['fixed_lease'],0) }}
+                  T:{{ $currencySymbol }}{{ number_format($row['fixed_road_tax'],0) }}
+                  I:{{ $currencySymbol }}{{ number_format($row['fixed_insurance'],0) }}
                 </div>
               </td>
             @endif
             <td class="px-5 py-3.5 text-right font-semibold text-slate-200">
-              ${{ number_format($row['total_expenses'],2) }}
+              {{ $currencySymbol }}{{ number_format($row['total_expenses'],2) }}
             </td>
             <td class="px-5 py-3.5 text-right font-bold {{ $row['is_profitable'] ? 'text-emerald-400' : 'text-red-400' }}">
-              {{ $row['net_profit'] < 0 ? '−' : '' }}${{ number_format(abs($row['net_profit']),2) }}
+              {{ $row['net_profit'] < 0 ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($row['net_profit']),2) }}
             </td>
             <td class="px-5 py-3.5 text-center">
               @if($row['is_profitable'])
@@ -150,24 +150,24 @@
             TOTALS — {{ $from->format('d M') }} to {{ $to->format('d M Y') }}
           </td>
           <td class="px-5 py-3.5 text-right font-bold text-sky-400">
-            ${{ number_format($grandRevenue,2) }}
+            {{ $currencySymbol }}{{ number_format($grandRevenue,2) }}
           </td>
           <td class="px-5 py-3.5 text-right font-bold text-slate-300">
             {{ collect($rows)->sum('trip_count') }}
           </td>
           <td class="px-5 py-3.5 text-right font-bold text-sky-400">
-            ${{ number_format($grandVariable,2) }}
+            {{ $currencySymbol }}{{ number_format($grandVariable,2) }}
           </td>
           @if(!$category)
             <td class="px-5 py-3.5 text-right font-bold text-slate-300">
-              ${{ number_format($grandFixed,2) }}
+              {{ $currencySymbol }}{{ number_format($grandFixed,2) }}
             </td>
           @endif
           <td class="px-5 py-3.5 text-right font-bold text-slate-100">
-            ${{ number_format($grandVariable + $grandFixed,2) }}
+            {{ $currencySymbol }}{{ number_format($grandVariable + $grandFixed,2) }}
           </td>
           <td class="px-5 py-3.5 text-right font-extrabold text-base {{ $grandNet >= 0 ? 'text-emerald-400' : 'text-red-400' }}">
-            {{ $grandNet < 0 ? '−' : '' }}${{ number_format(abs($grandNet),2) }}
+            {{ $grandNet < 0 ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($grandNet),2) }}
           </td>
           <td colspan="2"></td>
         </tr>

@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Illuminate\Support\Facades\View::composer(['demo.*', 'settings.*'], function ($view) {
+            $settings = \App\Models\TenantSetting::current();
+            $view->with('tenantSettings', $settings)->with('currencySymbol', $settings->currency_symbol);
+        });
         // 1. Resolve NativePHP or default SQLite database file path
         $dbPath = config('database.connections.nativephp.database') 
                   ?? config('database.connections.sqlite.database');

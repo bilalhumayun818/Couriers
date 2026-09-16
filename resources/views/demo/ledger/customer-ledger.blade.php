@@ -38,7 +38,7 @@
 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Invoiced</p>
-    <p class="text-2xl font-bold text-emerald-400 mt-1">${{ number_format($grandTotal,2) }}</p>
+    <p class="text-2xl font-bold text-emerald-400 mt-1">{{ $currencySymbol }}{{ number_format($grandTotal,2) }}</p>
     <p class="text-xs text-slate-500 mt-0.5">{{ $grandTrips }} active trips</p>
   </div>
   <div class="card p-4">
@@ -84,14 +84,14 @@
           <td class="px-5 py-3.5 text-slate-300 text-xs">{{ $c->contact_name ?? '—' }}</td>
           <td class="px-5 py-3.5 text-right text-slate-300">{{ $row['total_trips'] }}</td>
           <td class="px-5 py-3.5 text-right">
-            <div class="font-semibold text-slate-100">${{ number_format($row['total_invoiced'],2) }}</div>
+            <div class="font-semibold text-slate-100">{{ $currencySymbol }}{{ number_format($row['total_invoiced'],2) }}</div>
             @if($c->credit_limit > 0)
             <div class="mt-1" style="height:4px;background:rgba(255,255,255,0.08);border-radius:4px;width:80px;margin-left:auto;">
               <div style="height:100%;width:{{ $utilizationPct }}%;background:{{ $utilizationPct>80?'#38bdf8':($utilizationPct>50?'#7dd3fc':'#38bdf8') }};border-radius:4px;"></div>
             </div>
             @endif
           </td>
-          <td class="px-5 py-3.5 text-right text-slate-400 text-xs">${{ number_format($c->credit_limit,2) }}</td>
+          <td class="px-5 py-3.5 text-right text-slate-400 text-xs">{{ $currencySymbol }}{{ number_format($c->credit_limit,2) }}</td>
           <td class="px-5 py-3.5 text-xs text-slate-400">
             {{ $row['last_trip_date'] ? $row['last_trip_date']->format('d M Y') : '—' }}
           </td>
@@ -115,7 +115,7 @@
         <tr>
           <td colspan="2" class="px-5 py-3 font-bold text-slate-300 text-xs">TOTALS</td>
           <td class="px-5 py-3 text-right font-bold text-slate-200">{{ $grandTrips }}</td>
-          <td class="px-5 py-3 text-right font-bold text-emerald-400">${{ number_format($grandTotal,2) }}</td>
+          <td class="px-5 py-3 text-right font-bold text-emerald-400">{{ $currencySymbol }}{{ number_format($grandTotal,2) }}</td>
           <td colspan="3"></td>
         </tr>
       </tfoot>

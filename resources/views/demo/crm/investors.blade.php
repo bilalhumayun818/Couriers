@@ -20,22 +20,22 @@
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Capital</p>
-    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($totals['capital'] + $totals['injections'], 2) }}</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">{{ $currencySymbol }}{{ number_format($totals['capital'] + $totals['injections'], 2) }}</p>
     <p class="text-xs text-slate-500 mt-0.5">Initial + injections</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Injections</p>
-    <p class="text-2xl font-bold text-sky-400 mt-1">${{ number_format($totals['injections'], 2) }}</p>
+    <p class="text-2xl font-bold text-sky-400 mt-1">{{ $currencySymbol }}{{ number_format($totals['injections'], 2) }}</p>
     <p class="text-xs text-slate-500 mt-0.5">Additional capital</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Distributions</p>
-    <p class="text-2xl font-bold text-red-400 mt-1">${{ number_format($totals['distributions'], 2) }}</p>
+    <p class="text-2xl font-bold text-red-400 mt-1">{{ $currencySymbol }}{{ number_format($totals['distributions'], 2) }}</p>
     <p class="text-xs text-slate-500 mt-0.5">Profit payouts</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Retained Equity</p>
-    <p class="text-2xl font-bold text-emerald-400 mt-1">${{ number_format($totals['retained'], 2) }}</p>
+    <p class="text-2xl font-bold text-emerald-400 mt-1">{{ $currencySymbol }}{{ number_format($totals['retained'], 2) }}</p>
     <p class="text-xs text-slate-500 mt-0.5">Net balance</p>
   </div>
 </div>
@@ -81,15 +81,15 @@
       <div class="flex gap-4 text-sm">
         <div class="text-center">
           <p class="text-xs text-slate-400">Capital</p>
-          <p class="font-bold text-slate-200">${{ number_format($totalCapital,2) }}</p>
+          <p class="font-bold text-slate-200">{{ $currencySymbol }}{{ number_format($totalCapital,2) }}</p>
         </div>
         <div class="text-center">
           <p class="text-xs text-slate-400">Distributed</p>
-          <p class="font-bold text-red-400">−${{ number_format($inv->total_distributions,2) }}</p>
+          <p class="font-bold text-red-400">−{{ $currencySymbol }}{{ number_format($inv->total_distributions,2) }}</p>
         </div>
         <div class="text-center">
           <p class="text-xs text-slate-400">Retained</p>
-          <p class="font-bold text-emerald-400">${{ number_format($retained,2) }}</p>
+          <p class="font-bold text-emerald-400">{{ $currencySymbol }}{{ number_format($retained,2) }}</p>
         </div>
       </div>
 
@@ -131,9 +131,9 @@
           <tr style="background:rgba(255,255,255,0.02);">
             <td class="px-5 py-2 text-xs text-slate-400">{{ $inv->created_at->format('d M Y') }}</td>
             <td class="px-5 py-2 text-xs text-slate-400 italic">Opening — Initial Capital</td>
-            <td class="px-5 py-2 text-right text-xs font-semibold text-sky-400">${{ number_format($inv->initial_capital,2) }}</td>
+            <td class="px-5 py-2 text-right text-xs font-semibold text-sky-400">{{ $currencySymbol }}{{ number_format($inv->initial_capital,2) }}</td>
             <td class="px-5 py-2 text-right text-xs text-slate-600">—</td>
-            <td class="px-5 py-2 text-right text-xs font-bold text-slate-200">${{ number_format($inv->initial_capital,2) }}</td>
+            <td class="px-5 py-2 text-right text-xs font-bold text-slate-200">{{ $currencySymbol }}{{ number_format($inv->initial_capital,2) }}</td>
           </tr>
           @foreach($ledger as $row)
           <tr class="table-row">
@@ -145,7 +145,7 @@
             <td class="px-5 py-2.5 text-right text-xs {{ $row['tx']->type==='distribution'?'font-semibold text-sky-400':'text-slate-600' }}">
               {{ $row['tx']->type==='distribution' ? '$'.number_format($row['tx']->amount,2) : '—' }}
             </td>
-            <td class="px-5 py-2.5 text-right text-xs font-bold text-slate-200">${{ number_format($row['balance'],2) }}</td>
+            <td class="px-5 py-2.5 text-right text-xs font-bold text-slate-200">{{ $currencySymbol }}{{ number_format($row['balance'],2) }}</td>
           </tr>
           @endforeach
         </tbody>
@@ -202,7 +202,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Initial Capital ($)</label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Initial Capital ({{ $currencySymbol }})</label>
             <input type="number" name="initial_capital" id="if_capital" min="0" step="0.01" placeholder="0.00" class="w-full">
           </div>
           <div>
@@ -247,7 +247,7 @@
           <input type="date" name="transaction_date" required class="w-full" value="{{ date('Y-m-d') }}">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-sky-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ({{ $currencySymbol }}) <span class="text-sky-400">*</span></label>
           <input type="number" name="amount" required min="0.01" step="0.01" placeholder="0.00" class="w-full" id="tx_amount">
           <p id="tx_balance_hint" class="text-xs text-slate-400 mt-1 hidden"></p>
         </div>

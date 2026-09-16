@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class TripController extends Controller
 {
-    private const TAX_RATE = 0.08; // 8% — replace with tenant setting when available
 
     /**
      * List trips with filters and pagination.
@@ -71,7 +70,7 @@ class TripController extends Controller
         ]);
 
         $fare  = (float) $data['fare_amount'];
-        $tax   = round($fare * self::TAX_RATE, 2);
+        $tax   = round($fare * (float) \App\Models\TenantSetting::current()->tax_rate / 100, 2);
         $total = round($fare + $tax, 2);
 
         Trip::create([

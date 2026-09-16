@@ -51,11 +51,11 @@
     <div class="pt-4 space-y-2" style="border-top:1px solid rgba(255,255,255,0.07);">
       <div class="flex justify-between text-sm">
         <span class="text-slate-400">Credit Limit</span>
-        <span class="font-semibold text-slate-200">${{ number_format($customer->credit_limit, 2) }}</span>
+        <span class="font-semibold text-slate-200">{{ $currencySymbol }}{{ number_format($customer->credit_limit, 2) }}</span>
       </div>
       <div class="flex justify-between text-sm">
         <span class="text-slate-400">Total Invoiced</span>
-        <span class="font-semibold text-slate-200">${{ number_format($totalInvoiced, 2) }}</span>
+        <span class="font-semibold text-slate-200">{{ $currencySymbol }}{{ number_format($totalInvoiced, 2) }}</span>
       </div>
       <div class="flex justify-between text-sm">
         <span class="text-slate-400">Total Trips</span>
@@ -99,7 +99,7 @@
               <span class="font-mono text-xs px-2 py-0.5 rounded" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">{{ $trip->van->plate_number ?? '—' }}</span>
             </td>
             <td class="px-4 py-3 text-xs text-slate-400">{{ $trip->origin }} → {{ $trip->destination }}</td>
-            <td class="px-4 py-3 text-right font-semibold text-slate-200">${{ number_format($trip->total_amount,2) }}</td>
+            <td class="px-4 py-3 text-right font-semibold text-slate-200">{{ $currencySymbol }}{{ number_format($trip->total_amount,2) }}</td>
             <td class="px-4 py-3 text-center">
               @if($trip->status==='active')
                 <span class="badge-blue">Active</span>

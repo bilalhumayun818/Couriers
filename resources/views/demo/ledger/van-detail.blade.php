@@ -34,23 +34,23 @@
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Revenue</p>
-    <p class="text-2xl font-bold mt-1 text-emerald-400">${{ number_format($revenue,2) }}</p>
+    <p class="text-2xl font-bold mt-1 text-emerald-400">{{ $currencySymbol }}{{ number_format($revenue,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">{{ $trips->count() }} trips</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Variable Expenses</p>
-    <p class="text-2xl font-bold mt-1 text-red-400">${{ number_format($variableTotal,2) }}</p>
+    <p class="text-2xl font-bold mt-1 text-red-400">{{ $currencySymbol }}{{ number_format($variableTotal,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">{{ $expenses->count() }} records</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Fixed (Prorated)</p>
-    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($fixedTotal,2) }}</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">{{ $currencySymbol }}{{ number_format($fixedTotal,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">{{ $daysInRange }}-day basis</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Net Profit / Loss</p>
     <p class="text-2xl font-bold mt-1 {{ $netProfit >= 0 ? 'text-emerald-400' : 'text-red-400' }}">
-      {{ $netProfit < 0 ? '−' : '' }}${{ number_format(abs($netProfit),2) }}
+      {{ $netProfit < 0 ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($netProfit),2) }}
     </p>
     @php $margin = $revenue > 0 ? round(($netProfit / $revenue) * 100, 1) : 0; @endphp
     <p class="text-xs text-slate-400 mt-0.5">Margin: {{ $margin }}%</p>
@@ -94,7 +94,7 @@
       <div class="mb-3">
         <div class="flex justify-between text-xs mb-1">
           <span class="font-medium text-slate-300">{{ $cat }}</span>
-          <span class="font-semibold text-slate-100">${{ number_format($amt,2) }}</span>
+          <span class="font-semibold text-slate-100">{{ $currencySymbol }}{{ number_format($amt,2) }}</span>
         </div>
         @if($variableTotal > 0)
         <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
@@ -119,14 +119,14 @@
       <div class="flex justify-between text-sm mb-2">
         <div>
           <span class="text-slate-300">{{ $label }}</span>
-          <span class="text-xs text-slate-400 ml-1">(${{''.number_format($full,0)}}{{ $unit }})</span>
+          <span class="text-xs text-slate-400 ml-1">({{ $currencySymbol }}{{''.number_format($full,0)}}{{ $unit }})</span>
         </div>
-        <span class="font-semibold text-slate-200">${{ number_format($prorated,2) }}</span>
+        <span class="font-semibold text-slate-200">{{ $currencySymbol }}{{ number_format($prorated,2) }}</span>
       </div>
       @endforeach
       <div class="flex justify-between text-sm font-bold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
         <span class="text-slate-200">Total Fixed</span>
-        <span class="text-slate-100">${{ number_format($fixedTotal,2) }}</span>
+        <span class="text-slate-100">{{ $currencySymbol }}{{ number_format($fixedTotal,2) }}</span>
       </div>
     </div>
   </div>
@@ -138,7 +138,7 @@
     <div class="card overflow-hidden">
       <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.07);">
         <h3 class="font-semibold text-slate-100 text-sm">Trip Revenue</h3>
-        <p class="text-xs text-slate-400 mt-0.5">{{ $trips->count() }} active trips — ${{ number_format($revenue,2) }} total</p>
+        <p class="text-xs text-slate-400 mt-0.5">{{ $trips->count() }} active trips — {{ $currencySymbol }}{{ number_format($revenue,2) }} total</p>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
@@ -156,7 +156,7 @@
               <td class="px-4 py-3 text-xs text-slate-400">{{ $trip->trip_date->format('d M Y') }}</td>
               <td class="px-4 py-3 text-slate-300 text-xs">{{ $trip->customer?->company_name ?? '—' }}</td>
               <td class="px-4 py-3 text-xs text-slate-400">{{ $trip->origin }} → {{ $trip->destination }}</td>
-              <td class="px-4 py-3 text-right font-semibold text-emerald-400">${{ number_format($trip->fare_amount,2) }}</td>
+              <td class="px-4 py-3 text-right font-semibold text-emerald-400">{{ $currencySymbol }}{{ number_format($trip->fare_amount,2) }}</td>
             </tr>
             @empty
             <tr><td colspan="5" class="px-4 py-8 text-center text-slate-400 text-xs">No trips in this period.</td></tr>
@@ -170,7 +170,7 @@
     <div class="card overflow-hidden">
       <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.07);">
         <h3 class="font-semibold text-slate-100 text-sm">Variable Expenses</h3>
-        <p class="text-xs text-slate-400 mt-0.5">{{ $expenses->count() }} records — ${{ number_format($variableTotal,2) }} total</p>
+        <p class="text-xs text-slate-400 mt-0.5">{{ $expenses->count() }} records — {{ $currencySymbol }}{{ number_format($variableTotal,2) }} total</p>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
@@ -197,7 +197,7 @@
                 <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="{{ $catStyle }}">{{ $exp->category }}</span>
               </td>
               <td class="px-4 py-3 text-xs text-slate-400">{{ $exp->description ?? '—' }}</td>
-              <td class="px-4 py-3 text-right font-semibold text-red-400">${{ number_format($exp->amount,2) }}</td>
+              <td class="px-4 py-3 text-right font-semibold text-red-400">{{ $currencySymbol }}{{ number_format($exp->amount,2) }}</td>
             </tr>
             @empty
             <tr><td colspan="4" class="px-4 py-8 text-center text-slate-400 text-xs">No expenses in this period.</td></tr>
@@ -207,7 +207,7 @@
           <tfoot style="background:rgba(15,23,42,0.7);border-top:1px solid rgba(255,255,255,0.12);">
             <tr>
               <td colspan="3" class="px-4 py-3 font-bold text-slate-200 text-xs">Total Variable Expenses</td>
-              <td class="px-4 py-3 text-right font-bold text-red-400">${{ number_format($variableTotal,2) }}</td>
+              <td class="px-4 py-3 text-right font-bold text-red-400">{{ $currencySymbol }}{{ number_format($variableTotal,2) }}</td>
             </tr>
           </tfoot>
           @endif
@@ -219,13 +219,13 @@
     <div class="card p-5">
       <h3 class="font-semibold text-slate-100 text-sm mb-3">P&L Summary — {{ $from->format('d M') }} to {{ $to->format('d M Y') }}</h3>
       <div class="space-y-2">
-        <div class="flex justify-between text-sm"><span class="text-slate-400">Revenue</span><span class="font-semibold text-emerald-400">${{ number_format($revenue,2) }}</span></div>
-        <div class="flex justify-between text-sm"><span class="text-slate-400">Variable Expenses</span><span class="font-semibold text-red-400">−${{ number_format($variableTotal,2) }}</span></div>
-        <div class="flex justify-between text-sm"><span class="text-slate-400">Fixed Costs (Prorated)</span><span class="font-semibold text-slate-200">−${{ number_format($fixedTotal,2) }}</span></div>
+        <div class="flex justify-between text-sm"><span class="text-slate-400">Revenue</span><span class="font-semibold text-emerald-400">{{ $currencySymbol }}{{ number_format($revenue,2) }}</span></div>
+        <div class="flex justify-between text-sm"><span class="text-slate-400">Variable Expenses</span><span class="font-semibold text-red-400">−{{ $currencySymbol }}{{ number_format($variableTotal,2) }}</span></div>
+        <div class="flex justify-between text-sm"><span class="text-slate-400">Fixed Costs (Prorated)</span><span class="font-semibold text-slate-200">−{{ $currencySymbol }}{{ number_format($fixedTotal,2) }}</span></div>
         <div class="flex justify-between text-base font-bold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
           <span class="text-slate-100">Net {{ $netProfit >= 0 ? 'Profit' : 'Loss' }}</span>
           <span style="color:{{ $netProfit >= 0 ? '#4ade80' : '#f87171' }};">
-            {{ $netProfit < 0 ? '−' : '' }}${{ number_format(abs($netProfit),2) }}
+            {{ $netProfit < 0 ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($netProfit),2) }}
           </span>
         </div>
         <div class="flex justify-between text-xs text-slate-400 pt-1">

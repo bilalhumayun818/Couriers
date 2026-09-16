@@ -70,8 +70,10 @@ Route::get('/ledger/customer-ledger/{customer}',       [CustomerLedgerController
 Route::get('/ledger/trial-balance', [TrialBalanceController::class, 'index'])->name('ledger.trial-balance');
 Route::get('/ledger/profit-loss', [ProfitLossController::class, 'index'])->name('ledger.profit-loss');
 Route::get('/ledger/balance-sheet',  fn() => view('demo.ledger.balance-sheet'))->name('ledger.balance-sheet');
-Route::get('/settings/users',        fn() => view('demo.settings.users'))->name('settings.users');
-Route::get('/settings/tenant',       fn() => view('demo.settings.tenant'))->name('settings.tenant');
+Route::get('/settings/users', [\App\Http\Controllers\Settings\UserController::class, 'index'])->name('settings.users');
+Route::post('/settings/users', [\App\Http\Controllers\Settings\UserController::class, 'store'])->name('settings.users.store');
+Route::get('/settings/tenant', [\App\Http\Controllers\Settings\TenantController::class, 'edit'])->name('settings.tenant');
+Route::put('/settings/tenant', [\App\Http\Controllers\Settings\TenantController::class, 'update'])->name('settings.tenant.update');
 });
 
 

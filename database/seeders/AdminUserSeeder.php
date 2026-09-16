@@ -15,6 +15,7 @@ class AdminUserSeeder extends Seeder
 
         User::firstOrCreate(['email' => 'admin@gmail.com'], [
             'name' => 'Administrator',
+            'role' => 'Admin',
             'password' => '12345678',
         ]);
     }

@@ -25,15 +25,15 @@
       <div>
         <div class="px-5 py-3" style="border-bottom:1px solid rgba(255,255,255,0.06);">
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Current Assets</p>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Cash / Bank</span><span class="font-medium text-slate-200">$10,860.00</span></div>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Accounts Receivable</span><span class="font-medium text-slate-200">$400.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Cash / Bank</span><span class="font-medium text-slate-200">{{ $currencySymbol }}10,860.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Accounts Receivable</span><span class="font-medium text-slate-200">{{ $currencySymbol }}400.00</span></div>
         </div>
         <div class="px-5 py-3" style="border-bottom:1px solid rgba(255,255,255,0.06);">
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Non-Current Assets</p>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Fleet Vehicles (Net)</span><span class="font-medium text-slate-200">$136,000.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Fleet Vehicles (Net)</span><span class="font-medium text-slate-200">{{ $currencySymbol }}136,000.00</span></div>
         </div>
         <div class="px-5 py-3.5" style="background:rgba(255,255,255,0.03);">
-          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Assets</span><span class="text-sky-400 text-base">$147,260.00</span></div>
+          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Assets</span><span class="text-sky-400 text-base">{{ $currencySymbol }}147,260.00</span></div>
         </div>
       </div>
     </div>
@@ -46,15 +46,15 @@
       <div>
         <div class="px-5 py-3" style="border-bottom:1px solid rgba(255,255,255,0.06);">
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Current Liabilities</p>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Accounts Payable</span><span class="font-medium text-slate-200">$2,500.00</span></div>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Accrued Expenses</span><span class="font-medium text-slate-200">$2,200.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Accounts Payable</span><span class="font-medium text-slate-200">{{ $currencySymbol }}2,500.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Accrued Expenses</span><span class="font-medium text-slate-200">{{ $currencySymbol }}2,200.00</span></div>
         </div>
         <div class="px-5 py-3" style="border-bottom:1px solid rgba(255,255,255,0.06);">
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Non-Current Liabilities</p>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Long-term Lease</span><span class="font-medium text-slate-200">$0.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Long-term Lease</span><span class="font-medium text-slate-200">{{ $currencySymbol }}0.00</span></div>
         </div>
         <div class="px-5 py-3.5" style="background:rgba(255,255,255,0.03);">
-          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Liabilities</span><span class="text-slate-300 text-base">$4,700.00</span></div>
+          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Liabilities</span><span class="text-slate-300 text-base">{{ $currencySymbol }}4,700.00</span></div>
         </div>
       </div>
     </div>
@@ -67,18 +67,18 @@
       <div>
         <div class="px-5 py-3" style="border-bottom:1px solid rgba(255,255,255,0.06);">
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Shareholders' Equity</p>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Capital Contributions</span><span class="font-medium text-slate-200">$140,000.00</span></div>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Equity Distributions</span><span class="font-medium text-sky-400">−$29,500.00</span></div>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Retained Earnings</span><span class="font-medium text-sky-400">$32,060.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Capital Contributions</span><span class="font-medium text-slate-200">{{ $currencySymbol }}140,000.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Equity Distributions</span><span class="font-medium text-sky-400">−{{ $currencySymbol }}29,500.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Retained Earnings</span><span class="font-medium text-sky-400">{{ $currencySymbol }}32,060.00</span></div>
         </div>
         <div class="px-5 py-3.5" style="background:rgba(255,255,255,0.03);">
-          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Equity</span><span class="text-sky-400 text-base">$142,560.00</span></div>
+          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Equity</span><span class="text-sky-400 text-base">{{ $currencySymbol }}142,560.00</span></div>
         </div>
       </div>
       <div class="px-5 py-4" style="background:rgba(56,189,248,0.08);border-top:1px solid rgba(56,189,248,0.2);">
         <div class="flex justify-between font-bold text-sky-300">
           <span>Liabilities + Equity</span>
-          <span class="text-base">$147,260.00</span>
+          <span class="text-base">{{ $currencySymbol }}147,260.00</span>
         </div>
         <p class="text-xs text-sky-400 mt-1 font-medium">✓ Matches Total Assets</p>
       </div>

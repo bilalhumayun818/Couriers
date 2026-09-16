@@ -71,9 +71,9 @@
           <td class="px-5 py-3.5 text-slate-300">{{ $c->contact_name ?? '—' }}</td>
           <td class="px-5 py-3.5 text-slate-400 text-xs">{{ $c->email ?? '—' }}</td>
           <td class="px-5 py-3.5 text-slate-400 text-xs">{{ $c->phone ?? '—' }}</td>
-          <td class="px-5 py-3.5 text-right text-slate-400">${{ number_format($c->credit_limit ?? 0, 2) }}</td>
+          <td class="px-5 py-3.5 text-right text-slate-400">{{ $currencySymbol }}{{ number_format($c->credit_limit ?? 0, 2) }}</td>
           <td class="px-5 py-3.5 text-right font-semibold text-slate-200">
-            ${{ number_format($c->total_invoiced ?? 0, 2) }}
+            {{ $currencySymbol }}{{ number_format($c->total_invoiced ?? 0, 2) }}
           </td>
           <td class="px-5 py-3.5 text-right text-slate-400">{{ $c->trips_count }}</td>
           <td class="px-5 py-3.5 text-right space-x-2">
@@ -157,7 +157,7 @@
             <input type="text" name="phone" id="f_phone" maxlength="30" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Credit Limit ($)</label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Credit Limit ({{ $currencySymbol }})</label>
             <input type="number" name="credit_limit" id="f_limit" min="0" step="0.01" placeholder="0.00" class="w-full">
           </div>
           <div class="col-span-2">

@@ -275,16 +275,16 @@
         <tbody>
           @php
           $trips = [
-            ['TR-2401','Ocean Majesty','James Carter','London → Manchester','£ 1,240','£ 380','Completed'],
-            ['TR-2402','Blue Horizon','Liam Hassan','Birmingham → Leeds','£ 890','£ 270','In Transit'],
-            ['TR-2403','Royal Escape','Sofia Patel','Edinburgh → Glasgow','£ 560','£ 190','Completed'],
-            ['TR-2404','Sea Pearl','David Nguyen','Bristol → Cardiff','£ 420','£ 145','Completed'],
-            ['TR-2405','Azure Dream','Amara Osei','Sheffield → Nottm','£ 710','£ 230','In Transit'],
-            ['TR-2406','Ocean Majesty','James Carter','Liverpool → Hull','£ 980','£ 310','Pending'],
-            ['TR-2407','Blue Horizon','Liam Hassan','London → Brighton','£ 370','£ 125','Completed'],
-            ['TR-2408','Royal Escape','Sofia Patel','Manchester → Leeds','£ 640','£ 200','In Transit'],
-            ['TR-2409','Sea Pearl','David Nguyen','Newcastle → Durham','£ 280','£ 95','Completed'],
-            ['TR-2410','Azure Dream','Amara Osei','London → Oxford','£ 530','£ 175','Pending'],
+            ['TR-2401','Ocean Majesty','James Carter','London → Manchester',$currencySymbol . ' 1,240',$currencySymbol . ' 380','Completed'],
+            ['TR-2402','Blue Horizon','Liam Hassan','Birmingham → Leeds',$currencySymbol . ' 890',$currencySymbol . ' 270','In Transit'],
+            ['TR-2403','Royal Escape','Sofia Patel','Edinburgh → Glasgow',$currencySymbol . ' 560',$currencySymbol . ' 190','Completed'],
+            ['TR-2404','Sea Pearl','David Nguyen','Bristol → Cardiff',$currencySymbol . ' 420',$currencySymbol . ' 145','Completed'],
+            ['TR-2405','Azure Dream','Amara Osei','Sheffield → Nottm',$currencySymbol . ' 710',$currencySymbol . ' 230','In Transit'],
+            ['TR-2406','Ocean Majesty','James Carter','Liverpool → Hull',$currencySymbol . ' 980',$currencySymbol . ' 310','Pending'],
+            ['TR-2407','Blue Horizon','Liam Hassan','London → Brighton',$currencySymbol . ' 370',$currencySymbol . ' 125','Completed'],
+            ['TR-2408','Royal Escape','Sofia Patel','Manchester → Leeds',$currencySymbol . ' 640',$currencySymbol . ' 200','In Transit'],
+            ['TR-2409','Sea Pearl','David Nguyen','Newcastle → Durham',$currencySymbol . ' 280',$currencySymbol . ' 95','Completed'],
+            ['TR-2410','Azure Dream','Amara Osei','London → Oxford',$currencySymbol . ' 530',$currencySymbol . ' 175','Pending'],
           ];
           $statusCls = ['Completed'=>'badge-blue','In Transit'=>'badge-blue','Pending'=>'badge-amber'];
           @endphp
@@ -303,9 +303,9 @@
         <tfoot>
           <tr style="background:rgba(56,189,248,0.05);border-top:1px solid rgba(56,189,248,0.2);">
             <td colspan="4" class="px-5 py-3 text-xs font-bold text-slate-300">Total (10 Trips)</td>
-            <td class="px-4 py-3 text-right text-sky-400 font-extrabold text-sm">£ 6,620</td>
-            <td class="px-4 py-3 text-right text-sky-400 font-bold text-sm">£ 2,120</td>
-            <td class="px-4 py-3 text-center text-sky-400 font-bold text-xs">Net: £ 4,500</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-extrabold text-sm">{{ $currencySymbol }} 6,620</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-bold text-sm">{{ $currencySymbol }} 2,120</td>
+            <td class="px-4 py-3 text-center text-sky-400 font-bold text-xs">Net: {{ $currencySymbol }} 4,500</td>
           </tr>
         </tfoot>
       </table>
@@ -324,12 +324,12 @@
     <div class="p-4 space-y-3">
       @php
       $customers = [
-        ['Apex Logistics Ltd','34 trips','£ 18,450',92,'bg-sky-400'],
-        ['BlueStar Retail','28 trips','£ 14,220',78,'bg-sky-400'],
-        ['NovaMed Supplies','21 trips','£ 10,800',60,'bg-sky-400'],
-        ['Horizon Foods','18 trips','£ 8,960',50,'bg-sky-400'],
-        ['Sterling Motors','15 trips','£ 7,340',41,'bg-sky-400'],
-        ['Prime Express UK','12 trips','£ 5,670',32,'bg-slate-500'],
+        ['Apex Logistics Ltd','34 trips',$currencySymbol . ' 18,450',92,'bg-sky-400'],
+        ['BlueStar Retail','28 trips',$currencySymbol . ' 14,220',78,'bg-sky-400'],
+        ['NovaMed Supplies','21 trips',$currencySymbol . ' 10,800',60,'bg-sky-400'],
+        ['Horizon Foods','18 trips',$currencySymbol . ' 8,960',50,'bg-sky-400'],
+        ['Sterling Motors','15 trips',$currencySymbol . ' 7,340',41,'bg-sky-400'],
+        ['Prime Express UK','12 trips',$currencySymbol . ' 5,670',32,'bg-slate-500'],
       ];
       @endphp
       @foreach($customers as $c)
@@ -377,14 +377,14 @@
         <tbody>
           @php
           $expenses = [
-            ['09 Sep 2026','Ocean Majesty','Fuel','£ 145'],
-            ['09 Sep 2026','Blue Horizon','Motorway Toll','£ 38'],
-            ['08 Sep 2026','Royal Escape','Maintenance','£ 310'],
-            ['08 Sep 2026','Sea Pearl','Fuel','£ 128'],
-            ['08 Sep 2026','Azure Dream','Driver Wage','£ 220'],
-            ['07 Sep 2026','Ocean Majesty','Parking','£ 24'],
-            ['07 Sep 2026','Blue Horizon','Fuel','£ 152'],
-            ['07 Sep 2026','Royal Escape','Motorway Toll','£ 45'],
+            ['09 Sep 2026','Ocean Majesty','Fuel',$currencySymbol . ' 145'],
+            ['09 Sep 2026','Blue Horizon','Motorway Toll',$currencySymbol . ' 38'],
+            ['08 Sep 2026','Royal Escape','Maintenance',$currencySymbol . ' 310'],
+            ['08 Sep 2026','Sea Pearl','Fuel',$currencySymbol . ' 128'],
+            ['08 Sep 2026','Azure Dream','Driver Wage',$currencySymbol . ' 220'],
+            ['07 Sep 2026','Ocean Majesty','Parking',$currencySymbol . ' 24'],
+            ['07 Sep 2026','Blue Horizon','Fuel',$currencySymbol . ' 152'],
+            ['07 Sep 2026','Royal Escape','Motorway Toll',$currencySymbol . ' 45'],
           ];
           @endphp
           @foreach($expenses as $e)
@@ -409,7 +409,7 @@
         <tfoot>
           <tr style="background:rgba(56,189,248,0.05);border-top:1px solid rgba(56,189,248,0.2);">
             <td colspan="3" class="px-5 py-3 text-xs font-bold text-slate-300">Total Expenses</td>
-            <td class="px-4 py-3 text-right text-sky-400 font-extrabold">£ 1,062</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-extrabold">{{ $currencySymbol }} 1,062</td>
           </tr>
         </tfoot>
       </table>
@@ -439,12 +439,12 @@
         <tbody>
           @php
           $drivers = [
-            ['James Carter','Ocean Majesty','34','£ 18,450','★★★★★','text-sky-400'],
-            ['Liam Hassan','Blue Horizon','28','£ 14,220','★★★★☆','text-sky-400'],
-            ['Sofia Patel','Royal Escape','21','£ 10,800','★★★★★','text-sky-400'],
-            ['David Nguyen','Sea Pearl','18','£ 8,960','★★★★☆','text-sky-400'],
-            ['Amara Osei','Azure Dream','15','£ 7,340','★★★☆☆','text-slate-400'],
-            ['Raj Mehta','Blue Horizon','12','£ 5,670','★★★★☆','text-sky-400'],
+            ['James Carter','Ocean Majesty','34',$currencySymbol . ' 18,450','★★★★★','text-sky-400'],
+            ['Liam Hassan','Blue Horizon','28',$currencySymbol . ' 14,220','★★★★☆','text-sky-400'],
+            ['Sofia Patel','Royal Escape','21',$currencySymbol . ' 10,800','★★★★★','text-sky-400'],
+            ['David Nguyen','Sea Pearl','18',$currencySymbol . ' 8,960','★★★★☆','text-sky-400'],
+            ['Amara Osei','Azure Dream','15',$currencySymbol . ' 7,340','★★★☆☆','text-slate-400'],
+            ['Raj Mehta','Blue Horizon','12',$currencySymbol . ' 5,670','★★★★☆','text-sky-400'],
           ];
           @endphp
           @foreach($drivers as $d)

@@ -113,7 +113,7 @@
           <th class="px-5 py-3 text-left">Customer</th>
           <th class="px-5 py-3 text-left">Route</th>
           <th class="px-5 py-3 text-right">Fare</th>
-          <th class="px-5 py-3 text-right">Tax (8%)</th>
+          <th class="px-5 py-3 text-right">{{ $tenantSettings->tax_label }}</th>
           <th class="px-5 py-3 text-right">Total</th>
           <th class="px-5 py-3 text-center">Status</th>
           <th class="px-5 py-3 text-right">Actions</th>
@@ -155,17 +155,17 @@
 
           {{-- Fare --}}
           <td class="px-5 py-3.5 text-right text-slate-300 text-xs">
-            ${{ number_format($trip->fare_amount, 2) }}
+            {{ $currencySymbol }}{{ number_format($trip->fare_amount, 2) }}
           </td>
 
           {{-- Tax --}}
           <td class="px-5 py-3.5 text-right text-slate-400 text-xs">
-            ${{ number_format($trip->tax_amount, 2) }}
+            {{ $currencySymbol }}{{ number_format($trip->tax_amount, 2) }}
           </td>
 
           {{-- Total --}}
           <td class="px-5 py-3.5 text-right font-semibold text-slate-100 text-xs">
-            ${{ number_format($trip->total_amount, 2) }}
+            {{ $currencySymbol }}{{ number_format($trip->total_amount, 2) }}
           </td>
 
           {{-- Status badge --}}
@@ -343,7 +343,7 @@
               <span id="previewFare" class="text-slate-200">0.00</span>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-bottom:4px;">
-              <span>Tax (8%)</span>
+              <span>{{ $tenantSettings->tax_label }} ({{ $tenantSettings->tax_rate }}%)</span>
               <span id="previewTax" style="color:#7dd3fc;">+ 0.00</span>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#f8fafc;border-top:1px solid rgba(255,255,255,0.08);padding-top:6px;margin-top:4px;">
@@ -374,7 +374,7 @@ function modal(id, s) {
 
 function calcTax(el) {
   const fare  = parseFloat(el.value) || 0;
-  const tax   = Math.round(fare * 0.08 * 100) / 100;
+  const tax   = Math.round(fare * {{ (float) $tenantSettings->tax_rate / 100 }} * 100) / 100;
   const total = Math.round((fare + tax) * 100) / 100;
 
   document.getElementById('previewFare').textContent  = fare.toFixed(2);

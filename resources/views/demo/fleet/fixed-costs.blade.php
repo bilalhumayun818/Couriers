@@ -101,10 +101,10 @@
       <tfoot style="background:rgba(15,23,42,0.7);border-top:1px solid rgba(255,255,255,0.12);">
         <tr>
           <td class="px-5 py-3.5 font-bold text-slate-300 text-xs" colspan="2">FLEET TOTALS / MONTH</td>
-          <td class="px-5 py-3.5 text-right font-bold text-slate-200">${{ number_format($fleetTotals['lease'], 2) }}</td>
-          <td class="px-5 py-3.5 text-right font-bold text-slate-200">${{ number_format($fleetTotals['road_tax'] * 12, 2) }}<span class="text-xs font-normal text-slate-500 ml-1">(annual)</span></td>
-          <td class="px-5 py-3.5 text-right font-bold text-slate-200">${{ number_format($fleetTotals['insurance'], 2) }}</td>
-          <td class="px-5 py-3.5 text-right font-extrabold text-sky-400 text-base">${{ number_format($fleetTotals['total'], 2) }}</td>
+          <td class="px-5 py-3.5 text-right font-bold text-slate-200">{{ $currencySymbol }}{{ number_format($fleetTotals['lease'], 2) }}</td>
+          <td class="px-5 py-3.5 text-right font-bold text-slate-200">{{ $currencySymbol }}{{ number_format($fleetTotals['road_tax'] * 12, 2) }}<span class="text-xs font-normal text-slate-500 ml-1">(annual)</span></td>
+          <td class="px-5 py-3.5 text-right font-bold text-slate-200">{{ $currencySymbol }}{{ number_format($fleetTotals['insurance'], 2) }}</td>
+          <td class="px-5 py-3.5 text-right font-extrabold text-sky-400 text-base">{{ $currencySymbol }}{{ number_format($fleetTotals['total'], 2) }}</td>
           <td colspan="2"></td>
         </tr>
       </tfoot>
@@ -163,15 +163,15 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Monthly Lease ($) <span class="text-sky-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Monthly Lease ({{ $currencySymbol }}) <span class="text-sky-400">*</span></label>
             <input type="number" name="monthly_lease" id="f_lease" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Road Tax Annual ($) <span class="text-sky-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Road Tax Annual ({{ $currencySymbol }}) <span class="text-sky-400">*</span></label>
             <input type="number" name="road_tax_annual" id="f_road_tax" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Insurance Monthly ($) <span class="text-sky-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Insurance Monthly ({{ $currencySymbol }}) <span class="text-sky-400">*</span></label>
             <input type="number" name="insurance_monthly" id="f_insurance" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
@@ -181,11 +181,11 @@
         </div>
         {{-- Live total preview --}}
         <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;">
-          <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Monthly Lease</span><span id="p_lease" class="text-slate-200">$0.00</span></div>
-          <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Road Tax (÷12)</span><span id="p_road_tax" class="text-slate-200">$0.00</span></div>
-          <div class="flex justify-between text-xs text-slate-400"><span>Insurance</span><span id="p_insurance" class="text-slate-200">$0.00</span></div>
+          <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Monthly Lease</span><span id="p_lease" class="text-slate-200">{{ $currencySymbol }}0.00</span></div>
+          <div class="flex justify-between text-xs text-slate-400 mb-1"><span>Road Tax (÷12)</span><span id="p_road_tax" class="text-slate-200">{{ $currencySymbol }}0.00</span></div>
+          <div class="flex justify-between text-xs text-slate-400"><span>Insurance</span><span id="p_insurance" class="text-slate-200">{{ $currencySymbol }}0.00</span></div>
           <div class="flex justify-between text-sm font-bold text-slate-100 border-t mt-2 pt-2" style="border-color:rgba(255,255,255,0.08);">
-            <span>Total Fixed / Month</span><span id="p_total" class="text-sky-400">$0.00</span>
+            <span>Total Fixed / Month</span><span id="p_total" class="text-sky-400">{{ $currencySymbol }}0.00</span>
           </div>
         </div>
       </div>
@@ -251,7 +251,7 @@ function closeCostModal() {
   document.getElementById('costModal').classList.add('hidden');
 }
 
-function fmt(n) { return '$' + parseFloat(n || 0).toFixed(2); }
+function fmt(n) { return @json($currencySymbol) + parseFloat(n || 0).toFixed(2); }
 
 function calcTotal() {
   const lease     = parseFloat(document.getElementById('f_lease').value)     || 0;

@@ -125,7 +125,7 @@
             <tr class="table-row">
               <td class="px-4 py-3 text-xs text-slate-400">{{ $adv->advance_date->format('d M Y') }}</td>
               <td class="px-4 py-3 text-xs text-slate-300">{{ $adv->purpose ?? '—' }}</td>
-              <td class="px-4 py-3 text-right text-red-400 font-semibold text-xs">${{ number_format($adv->amount,2) }}</td>
+              <td class="px-4 py-3 text-right text-red-400 font-semibold text-xs">{{ $currencySymbol }}{{ number_format($adv->amount,2) }}</td>
             </tr>
             @empty
             <tr><td colspan="3" class="px-4 py-8 text-center text-slate-500 text-xs">No advances.</td></tr>
@@ -151,9 +151,9 @@
               <td class="px-4 py-3 text-xs text-slate-300 font-medium">
                 {{ \Carbon\Carbon::createFromFormat('Y-m', $payout->pay_period)->format('M Y') }}
               </td>
-              <td class="px-4 py-3 text-right text-xs text-slate-400">${{ number_format($payout->gross_wage,2) }}</td>
+              <td class="px-4 py-3 text-right text-xs text-slate-400">{{ $currencySymbol }}{{ number_format($payout->gross_wage,2) }}</td>
               <td class="px-4 py-3 text-right text-xs font-bold {{ $payout->is_negative ? 'text-red-400' : 'text-emerald-400' }}">
-                {{ $payout->is_negative ? '−' : '' }}${{ number_format(abs($payout->net_wage),2) }}
+                {{ $payout->is_negative ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($payout->net_wage),2) }}
               </td>
             </tr>
             @empty

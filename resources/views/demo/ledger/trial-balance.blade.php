@@ -36,7 +36,7 @@
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
-          Unbalanced — Discrepancy: ${{ number_format(abs($totalDebit - $totalCredit),2) }}
+          Unbalanced — Discrepancy: {{ $currencySymbol }}{{ number_format(abs($totalDebit - $totalCredit),2) }}
         </span>
       @endif
     </div>
@@ -47,16 +47,16 @@
 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Debits</p>
-    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($totalDebit,2) }}</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">{{ $currencySymbol }}{{ number_format($totalDebit,2) }}</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Credits</p>
-    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($totalCredit,2) }}</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">{{ $currencySymbol }}{{ number_format($totalCredit,2) }}</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Difference</p>
     <p class="text-2xl font-bold mt-1 {{ $balanced ? 'text-sky-400' : 'text-sky-400' }}">
-      ${{ number_format(abs($totalDebit - $totalCredit),2) }}
+      {{ $currencySymbol }}{{ number_format(abs($totalDebit - $totalCredit),2) }}
     </p>
     <p class="text-xs mt-0.5 {{ $balanced ? 'text-sky-400' : 'text-sky-400' }}">
       {{ $balanced ? '✓ Balanced' : '⚠ Discrepancy' }}
@@ -75,8 +75,8 @@
         <tr class="table-header">
           <th class="px-5 py-3 text-left">Account Name</th>
           <th class="px-5 py-3 text-left">Type</th>
-          <th class="px-5 py-3 text-right">Debit ($)</th>
-          <th class="px-5 py-3 text-right">Credit ($)</th>
+          <th class="px-5 py-3 text-right">Debit ({{ $currencySymbol }})</th>
+          <th class="px-5 py-3 text-right">Credit ({{ $currencySymbol }})</th>
         </tr>
       </thead>
       <tbody>
@@ -127,10 +127,10 @@
             @endif
           </td>
           <td class="px-5 py-4 text-right font-extrabold text-lg text-slate-100 font-mono">
-            ${{ number_format($totalDebit,2) }}
+            {{ $currencySymbol }}{{ number_format($totalDebit,2) }}
           </td>
           <td class="px-5 py-4 text-right font-extrabold text-lg text-slate-100 font-mono">
-            ${{ number_format($totalCredit,2) }}
+            {{ $currencySymbol }}{{ number_format($totalCredit,2) }}
           </td>
         </tr>
       </tfoot>

@@ -59,7 +59,7 @@
       @endforeach
       <div class="flex justify-between text-sm pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.07);">
         <span class="text-slate-400 text-xs">Credit Limit</span>
-        <span class="font-semibold text-slate-200">${{ number_format($customer->credit_limit,2) }}</span>
+        <span class="font-semibold text-slate-200">{{ $currencySymbol }}{{ number_format($customer->credit_limit,2) }}</span>
       </div>
     </div>
 
@@ -76,15 +76,15 @@
       </div>
       <div class="flex justify-between text-sm">
         <span class="text-slate-400">Total Fare</span>
-        <span class="font-semibold text-slate-200">${{ number_format($totalFare,2) }}</span>
+        <span class="font-semibold text-slate-200">{{ $currencySymbol }}{{ number_format($totalFare,2) }}</span>
       </div>
       <div class="flex justify-between text-sm">
-        <span class="text-slate-400">Tax (8%)</span>
-        <span class="font-semibold text-slate-400">${{ number_format($totalTax,2) }}</span>
+        <span class="text-slate-400">{{ $tenantSettings->tax_label }}</span>
+        <span class="font-semibold text-slate-400">{{ $currencySymbol }}{{ number_format($totalTax,2) }}</span>
       </div>
       <div class="flex justify-between text-base font-bold pt-2" style="border-top:1px solid rgba(255,255,255,0.08);">
         <span class="text-slate-100">Total Invoiced</span>
-        <span class="text-emerald-400">${{ number_format($totalInvoiced,2) }}</span>
+        <span class="text-emerald-400">{{ $currencySymbol }}{{ number_format($totalInvoiced,2) }}</span>
       </div>
     </div>
 
@@ -97,7 +97,7 @@
       <div class="mb-3">
         <div class="flex justify-between text-xs mb-1">
           <span class="font-medium text-slate-200">{{ $m['label'] }}</span>
-          <span class="text-slate-400">{{ $m['count'] }} trips · ${{ number_format($m['total'],2) }}</span>
+          <span class="text-slate-400">{{ $m['count'] }} trips · {{ $currencySymbol }}{{ number_format($m['total'],2) }}</span>
         </div>
         <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
           <div style="height:100%;width:{{ $maxMonth>0?round(($m['total']/$maxMonth)*100):0 }}%;background:linear-gradient(135deg,#0284c7,#2563eb);border-radius:4px;"></div>
@@ -154,9 +154,9 @@
               </span>
             </td>
             <td class="px-4 py-3 text-xs text-slate-400">{{ $trip->origin }} → {{ $trip->destination }}</td>
-            <td class="px-4 py-3 text-right text-xs text-slate-300">${{ number_format($trip->fare_amount,2) }}</td>
-            <td class="px-4 py-3 text-right text-xs text-slate-400">${{ number_format($trip->tax_amount,2) }}</td>
-            <td class="px-4 py-3 text-right text-xs font-semibold text-slate-100">${{ number_format($trip->total_amount,2) }}</td>
+            <td class="px-4 py-3 text-right text-xs text-slate-300">{{ $currencySymbol }}{{ number_format($trip->fare_amount,2) }}</td>
+            <td class="px-4 py-3 text-right text-xs text-slate-400">{{ $currencySymbol }}{{ number_format($trip->tax_amount,2) }}</td>
+            <td class="px-4 py-3 text-right text-xs font-semibold text-slate-100">{{ $currencySymbol }}{{ number_format($trip->total_amount,2) }}</td>
             <td class="px-4 py-3 text-center">
               @if($trip->status==='active')
                 <span class="badge-blue">Active</span>
@@ -173,9 +173,9 @@
         <tfoot style="background:rgba(15,23,42,0.7);border-top:1px solid rgba(255,255,255,0.12);">
           <tr>
             <td colspan="6" class="px-4 py-3 font-bold text-slate-300 text-xs">PERIOD TOTAL</td>
-            <td class="px-4 py-3 text-right font-bold text-emerald-400">${{ number_format($totalInvoiced,2) }}</td>
+            <td class="px-4 py-3 text-right font-bold text-emerald-400">{{ $currencySymbol }}{{ number_format($totalInvoiced,2) }}</td>
             <td></td>
-            <td class="px-4 py-3 text-right font-bold text-emerald-400">${{ number_format($totalInvoiced,2) }}</td>
+            <td class="px-4 py-3 text-right font-bold text-emerald-400">{{ $currencySymbol }}{{ number_format($totalInvoiced,2) }}</td>
           </tr>
         </tfoot>
       </table>

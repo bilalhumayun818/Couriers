@@ -253,7 +253,7 @@ label { color: #94a3b8 !important; }
     </div>
     <div class="brand-text">
       <div style="font-weight:800;font-size:14.5px;color:#f8fafc;letter-spacing:.04em;">CX COURIER</div>
-      <div style="font-size:10px;color:#38bdf8;font-weight:600;margin-top:1px;letter-spacing:.06em;text-transform:uppercase;">Fleet Royale</div>
+      <div style="font-size:10px;color:#38bdf8;font-weight:600;margin-top:1px;letter-spacing:.06em;text-transform:uppercase;">{{ $tenantSettings->company_name }}</div>
     </div>
   </div>
 

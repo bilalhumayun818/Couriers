@@ -94,7 +94,7 @@ class TrialBalanceController extends Controller
         ];
         if ($tripTax > 0) {
             $accounts[] = [
-                'name'    => 'Tax Collected (8%)',
+                'name'    => 'Tax Collected',
                 'type'    => 'Revenue',
                 'debit'   => 0,
                 'credit'  => $tripTax,

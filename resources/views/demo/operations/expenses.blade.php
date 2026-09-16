@@ -27,13 +27,13 @@
   @endphp
   <div class="card p-4 col-span-2 sm:col-span-1">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Expenses</p>
-    <p class="text-2xl font-bold text-slate-100 mt-1">${{ number_format($totalAmount,2) }}</p>
+    <p class="text-2xl font-bold text-slate-100 mt-1">{{ $currencySymbol }}{{ number_format($totalAmount,2) }}</p>
     <p class="text-xs text-slate-500 mt-0.5">{{ $totalCount }} record{{ $totalCount!==1?'s':'' }}</p>
   </div>
   @foreach($categories as $cat)
   <div class="card p-4">
     <p class="text-xs font-semibold tracking-wide" style="color:{{ $colors[$cat] ?? '#cbd5e1' }};text-transform:uppercase;">{{ $cat }}</p>
-    <p class="text-xl font-bold text-slate-100 mt-1">${{ number_format($catTotals[$cat] ?? 0,2) }}</p>
+    <p class="text-xl font-bold text-slate-100 mt-1">{{ $currencySymbol }}{{ number_format($catTotals[$cat] ?? 0,2) }}</p>
   </div>
   @endforeach
 </div>
@@ -131,7 +131,7 @@
             @endif
           </td>
           <td class="px-5 py-3.5 text-xs text-slate-400">{{ $exp->description ?? '—' }}</td>
-          <td class="px-5 py-3.5 text-right font-semibold text-slate-200">${{ number_format($exp->amount,2) }}</td>
+          <td class="px-5 py-3.5 text-right font-semibold text-slate-200">{{ $currencySymbol }}{{ number_format($exp->amount,2) }}</td>
           <td class="px-5 py-3.5 text-center">
             @if($exp->status==='active')
               <span class="badge-blue">Active</span>
@@ -231,7 +231,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-sky-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ({{ $currencySymbol }}) <span class="text-sky-400">*</span></label>
           <input type="number" name="amount" id="f_amount" required min="0.01" max="999999.99" step="0.01" placeholder="0.00" class="w-full">
         </div>
         <div>

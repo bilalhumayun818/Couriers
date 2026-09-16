@@ -31,18 +31,18 @@
 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Gross Revenue</p>
-    <p class="text-2xl font-bold mt-1 text-emerald-400">${{ number_format($tripRevenue,2) }}</p>
+    <p class="text-2xl font-bold mt-1 text-emerald-400">{{ $currencySymbol }}{{ number_format($tripRevenue,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">{{ $tripCount }} active trips</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Expenses</p>
-    <p class="text-2xl font-bold mt-1 text-red-400">${{ number_format($totalExpenses,2) }}</p>
+    <p class="text-2xl font-bold mt-1 text-red-400">{{ $currencySymbol }}{{ number_format($totalExpenses,2) }}</p>
     <p class="text-xs text-slate-400 mt-0.5">All cost categories</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Net {{ $netProfit >= 0 ? 'Profit' : 'Loss' }}</p>
     <p class="text-2xl font-bold mt-1 {{ $netProfit >= 0 ? 'text-emerald-400' : 'text-red-400' }}">
-      {{ $netProfit < 0 ? '−' : '' }}${{ number_format(abs($netProfit),2) }}
+      {{ $netProfit < 0 ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($netProfit),2) }}
     </p>
     <p class="text-xs text-slate-400 mt-0.5">Margin: {{ $margin }}%</p>
   </div>
@@ -69,11 +69,11 @@
         <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">Revenue</p>
         <div class="flex justify-between text-sm mb-2">
           <span class="text-slate-300">Trip Revenue ({{ $tripCount }} trips)</span>
-          <span class="font-semibold text-slate-100">${{ number_format($tripRevenue,2) }}</span>
+          <span class="font-semibold text-slate-100">{{ $currencySymbol }}{{ number_format($tripRevenue,2) }}</span>
         </div>
         <div class="flex justify-between text-sm font-bold pt-2 mt-1" style="border-top:1px solid rgba(56,189,248,0.25);">
           <span class="text-slate-100">Gross Revenue</span>
-          <span class="text-base text-emerald-400">${{ number_format($tripRevenue,2) }}</span>
+          <span class="text-base text-emerald-400">{{ $currencySymbol }}{{ number_format($tripRevenue,2) }}</span>
         </div>
       </div>
 
@@ -92,7 +92,7 @@
         @if($amt > 0)
         <div class="flex justify-between text-sm mb-1.5">
           <span class="text-slate-300">{{ $label }}</span>
-          <span class="text-red-400">${{ number_format($amt,2) }}</span>
+          <span class="text-red-400">{{ $currencySymbol }}{{ number_format($amt,2) }}</span>
         </div>
         @endif
         @endforeach
@@ -101,7 +101,7 @@
         @endif
         <div class="flex justify-between text-sm font-semibold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
           <span class="text-slate-300">Total Variable</span>
-          <span class="text-red-400">${{ number_format($totalVariable,2) }}</span>
+          <span class="text-red-400">{{ $currencySymbol }}{{ number_format($totalVariable,2) }}</span>
         </div>
       </div>
 
@@ -116,13 +116,13 @@
         @if($amt > 0)
         <div class="flex justify-between text-sm mb-1.5">
           <span class="text-slate-300">{{ $label }}</span>
-          <span class="text-red-400">${{ number_format($amt,2) }}</span>
+          <span class="text-red-400">{{ $currencySymbol }}{{ number_format($amt,2) }}</span>
         </div>
         @endif
         @endforeach
         <div class="flex justify-between text-sm font-semibold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
           <span class="text-slate-300">Total Fixed</span>
-          <span class="text-red-400">${{ number_format($totalFixed,2) }}</span>
+          <span class="text-red-400">{{ $currencySymbol }}{{ number_format($totalFixed,2) }}</span>
         </div>
       </div>
 
@@ -133,18 +133,18 @@
         @if($totalWages > 0)
         <div class="flex justify-between text-sm mb-1.5">
           <span class="text-slate-300">Driver Wages (Gross)</span>
-          <span class="text-red-400">${{ number_format($totalWages,2) }}</span>
+          <span class="text-red-400">{{ $currencySymbol }}{{ number_format($totalWages,2) }}</span>
         </div>
         @endif
         @if($totalAdvances > 0)
         <div class="flex justify-between text-sm mb-1.5">
           <span class="text-slate-300">Driver Advances</span>
-          <span class="text-red-400">${{ number_format($totalAdvances,2) }}</span>
+          <span class="text-red-400">{{ $currencySymbol }}{{ number_format($totalAdvances,2) }}</span>
         </div>
         @endif
         <div class="flex justify-between text-sm font-semibold pt-2 mt-1" style="border-top:1px solid rgba(255,255,255,0.08);">
           <span class="text-slate-300">Total Staff Costs</span>
-          <span class="text-red-400">${{ number_format($totalWages + $totalAdvances,2) }}</span>
+          <span class="text-red-400">{{ $currencySymbol }}{{ number_format($totalWages + $totalAdvances,2) }}</span>
         </div>
       </div>
       @endif
@@ -153,17 +153,17 @@
       <div class="px-5 py-5" style="background:{{ $netProfit >= 0 ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)' }};">
         <div class="flex justify-between text-sm mb-2">
           <span class="text-slate-300">Gross Revenue</span>
-          <span class="font-semibold text-slate-100">${{ number_format($tripRevenue,2) }}</span>
+          <span class="font-semibold text-slate-100">{{ $currencySymbol }}{{ number_format($tripRevenue,2) }}</span>
         </div>
         <div class="flex justify-between text-sm mb-2">
           <span class="text-slate-300">Total Expenses</span>
-          <span class="font-semibold text-red-400">−${{ number_format($totalExpenses,2) }}</span>
+          <span class="font-semibold text-red-400">−{{ $currencySymbol }}{{ number_format($totalExpenses,2) }}</span>
         </div>
         <div class="flex justify-between font-bold text-base border-t-2 pt-3 mt-2"
              style="border-color:{{ $netProfit >= 0 ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)' }};">
           <span class="text-slate-100">Net {{ $netProfit >= 0 ? 'Profit' : 'Loss' }}</span>
           <span style="color:{{ $netProfit >= 0 ? '#4ade80' : '#f87171' }};" class="text-xl">
-            {{ $netProfit < 0 ? '−' : '' }}${{ number_format(abs($netProfit),2) }}
+            {{ $netProfit < 0 ? '−' : '' }}{{ $currencySymbol }}{{ number_format(abs($netProfit),2) }}
           </span>
         </div>
         <p class="text-xs mt-1" style="color:{{ $netProfit >= 0 ? '#4ade80' : '#f87171' }};">
