@@ -13,15 +13,15 @@ class WageSeeder extends Seeder
 {
     public function run(): void
     {
-        $drivers = Driver::all();
+        $drivers = Driver::whereNull('demo_token')->get();
         if ($drivers->isEmpty()) {
             $this->command->warn('No drivers — run FleetSeeder first.');
             return;
         }
 
         $currentPeriod  = Carbon::now()->format('Y-m');
-        $previousPeriod = Carbon::now()->subMonth()->format('Y-m');
-        $vanMap = Van::all()->keyBy('id');
+        $previousPeriod = Carbon::now()->subMonthNoOverflow()->format('Y-m');
+        $vanMap = Van::whereNull('demo_token')->get()->keyBy('id');
 
         // Advances for current period
         $advancesData = [
@@ -45,13 +45,13 @@ class WageSeeder extends Seeder
             // Get the van assigned to this driver
             $assignment = $driver->vans()->first();
 
-            DriverAdvance::firstOrCreate(
+            DriverAdvance::whereNull('demo_token')->whereDate('advance_date', Carbon::now()->subDays($daysAgo))->firstOrCreate(
                 [
                     'driver_id'    => $driver->id,
-                    'advance_date' => Carbon::now()->subDays($daysAgo)->toDateString(),
                     'amount'       => $amount,
                 ],
                 [
+                    'advance_date' => Carbon::now()->subDays($daysAgo)->toDateString(),
                     'van_id'     => $assignment?->id,
                     'purpose'    => $purpose,
                     'pay_period' => $period,
@@ -64,12 +64,12 @@ class WageSeeder extends Seeder
 
         foreach ($drivers->take(7) as $idx => $driver) {
             $gross    = $grossWages[$idx] ?? 900.00;
-            $advances = DriverAdvance::where('driver_id', $driver->id)
+            $advances = DriverAdvance::whereNull('demo_token')->where('driver_id', $driver->id)
                 ->where('pay_period', $previousPeriod)
                 ->sum('amount');
             $net      = round($gross - $advances, 2);
 
-            WagePayout::firstOrCreate(
+            WagePayout::whereNull('demo_token')->firstOrCreate(
                 ['driver_id' => $driver->id, 'pay_period' => $previousPeriod],
                 [
                     'gross_wage'     => $gross,

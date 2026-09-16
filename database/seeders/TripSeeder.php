@@ -60,18 +60,18 @@ class TripSeeder extends Seeder
 
         $customers = [];
         foreach ($customersData as $cd) {
-            $customers[] = Customer::firstOrCreate(
+            $customers[] = Customer::whereNull('demo_token')->firstOrCreate(
                 ['company_name' => $cd['company_name']],
                 $cd
             );
         }
 
         // ── Vans (active only) ───────────────────────────────────────────────────
-        $vans = Van::where('status', 'active')->pluck('id')->toArray();
+        $vans = Van::whereNull('demo_token')->where('status', 'active')->pluck('id')->toArray();
 
         if (empty($vans)) {
             $this->command->warn('No active vans found — using all vans.');
-            $vans = Van::pluck('id')->toArray();
+            $vans = Van::whereNull('demo_token')->pluck('id')->toArray();
         }
 
         if (empty($vans)) {
@@ -109,15 +109,15 @@ class TripSeeder extends Seeder
             $tax        = round($fare * $taxRate, 2);
             $total      = $fare + $tax;
 
-            Trip::firstOrCreate(
+            Trip::whereNull('demo_token')->whereDate('trip_date', $tripDate)->firstOrCreate(
                 [
                     'van_id'      => $vanId,
                     'customer_id' => $customerId,
-                    'trip_date'   => $tripDate,
                     'origin'      => $td[3],
                     'destination' => $td[4],
                 ],
                 [
+                    'trip_date'    => $tripDate,
                     'fare_amount'  => $fare,
                     'tax_amount'   => $tax,
                     'total_amount' => $total,

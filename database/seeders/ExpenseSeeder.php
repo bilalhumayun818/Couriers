@@ -11,7 +11,7 @@ class ExpenseSeeder extends Seeder
 {
     public function run(): void
     {
-        $vans = Van::all();
+        $vans = Van::whereNull('demo_token')->get();
         if ($vans->isEmpty()) {
             $this->command->warn('No vans found — run FleetSeeder first.');
             return;
@@ -49,14 +49,14 @@ class ExpenseSeeder extends Seeder
             $van = $vanMap->get($plate);
             if (!$van) continue;
 
-            Expense::firstOrCreate(
+            Expense::whereNull('demo_token')->whereDate('expense_date', $today->copy()->subDays($daysAgo))->firstOrCreate(
                 [
                     'van_id'       => $van->id,
                     'category'     => $category,
-                    'expense_date' => $today->copy()->subDays($daysAgo)->toDateString(),
                     'amount'       => $amount,
                 ],
                 [
+                    'expense_date' => $today->copy()->subDays($daysAgo)->toDateString(),
                     'description'  => $desc,
                     'status'       => 'active',
                 ]

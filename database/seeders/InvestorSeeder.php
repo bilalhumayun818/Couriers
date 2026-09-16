@@ -47,7 +47,7 @@ class InvestorSeeder extends Seeder
         ];
 
         foreach ($investors as $data) {
-            $inv = Investor::firstOrCreate(
+            $inv = Investor::whereNull('demo_token')->firstOrCreate(
                 ['full_name' => $data['full_name']],
                 $data
             );
@@ -61,14 +61,14 @@ class InvestorSeeder extends Seeder
             ];
 
             foreach ($txns as [$type, $monthsAgo, $amount, $desc]) {
-                InvestorTransaction::firstOrCreate(
+                $date = Carbon::now()->subMonthsNoOverflow($monthsAgo)->startOfMonth()->toDateString();
+                InvestorTransaction::whereNull('demo_token')->whereDate('transaction_date', $date)->firstOrCreate(
                     [
                         'investor_id'      => $inv->id,
                         'type'             => $type,
-                        'transaction_date' => Carbon::now()->subMonths($monthsAgo)->startOfMonth()->toDateString(),
                         'amount'           => $amount * ($inv->initial_capital / 50000), // scale by capital
                     ],
-                    ['description' => $desc]
+                    ['description' => $desc, 'transaction_date' => $date]
                 );
             }
         }

@@ -3,17 +3,18 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call([
+        DB::transaction(fn () => $this->call([
             FleetSeeder::class,
             TripSeeder::class,
             ExpenseSeeder::class,
             WageSeeder::class,
             InvestorSeeder::class,
-        ]);
+        ]));
     }
 }
