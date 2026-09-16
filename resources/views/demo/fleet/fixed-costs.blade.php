@@ -6,13 +6,13 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 
 @if($errors->any())
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   <strong>Validation errors:</strong>
   @foreach($errors->all() as $error)
     <div>• {{ $error }}</div>
@@ -74,7 +74,7 @@
           <td class="px-5 py-3.5 text-right font-bold {{ $totalFixed > 0 ? 'text-slate-100' : 'text-slate-500' }}">
             {{ $totalFixed > 0 ? '$'.number_format($totalFixed, 2) : '—' }}
           </td>
-          <td class="px-5 py-3.5 text-xs {{ $serviceSoon ? 'font-semibold text-amber-400' : 'text-slate-400' }}">
+          <td class="px-5 py-3.5 text-xs {{ $serviceSoon ? 'font-semibold text-blue-400' : 'text-slate-400' }}">
             {{ $serviceDate ? $serviceDate->format('d M Y') : '—' }}
             @if($serviceSoon)
               <span class="ml-1 badge-amber">⚠ Soon</span>
@@ -135,7 +135,7 @@
           <span class="font-mono font-semibold text-xs px-2 py-0.5 rounded" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#94a3b8;">{{ $van->plate_number }}</span>
           <span class="ml-2 text-sm text-slate-200">{{ $van->make_model }}</span>
         </div>
-        <span class="text-xs {{ $fc ? 'text-emerald-400 font-medium' : 'text-slate-500' }}">
+        <span class="text-xs {{ $fc ? 'text-sky-400 font-medium' : 'text-slate-500' }}">
           {{ $fc ? '$'.number_format($fc->total_monthly, 2).'/mo' : 'No costs set' }}
         </span>
       </button>
@@ -163,15 +163,15 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Monthly Lease ($) <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Monthly Lease ($) <span class="text-sky-400">*</span></label>
             <input type="number" name="monthly_lease" id="f_lease" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Road Tax Annual ($) <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Road Tax Annual ($) <span class="text-sky-400">*</span></label>
             <input type="number" name="road_tax_annual" id="f_road_tax" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Insurance Monthly ($) <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Insurance Monthly ($) <span class="text-sky-400">*</span></label>
             <input type="number" name="insurance_monthly" id="f_insurance" step="0.01" min="0" placeholder="0.00" required class="w-full">
           </div>
           <div>

@@ -17,11 +17,11 @@
 
 {{-- Alerts --}}
 @if($licenceExpired)
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ⚠ Licence EXPIRED {{ abs($daysToExpiry) }} days ago ({{ \Carbon\Carbon::parse($driver->licence_expiry_date)->format('d M Y') }}) — renewal required.
 </div>
 @elseif($licenceExpiringSoon)
-<div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);color:#7dd3fc;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ⚠ Licence expires in {{ abs($daysToExpiry) }} days ({{ \Carbon\Carbon::parse($driver->licence_expiry_date)->format('d M Y') }}).
 </div>
 @endif
@@ -59,7 +59,7 @@
     <div class="pt-4" style="border-top:1px solid rgba(255,255,255,0.07);">
       <p class="text-xs font-semibold text-slate-400 uppercase mb-2">Current Assignment</p>
       @if($currentAssignment)
-        <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:8px;padding:10px 12px;">
+        <div style="background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);border-radius:8px;padding:10px 12px;">
           <p class="font-mono font-bold text-slate-100 text-sm">{{ $currentAssignment->van->plate_number }}</p>
           <p class="text-xs text-slate-300 mt-0.5">{{ $currentAssignment->van->make_model }}</p>
           <p class="text-xs text-slate-400 mt-1">Since {{ \Carbon\Carbon::parse($currentAssignment->start_date)->format('d M Y') }}</p>
@@ -93,7 +93,7 @@
             <td class="px-4 py-3 text-xs text-slate-400">{{ $asgn->end_date ? \Carbon\Carbon::parse($asgn->end_date)->format('d M Y') : '—' }}</td>
             <td class="px-4 py-3 text-center">
               @if(!$asgn->end_date)
-                <span class="badge-green">Active</span>
+                <span class="badge-blue">Active</span>
               @else
                 <span class="badge-slate">Ended</span>
               @endif

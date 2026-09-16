@@ -14,8 +14,8 @@ $users = [
   ['U-006','Old Staff','old@acmelogistics.com','Fleet Manager','01 Jan 2024','inactive'],
 ];
 $roleColor = [
-  'Admin'         => 'background:rgba(99,102,241,0.15);color:#818cf8;border:1px solid rgba(99,102,241,0.3);',
-  'Fleet Manager' => 'background:rgba(16,185,129,0.15);color:#4ade80;border:1px solid rgba(16,185,129,0.3);',
+  'Admin'         => 'background:rgba(56,189,248,0.15);color:#60a5fa;border:1px solid rgba(56,189,248,0.3);',
+  'Fleet Manager' => 'background:rgba(56,189,248,0.15);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);',
   'Accountant'    => 'background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);',
   'Driver'        => 'background:rgba(255,255,255,0.06);color:#cbd5e1;border:1px solid rgba(255,255,255,0.1);',
 ];
@@ -43,7 +43,7 @@ $roleColor = [
             <td class="px-4 py-2 font-medium text-slate-300">{{ $p[0] }}</td>
             @foreach(array_slice($p,1) as $val)
             <td class="px-4 py-2 text-center">
-              @if($val==='Full')<span class="text-emerald-400 font-semibold">✓ Full</span>
+              @if($val==='Full')<span class="text-sky-400 font-semibold">✓ Full</span>
               @elseif($val==='Read')<span class="text-sky-400">Read</span>
               @elseif(str_contains($val,'own'))<span class="text-sky-400">Own Only</span>
               @else<span class="text-slate-600">—</span>
@@ -87,7 +87,7 @@ $roleColor = [
             <td class="px-5 py-3.5 text-slate-400 text-xs">{{ $u[4] }}</td>
             <td class="px-5 py-3.5 text-center">
               @if($u[5]==='active')
-                <span class="badge-green">Active</span>
+                <span class="badge-blue">Active</span>
               @else
                 <span class="badge-slate">Inactive</span>
               @endif
@@ -95,7 +95,7 @@ $roleColor = [
             <td class="px-5 py-3.5 text-right space-x-2">
               <button class="text-xs text-sky-400 hover:text-sky-300 font-medium">Edit</button>
               @if($u[5]==='active')
-              <button class="text-xs text-slate-400 hover:text-red-400 font-medium">Deactivate</button>
+              <button class="text-xs text-slate-400 hover:text-sky-400 font-medium">Deactivate</button>
               @endif
             </td>
           </tr>

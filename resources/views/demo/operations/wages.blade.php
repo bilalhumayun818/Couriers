@@ -6,7 +6,7 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
@@ -14,9 +14,9 @@
 {{-- Negative payout confirmation banner --}}
 @if(session('negative_warning'))
 @php $nw = session('negative_warning'); @endphp
-<div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
-  <p class="text-sm font-semibold text-amber-300 mb-1">⚠ Negative Net Payout</p>
-  <p class="text-xs text-amber-200 mb-3">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
+  <p class="text-sm font-semibold text-blue-300 mb-1">⚠ Negative Net Payout</p>
+  <p class="text-xs text-blue-200 mb-3">
     Driver has advances of <strong>${{ number_format($nw['advances'],2) }}</strong> which exceed gross wage of
     <strong>${{ number_format($nw['gross_wage'],2) }}</strong>.
     Net payout would be <strong class="text-red-400">${{ number_format($nw['net'],2) }}</strong>.
@@ -99,7 +99,7 @@
             <form method="POST" action="{{ route('operations.wages.advance.destroy',$adv) }}" class="inline"
                   onsubmit="return confirm('Remove this advance?')">
               @csrf @method('DELETE')
-              <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium">Remove</button>
+              <button type="submit" class="text-xs text-slate-500 hover:text-sky-400 font-medium">Remove</button>
             </form>
           </td>
         </tr>
@@ -141,9 +141,9 @@
           </td>
           <td class="px-4 py-3 text-center">
             @if($payout->is_negative)
-              <span class="badge-red">Negative</span>
+              <span class="financial-loss">Negative</span>
             @else
-              <span class="badge-green">Paid</span>
+              <span class="badge-blue">Paid</span>
             @endif
           </td>
         </tr>
@@ -170,7 +170,7 @@
       @csrf
       <div class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Driver <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Driver <span class="text-sky-400">*</span></label>
           <select name="driver_id" required class="w-full">
             <option value="">— Select Driver —</option>
             @foreach($drivers as $d)
@@ -180,11 +180,11 @@
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Date <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Date <span class="text-sky-400">*</span></label>
             <input type="date" name="advance_date" required class="w-full" value="{{ date('Y-m-d') }}">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-sky-400">*</span></label>
             <input type="number" name="amount" required min="0.01" step="0.01" placeholder="0.00" class="w-full">
           </div>
         </div>
@@ -215,7 +215,7 @@
       @csrf
       <div class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Driver <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Driver <span class="text-sky-400">*</span></label>
           <select name="driver_id" id="po_driver" required class="w-full" onchange="fetchPreview()">
             <option value="">— Select Driver —</option>
             @foreach($drivers as $d)
@@ -224,7 +224,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Gross Wage ($) <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Gross Wage ($) <span class="text-sky-400">*</span></label>
           <input type="number" name="gross_wage" id="po_gross" required min="0" step="0.01" placeholder="0.00" class="w-full" oninput="fetchPreview()">
         </div>
         <input type="hidden" name="pay_period" value="{{ $selectedPeriod }}">

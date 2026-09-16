@@ -99,7 +99,7 @@
               <span class="font-mono font-semibold text-xs px-2.5 py-1 rounded-md" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#cbd5e1;">{{ $row['van']->plate_number }}</span>
               <span class="text-xs text-slate-400 ml-1.5">{{ $row['van']->make_model }}</span>
             </td>
-            <td class="px-5 py-3.5 text-right font-semibold text-emerald-400">
+            <td class="px-5 py-3.5 text-right font-semibold text-sky-400">
               ${{ number_format($row['revenue'],2) }}
             </td>
             <td class="px-5 py-3.5 text-right text-slate-400">{{ $row['trip_count'] }}</td>
@@ -149,13 +149,13 @@
           <td class="px-5 py-3.5 font-bold text-slate-200 text-xs">
             TOTALS — {{ $from->format('d M') }} to {{ $to->format('d M Y') }}
           </td>
-          <td class="px-5 py-3.5 text-right font-bold text-emerald-400">
+          <td class="px-5 py-3.5 text-right font-bold text-sky-400">
             ${{ number_format($grandRevenue,2) }}
           </td>
           <td class="px-5 py-3.5 text-right font-bold text-slate-300">
             {{ collect($rows)->sum('trip_count') }}
           </td>
-          <td class="px-5 py-3.5 text-right font-bold text-red-400">
+          <td class="px-5 py-3.5 text-right font-bold text-sky-400">
             ${{ number_format($grandVariable,2) }}
           </td>
           @if(!$category)

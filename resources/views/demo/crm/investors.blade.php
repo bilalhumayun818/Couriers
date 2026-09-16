@@ -6,12 +6,12 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 @if($errors->any())
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
 </div>
 @endif
@@ -25,7 +25,7 @@
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Injections</p>
-    <p class="text-2xl font-bold text-indigo-400 mt-1">${{ number_format($totals['injections'], 2) }}</p>
+    <p class="text-2xl font-bold text-sky-400 mt-1">${{ number_format($totals['injections'], 2) }}</p>
     <p class="text-xs text-slate-500 mt-0.5">Additional capital</p>
   </div>
   <div class="card p-4">
@@ -61,8 +61,8 @@
     <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 justify-between" style="border-bottom:1px solid rgba(255,255,255,0.07);">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-             style="background:{{ $inv->role==='director'?'rgba(56,189,248,0.12)':'rgba(16,185,129,0.12)' }};border:1px solid {{ $inv->role==='director'?'rgba(56,189,248,0.25)':'rgba(16,185,129,0.25)' }};">
-          <svg width="20" height="20" fill="none" stroke="{{ $inv->role==='director'?'#38bdf8':'#34d399' }}" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+             style="background:{{ $inv->role==='director'?'rgba(56,189,248,0.12)':'rgba(56,189,248,0.12)' }};border:1px solid {{ $inv->role==='director'?'rgba(56,189,248,0.25)':'rgba(56,189,248,0.25)' }};">
+          <svg width="20" height="20" fill="none" stroke="{{ $inv->role==='director'?'#38bdf8':'#38bdf8' }}" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <div>
           <div class="flex items-center gap-2">
@@ -70,7 +70,7 @@
             @if($inv->role==='director')
               <span class="badge-blue capitalize">{{ $inv->role }}</span>
             @else
-              <span class="badge-green capitalize">{{ $inv->role }}</span>
+              <span class="badge-blue capitalize">{{ $inv->role }}</span>
             @endif
           </div>
           <p class="text-xs text-slate-400 mt-0.5">{{ $inv->bank_name ?? '—' }} &bull; {{ $inv->bank_account_number ?? '—' }}</p>
@@ -97,12 +97,12 @@
       <div class="flex gap-2 flex-wrap">
         <button onclick="openTxModal('inject', {{ $inv->id }}, '{{ addslashes($inv->full_name) }}')"
           class="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
-          style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);color:#818cf8;">
+          style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;">
           + Inject Capital
         </button>
         <button onclick="openTxModal('distribute', {{ $inv->id }}, '{{ addslashes($inv->full_name) }}', {{ $retained }})"
           class="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
-          style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;">
+          style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;">
           − Distribute
         </button>
         <button onclick="openEditModal({{ json_encode(['id'=>$inv->id,'full_name'=>$inv->full_name,'role'=>$inv->role,'bank_account_name'=>$inv->bank_account_name,'bank_account_number'=>$inv->bank_account_number,'bank_name'=>$inv->bank_name,'initial_capital'=>$inv->initial_capital]) }})"
@@ -110,7 +110,7 @@
         <form method="POST" action="{{ route('crm.investors.destroy',$inv) }}" class="inline"
               onsubmit="return confirm('Delete {{ addslashes($inv->full_name) }}?')">
           @csrf @method('DELETE')
-          <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium px-2 py-1.5">Delete</button>
+          <button type="submit" class="text-xs text-slate-500 hover:text-sky-400 font-medium px-2 py-1.5">Delete</button>
         </form>
       </div>
     </div>
@@ -131,7 +131,7 @@
           <tr style="background:rgba(255,255,255,0.02);">
             <td class="px-5 py-2 text-xs text-slate-400">{{ $inv->created_at->format('d M Y') }}</td>
             <td class="px-5 py-2 text-xs text-slate-400 italic">Opening — Initial Capital</td>
-            <td class="px-5 py-2 text-right text-xs font-semibold text-indigo-400">${{ number_format($inv->initial_capital,2) }}</td>
+            <td class="px-5 py-2 text-right text-xs font-semibold text-sky-400">${{ number_format($inv->initial_capital,2) }}</td>
             <td class="px-5 py-2 text-right text-xs text-slate-600">—</td>
             <td class="px-5 py-2 text-right text-xs font-bold text-slate-200">${{ number_format($inv->initial_capital,2) }}</td>
           </tr>
@@ -139,10 +139,10 @@
           <tr class="table-row">
             <td class="px-5 py-2.5 text-xs text-slate-400">{{ $row['tx']->transaction_date->format('d M Y') }}</td>
             <td class="px-5 py-2.5 text-xs text-slate-300">{{ $row['tx']->description ?? ucfirst($row['tx']->type) }}</td>
-            <td class="px-5 py-2.5 text-right text-xs {{ $row['tx']->type==='injection'?'font-semibold text-indigo-400':'text-slate-600' }}">
+            <td class="px-5 py-2.5 text-right text-xs {{ $row['tx']->type==='injection'?'font-semibold text-sky-400':'text-slate-600' }}">
               {{ $row['tx']->type==='injection' ? '$'.number_format($row['tx']->amount,2) : '—' }}
             </td>
-            <td class="px-5 py-2.5 text-right text-xs {{ $row['tx']->type==='distribution'?'font-semibold text-red-400':'text-slate-600' }}">
+            <td class="px-5 py-2.5 text-right text-xs {{ $row['tx']->type==='distribution'?'font-semibold text-sky-400':'text-slate-600' }}">
               {{ $row['tx']->type==='distribution' ? '$'.number_format($row['tx']->amount,2) : '—' }}
             </td>
             <td class="px-5 py-2.5 text-right text-xs font-bold text-slate-200">${{ number_format($row['balance'],2) }}</td>
@@ -191,11 +191,11 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
           <div class="col-span-2">
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Full Name <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Full Name <span class="text-sky-400">*</span></label>
             <input type="text" name="full_name" id="if_name" required maxlength="255" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Role <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Role <span class="text-sky-400">*</span></label>
             <select name="role" id="if_role" required class="w-full">
               <option value="investor">Investor</option>
               <option value="director">Director</option>
@@ -243,11 +243,11 @@
       @csrf
       <div class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Date <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Date <span class="text-sky-400">*</span></label>
           <input type="date" name="transaction_date" required class="w-full" value="{{ date('Y-m-d') }}">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-sky-400">*</span></label>
           <input type="number" name="amount" required min="0.01" step="0.01" placeholder="0.00" class="w-full" id="tx_amount">
           <p id="tx_balance_hint" class="text-xs text-slate-400 mt-1 hidden"></p>
         </div>
@@ -306,7 +306,7 @@ function openTxModal(type, investorId, name, balance) {
 
   const btn = document.getElementById('txSubmitBtn');
   btn.className = isInject ? 'btn-primary' : 'inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg cursor-pointer text-white border-none';
-  if (!isInject) btn.style.background = '#ef4444';
+  if (!isInject) btn.style.background = '#0284c7';
 
   document.getElementById('txModal').classList.remove('hidden');
 }

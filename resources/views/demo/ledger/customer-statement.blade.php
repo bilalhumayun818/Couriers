@@ -100,7 +100,7 @@
           <span class="text-slate-400">{{ $m['count'] }} trips · ${{ number_format($m['total'],2) }}</span>
         </div>
         <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
-          <div style="height:100%;width:{{ $maxMonth>0?round(($m['total']/$maxMonth)*100):0 }}%;background:linear-gradient(135deg,#0284c7,#6366f1);border-radius:4px;"></div>
+          <div style="height:100%;width:{{ $maxMonth>0?round(($m['total']/$maxMonth)*100):0 }}%;background:linear-gradient(135deg,#0284c7,#2563eb);border-radius:4px;"></div>
         </div>
       </div>
       @endforeach
@@ -159,9 +159,9 @@
             <td class="px-4 py-3 text-right text-xs font-semibold text-slate-100">${{ number_format($trip->total_amount,2) }}</td>
             <td class="px-4 py-3 text-center">
               @if($trip->status==='active')
-                <span class="badge-green">Active</span>
+                <span class="badge-blue">Active</span>
               @else
-                <span class="badge-red">Voided</span>
+                <span class="badge-blue">Voided</span>
               @endif
             </td>
             <td class="px-4 py-3 text-right text-xs font-bold text-slate-200">

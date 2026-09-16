@@ -86,7 +86,7 @@
     <div class="card p-5">
       <h3 class="font-semibold text-slate-100 text-sm mb-3">Expenses by Category</h3>
       @php
-      $catColors = ['Fuel'=>'#f59e0b','Tolls'=>'#94a3b8','Spare Parts'=>'#6366f1','Maintenance/Repairs'=>'#ef4444'];
+      $catColors = ['Fuel'=>'#0ea5e9','Tolls'=>'#94a3b8','Spare Parts'=>'#2563eb','Maintenance/Repairs'=>'#0284c7'];
       $allCats = \App\Models\Expense::$categories;
       @endphp
       @foreach($allCats as $cat)
@@ -98,7 +98,7 @@
         </div>
         @if($variableTotal > 0)
         <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;">
-          <div style="height:100%;width:{{ min(100,round(($amt/$variableTotal)*100,1)) }}%;background:{{ $catColors[$cat] ?? '#6366f1' }};border-radius:4px;"></div>
+          <div style="height:100%;width:{{ min(100,round(($amt/$variableTotal)*100,1)) }}%;background:{{ $catColors[$cat] ?? '#2563eb' }};border-radius:4px;"></div>
         </div>
         @else
         <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;"></div>
@@ -184,10 +184,10 @@
             @forelse($expenses as $exp)
             @php
               $catStyle = match($exp->category) {
-                'Fuel'                => 'background:rgba(245,158,11,0.15);color:#fbbf24;',
+                'Fuel'                => 'background:rgba(56,189,248,0.15);color:#7dd3fc;',
                 'Tolls'               => 'background:rgba(148,163,184,0.15);color:#cbd5e1;',
-                'Spare Parts'         => 'background:rgba(99,102,241,0.15);color:#818cf8;',
-                'Maintenance/Repairs' => 'background:rgba(239,68,68,0.15);color:#f87171;',
+                'Spare Parts'         => 'background:rgba(56,189,248,0.15);color:#60a5fa;',
+                'Maintenance/Repairs' => 'background:rgba(56,189,248,0.15);color:#38bdf8;',
                 default               => 'background:rgba(255,255,255,0.06);color:#cbd5e1;',
               };
             @endphp

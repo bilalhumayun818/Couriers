@@ -64,7 +64,7 @@
           </div>
           <div class="flex justify-between py-2">
             <span class="text-slate-400 font-medium">Battery &amp; Energy</span>
-            <span class="text-emerald-400 font-semibold">320 L (42 kWh)</span>
+            <span class="text-sky-400 font-semibold">320 L (42 kWh)</span>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@
         </div>
 
         <div class="flex items-center justify-end gap-3">
-          <span class="w-8 h-8 rounded-lg flex items-center justify-center text-emerald-400" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);">
+          <span class="w-8 h-8 rounded-lg flex items-center justify-center text-sky-400" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </span>
           <div>
@@ -117,7 +117,7 @@
         </div>
         <div class="flex items-center gap-3 text-[11px] mb-3 text-slate-400">
           <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sky-400"></span><span><b class="text-slate-200">64%</b> Charters</span></div>
-          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-indigo-400"></span><span><b class="text-slate-200">22%</b> Express</span></div>
+          <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-blue-400"></span><span><b class="text-slate-200">22%</b> Express</span></div>
           <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-500"></span><span><b class="text-slate-200">14%</b> Direct</span></div>
         </div>
         <div class="relative flex-1" style="height:160px;">
@@ -136,9 +136,9 @@
         </div>
         <div class="flex justify-between items-center text-[10px] text-slate-400 px-1 mb-2">
           <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#cbd5e1;">118 <span class="text-slate-400">±0%</span></span>
-          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;">76 <span>-8%</span></span>
+          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;">76 <span>-8%</span></span>
           <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#cbd5e1;">118 <span class="text-slate-400">±0%</span></span>
-          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#f87171;">68 <span>-12%</span></span>
+          <span class="px-2 py-0.5 rounded font-mono" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;">68 <span>-12%</span></span>
         </div>
         <div class="relative flex-1" style="height:148px;">
           <canvas id="analyticsChart" class="w-full h-full"></canvas>
@@ -162,11 +162,11 @@
 
       @php
       $fleet = [
-        ['Ocean Majesty','Luxury Motor Van','Available','text-emerald-400','bg-emerald-400','/images/van_fleet_1.png'],
+        ['Ocean Majesty','Luxury Motor Van','Available','text-sky-400','bg-sky-400','/images/van_fleet_1.png'],
         ['Blue Horizon','Sport Cargo Van','In Transit','text-sky-400','bg-sky-400','/images/van_hero_bg.png'],
         ['Royal Escape','Super Cargo Van','Maintenance','text-sky-400','bg-sky-400','/images/van_fleet_2.png'],
         ['Sea Pearl','Luxury Courier Van','In Transit','text-sky-400','bg-sky-400','/images/van_ai_card.png'],
-        ['Azure Dream','Luxury EV Cargo','Available','text-emerald-400','bg-emerald-400','/images/van_fleet_1.png'],
+        ['Azure Dream','Luxury EV Cargo','Available','text-sky-400','bg-sky-400','/images/van_fleet_1.png'],
       ];
       @endphp
 
@@ -208,7 +208,7 @@
           <span class="block text-[10px] font-semibold text-slate-400">Today's Bookings</span>
           <div class="flex items-baseline justify-between mt-1">
             <span class="text-xl font-extrabold text-slate-100">124</span>
-            <span class="text-[10px] font-bold text-emerald-400">+15%</span>
+            <span class="text-[10px] font-bold text-sky-400">+15%</span>
           </div>
           <div style="height:28px;margin-top:6px;"><canvas id="sparkline1" class="w-full h-full"></canvas></div>
         </div>
@@ -235,7 +235,7 @@
           <span class="block text-[10px] font-semibold text-slate-400">Available Vans</span>
           <div class="flex items-baseline justify-between mt-1">
             <span class="text-xl font-extrabold text-slate-100">412</span>
-            <span class="text-[10px] font-bold text-emerald-400">+5%</span>
+            <span class="text-[10px] font-bold text-sky-400">+5%</span>
           </div>
           <div style="height:28px;margin-top:6px;"><canvas id="sparkline4" class="w-full h-full"></canvas></div>
         </div>
@@ -286,7 +286,7 @@
             ['TR-2409','Sea Pearl','David Nguyen','Newcastle → Durham','£ 280','£ 95','Completed'],
             ['TR-2410','Azure Dream','Amara Osei','London → Oxford','£ 530','£ 175','Pending'],
           ];
-          $statusCls = ['Completed'=>'badge-green','In Transit'=>'badge-blue','Pending'=>'badge-amber'];
+          $statusCls = ['Completed'=>'badge-blue','In Transit'=>'badge-blue','Pending'=>'badge-amber'];
           @endphp
           @foreach($trips as $i => $t)
           <tr class="table-row">
@@ -294,8 +294,8 @@
             <td class="px-4 py-3 text-slate-200 font-medium">{{ $t[1] }}</td>
             <td class="px-4 py-3 text-slate-300">{{ $t[2] }}</td>
             <td class="px-4 py-3 text-slate-400">{{ $t[3] }}</td>
-            <td class="px-4 py-3 text-right text-emerald-400 font-bold">{{ $t[4] }}</td>
-            <td class="px-4 py-3 text-right text-red-400 font-semibold">{{ $t[5] }}</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-bold">{{ $t[4] }}</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-semibold">{{ $t[5] }}</td>
             <td class="px-4 py-3 text-center"><span class="{{ $statusCls[$t[6]] }}">{{ $t[6] }}</span></td>
           </tr>
           @endforeach
@@ -303,8 +303,8 @@
         <tfoot>
           <tr style="background:rgba(56,189,248,0.05);border-top:1px solid rgba(56,189,248,0.2);">
             <td colspan="4" class="px-5 py-3 text-xs font-bold text-slate-300">Total (10 Trips)</td>
-            <td class="px-4 py-3 text-right text-emerald-400 font-extrabold text-sm">£ 6,620</td>
-            <td class="px-4 py-3 text-right text-red-400 font-bold text-sm">£ 2,120</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-extrabold text-sm">£ 6,620</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-bold text-sm">£ 2,120</td>
             <td class="px-4 py-3 text-center text-sky-400 font-bold text-xs">Net: £ 4,500</td>
           </tr>
         </tfoot>
@@ -327,8 +327,8 @@
         ['Apex Logistics Ltd','34 trips','£ 18,450',92,'bg-sky-400'],
         ['BlueStar Retail','28 trips','£ 14,220',78,'bg-sky-400'],
         ['NovaMed Supplies','21 trips','£ 10,800',60,'bg-sky-400'],
-        ['Horizon Foods','18 trips','£ 8,960',50,'bg-emerald-400'],
-        ['Sterling Motors','15 trips','£ 7,340',41,'bg-emerald-400'],
+        ['Horizon Foods','18 trips','£ 8,960',50,'bg-sky-400'],
+        ['Sterling Motors','15 trips','£ 7,340',41,'bg-sky-400'],
         ['Prime Express UK','12 trips','£ 5,670',32,'bg-slate-500'],
       ];
       @endphp
@@ -336,7 +336,7 @@
       <div class="glass-card p-3">
         <div class="flex items-center justify-between mb-2">
           <span class="text-xs font-bold text-slate-100">{{ $c[0] }}</span>
-          <span class="text-xs font-bold text-emerald-400">{{ $c[2] }}</span>
+          <span class="text-xs font-bold text-sky-400">{{ $c[2] }}</span>
         </div>
         <div class="flex items-center justify-between text-[10px] text-slate-400 mb-1.5">
           <span>{{ $c[1] }}</span>
@@ -395,21 +395,21 @@
               @php
               $catColor = match($e[2]) {
                 'Fuel' => 'badge-blue',
-                'Maintenance' => 'badge-red',
-                'Driver Wage' => 'badge-green',
+                'Maintenance' => 'badge-blue',
+                'Driver Wage' => 'badge-blue',
                 default => 'badge-slate'
               };
               @endphp
               <span class="{{ $catColor }}">{{ $e[2] }}</span>
             </td>
-            <td class="px-4 py-3 text-right text-red-400 font-bold">{{ $e[3] }}</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-bold">{{ $e[3] }}</td>
           </tr>
           @endforeach
         </tbody>
         <tfoot>
-          <tr style="background:rgba(239,68,68,0.05);border-top:1px solid rgba(239,68,68,0.2);">
+          <tr style="background:rgba(56,189,248,0.05);border-top:1px solid rgba(56,189,248,0.2);">
             <td colspan="3" class="px-5 py-3 text-xs font-bold text-slate-300">Total Expenses</td>
-            <td class="px-4 py-3 text-right text-red-400 font-extrabold">£ 1,062</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-extrabold">£ 1,062</td>
           </tr>
         </tfoot>
       </table>
@@ -441,7 +441,7 @@
           $drivers = [
             ['James Carter','Ocean Majesty','34','£ 18,450','★★★★★','text-sky-400'],
             ['Liam Hassan','Blue Horizon','28','£ 14,220','★★★★☆','text-sky-400'],
-            ['Sofia Patel','Royal Escape','21','£ 10,800','★★★★★','text-emerald-400'],
+            ['Sofia Patel','Royal Escape','21','£ 10,800','★★★★★','text-sky-400'],
             ['David Nguyen','Sea Pearl','18','£ 8,960','★★★★☆','text-sky-400'],
             ['Amara Osei','Azure Dream','15','£ 7,340','★★★☆☆','text-slate-400'],
             ['Raj Mehta','Blue Horizon','12','£ 5,670','★★★★☆','text-sky-400'],
@@ -459,7 +459,7 @@
             </td>
             <td class="px-4 py-3 text-slate-400">{{ $d[1] }}</td>
             <td class="px-4 py-3 text-center font-bold text-slate-100">{{ $d[2] }}</td>
-            <td class="px-4 py-3 text-right text-emerald-400 font-bold">{{ $d[3] }}</td>
+            <td class="px-4 py-3 text-right text-sky-400 font-bold">{{ $d[3] }}</td>
             <td class="px-4 py-3 text-center text-sky-400 text-[11px] tracking-wider">{{ $d[4] }}</td>
           </tr>
           @endforeach
@@ -493,7 +493,7 @@ new Chart(ctxMatrix, {
   data: { datasets: [{ data: scatterData,
     backgroundColor: ctx => {
       const v = ctx.raw ? ctx.raw.r : 3;
-      return v > 4 ? '#38bdf8' : (v > 3 ? '#818cf8' : 'rgba(255,255,255,0.22)');
+      return v > 4 ? '#38bdf8' : (v > 3 ? '#60a5fa' : 'rgba(255,255,255,0.22)');
     },
     borderColor: 'transparent'
   }]},
@@ -545,9 +545,9 @@ function sparkline(id, data, color) {
     }
   });
 }
-sparkline('sparkline1', [12,19,14,25,22,30,28,35], '#34d399');
+sparkline('sparkline1', [12,19,14,25,22,30,28,35], '#38bdf8');
 sparkline('sparkline2', [15,12,20,18,24,22,29,31], '#38bdf8');
 sparkline('sparkline3', [25,22,18,20,16,14,15,12], '#38bdf8');
-sparkline('sparkline4', [30,32,28,35,38,42,40,45], '#34d399');
+sparkline('sparkline4', [30,32,28,35,38,42,40,45], '#38bdf8');
 </script>
 @endsection

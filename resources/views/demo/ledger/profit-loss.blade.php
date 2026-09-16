@@ -48,7 +48,7 @@
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Profit Margin</p>
-    <p class="text-2xl font-bold mt-1 {{ $margin >= 0 ? 'text-indigo-400' : 'text-red-400' }}">{{ $margin }}%</p>
+    <p class="text-2xl font-bold mt-1 {{ $margin >= 0 ? 'text-blue-400' : 'text-sky-400' }}">{{ $margin }}%</p>
     <p class="text-xs text-slate-400 mt-0.5">{{ $voidedCount }} voided trips</p>
   </div>
 </div>
@@ -65,13 +65,13 @@
     <div>
 
       {{-- Revenue --}}
-      <div class="px-5 py-4" style="background:rgba(16,185,129,0.08);border-bottom:1px solid rgba(255,255,255,0.07);">
+      <div class="px-5 py-4" style="background:rgba(56,189,248,0.08);border-bottom:1px solid rgba(255,255,255,0.07);">
         <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">Revenue</p>
         <div class="flex justify-between text-sm mb-2">
           <span class="text-slate-300">Trip Revenue ({{ $tripCount }} trips)</span>
           <span class="font-semibold text-slate-100">${{ number_format($tripRevenue,2) }}</span>
         </div>
-        <div class="flex justify-between text-sm font-bold pt-2 mt-1" style="border-top:1px solid rgba(16,185,129,0.25);">
+        <div class="flex justify-between text-sm font-bold pt-2 mt-1" style="border-top:1px solid rgba(56,189,248,0.25);">
           <span class="text-slate-100">Gross Revenue</span>
           <span class="text-base text-emerald-400">${{ number_format($tripRevenue,2) }}</span>
         </div>
@@ -209,8 +209,8 @@ new Chart(document.getElementById('expPie'), {
         {{ $totalLease }}, {{ $totalRoadTax }}, {{ $totalInsurance }}
       ],
       backgroundColor: [
-        '#f59e0b','#94a3b8','#6366f1','#ef4444',
-        '#3b82f6','#8b5cf6','#10b981','#14b8a6','#f97316'
+        '#bae6fd','#7dd3fc','#38bdf8','#0ea5e9',
+        '#0284c7','#0369a1','#60a5fa','#3b82f6','#1d4ed8'
       ],
       borderWidth: 0,
     }]
@@ -229,7 +229,7 @@ new Chart(document.getElementById('trendChart'), {
   data: {
     labels: {!! json_encode(collect($trend)->pluck('label')) !!},
     datasets: [
-      { label: 'Revenue', data: {!! json_encode(collect($trend)->pluck('revenue')) !!}, backgroundColor: '#6366f1', borderRadius: 4 },
+      { label: 'Revenue', data: {!! json_encode(collect($trend)->pluck('revenue')) !!}, backgroundColor: '#2563eb', borderRadius: 4 },
       { label: 'Expenses', data: {!! json_encode(collect($trend)->pluck('expenses')) !!}, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 4, borderColor: 'rgba(255,255,255,0.2)', borderWidth: 1 },
     ]
   },

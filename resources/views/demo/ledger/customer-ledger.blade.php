@@ -87,7 +87,7 @@
             <div class="font-semibold text-slate-100">${{ number_format($row['total_invoiced'],2) }}</div>
             @if($c->credit_limit > 0)
             <div class="mt-1" style="height:4px;background:rgba(255,255,255,0.08);border-radius:4px;width:80px;margin-left:auto;">
-              <div style="height:100%;width:{{ $utilizationPct }}%;background:{{ $utilizationPct>80?'#f87171':($utilizationPct>50?'#fbbf24':'#38bdf8') }};border-radius:4px;"></div>
+              <div style="height:100%;width:{{ $utilizationPct }}%;background:{{ $utilizationPct>80?'#38bdf8':($utilizationPct>50?'#7dd3fc':'#38bdf8') }};border-radius:4px;"></div>
             </div>
             @endif
           </td>

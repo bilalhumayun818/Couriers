@@ -6,12 +6,12 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 @if($errors->any())
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   <strong>Please fix:</strong>
   @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
 </div>
@@ -23,7 +23,7 @@
   $catTotals = \App\Models\Expense::where('status','active')
     ->selectRaw('category, SUM(amount) as total')
     ->groupBy('category')->pluck('total','category');
-  $colors = ['Fuel'=>'#38bdf8','Tolls'=>'#cbd5e1','Spare Parts'=>'#818cf8','Maintenance/Repairs'=>'#f87171'];
+  $colors = ['Fuel'=>'#38bdf8','Tolls'=>'#cbd5e1','Spare Parts'=>'#60a5fa','Maintenance/Repairs'=>'#38bdf8'];
   @endphp
   <div class="card p-4 col-span-2 sm:col-span-1">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Total Expenses</p>
@@ -125,7 +125,7 @@
             @elseif($exp->category === 'Spare Parts')
               <span class="badge-blue">{{ $exp->category }}</span>
             @elseif($exp->category === 'Maintenance/Repairs')
-              <span class="badge-red">{{ $exp->category }}</span>
+              <span class="badge-blue">{{ $exp->category }}</span>
             @else
               <span class="badge-slate">{{ $exp->category }}</span>
             @endif
@@ -134,9 +134,9 @@
           <td class="px-5 py-3.5 text-right font-semibold text-slate-200">${{ number_format($exp->amount,2) }}</td>
           <td class="px-5 py-3.5 text-center">
             @if($exp->status==='active')
-              <span class="badge-green">Active</span>
+              <span class="badge-blue">Active</span>
             @else
-              <span class="badge-red">Deleted</span>
+              <span class="badge-blue">Deleted</span>
             @endif
           </td>
           <td class="px-5 py-3.5 text-right space-x-2">
@@ -146,7 +146,7 @@
               <form method="POST" action="{{ route('operations.expenses.destroy',$exp) }}" class="inline"
                     onsubmit="return confirm('Delete expense E-{{ str_pad($exp->id,5,'0',STR_PAD_LEFT) }}?')">
                 @csrf @method('DELETE')
-                <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium">Delete</button>
+                <button type="submit" class="text-xs text-slate-500 hover:text-sky-400 font-medium">Delete</button>
               </form>
             @endif
           </td>
@@ -174,7 +174,7 @@
       @endif
       @foreach($expenses->getUrlRange(max(1,$expenses->currentPage()-2),min($expenses->lastPage(),$expenses->currentPage()+2)) as $page=>$url)
         @if($page==$expenses->currentPage())
-          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#6366f1);border:none;">{{ $page }}</span>
+          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#2563eb);border:none;">{{ $page }}</span>
         @else
           <a href="{{ $url }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">{{ $page }}</a>
         @endif
@@ -208,7 +208,7 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Van <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Van <span class="text-sky-400">*</span></label>
             <select name="van_id" id="f_van" required class="w-full">
               <option value="">— Select —</option>
               @foreach($vans as $van)
@@ -217,12 +217,12 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Expense Date <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Expense Date <span class="text-sky-400">*</span></label>
             <input type="date" name="expense_date" id="f_date" required class="w-full" value="{{ date('Y-m-d') }}">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Category <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Category <span class="text-sky-400">*</span></label>
           <select name="category" id="f_category" required class="w-full">
             <option value="">— Select Category —</option>
             @foreach($categories as $cat)
@@ -231,7 +231,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Amount ($) <span class="text-sky-400">*</span></label>
           <input type="number" name="amount" id="f_amount" required min="0.01" max="999999.99" step="0.01" placeholder="0.00" class="w-full">
         </div>
         <div>

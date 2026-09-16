@@ -7,13 +7,13 @@
 
 {{-- Success / Error banners --}}
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 
 @if($errors->any())
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   @foreach($errors->all() as $err)<div>• {{ $err }}</div>@endforeach
 </div>
 @endif
@@ -21,8 +21,8 @@
 {{-- Reassign confirmation banner --}}
 @if(session('confirm_reassign'))
 @php $cr = session('confirm_reassign'); @endphp
-<div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
-  <p class="text-sm font-semibold text-amber-300 mb-2">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
+  <p class="text-sm font-semibold text-blue-300 mb-2">
     ⚠ {{ $cr['driver_name'] }} is currently assigned to <strong>{{ $cr['current_van'] }}</strong>.
     Reassigning will end that assignment. Confirm?
   </p>
@@ -50,11 +50,11 @@
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Assigned</p>
-    <p class="text-2xl font-bold text-emerald-400 mt-1">{{ $activeCount }}</p>
+    <p class="text-2xl font-bold text-sky-400 mt-1">{{ $activeCount }}</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Unassigned</p>
-    <p class="text-2xl font-bold text-amber-400 mt-1">{{ $unassignedCount }}</p>
+    <p class="text-2xl font-bold text-blue-400 mt-1">{{ $unassignedCount }}</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Available Drivers</p>
@@ -106,7 +106,7 @@
           </td>
           <td class="px-5 py-3.5">
             @if($van->status === 'active')
-              <span class="badge-green capitalize">{{ $van->status }}</span>
+              <span class="badge-blue capitalize">{{ $van->status }}</span>
             @elseif($van->status === 'maintenance')
               <span class="badge-amber capitalize">{{ $van->status }}</span>
             @else
@@ -127,7 +127,7 @@
           </td>
           <td class="px-5 py-3.5 text-center">
             @if($active)
-              <span class="badge-green">Active</span>
+              <span class="badge-blue">Active</span>
             @else
               <span class="badge-slate">Unassigned</span>
             @endif
@@ -141,7 +141,7 @@
             <form method="POST" action="{{ route('fleet.assignments.end', $active->id) }}" class="inline"
                   onsubmit="return confirm('End assignment for {{ $active->driver->full_name }}?')">
               @csrf @method('DELETE')
-              <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium">End</button>
+              <button type="submit" class="text-xs text-slate-500 hover:text-sky-400 font-medium">End</button>
             </form>
             @endif
           </td>
@@ -183,7 +183,7 @@
             </td>
             <td class="px-5 py-3 text-center">
               @if(!$asgn->end_date)
-                <span class="badge-green">Active</span>
+                <span class="badge-blue">Active</span>
               @else
                 <span class="badge-slate">Ended</span>
               @endif
@@ -217,7 +217,7 @@
       @csrf
       <div class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Van <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Van <span class="text-sky-400">*</span></label>
           <select name="van_id" id="f_van" required class="w-full">
             <option value="">— Select Van —</option>
             @foreach($vans as $van)
@@ -226,7 +226,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Driver <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Driver <span class="text-sky-400">*</span></label>
           <select name="driver_id" required class="w-full">
             <option value="">— Select Driver —</option>
             @foreach($allDrivers as $driver)
@@ -235,7 +235,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Start Date <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Start Date <span class="text-sky-400">*</span></label>
           <input type="date" name="start_date" value="{{ date('Y-m-d') }}" required class="w-full">
         </div>
         <div style="background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:8px;padding:10px 12px;">

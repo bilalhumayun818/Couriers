@@ -104,7 +104,7 @@ body {
 .nav-link:hover { background: rgba(255,255,255,.08); color: #fff; }
 .nav-link:focus-visible { outline: 2px solid #7dd3fc; outline-offset: -2px; }
 .nav-link.active {
-  background: linear-gradient(110deg, rgba(56,189,248,.2), rgba(99,102,241,.18));
+  background: linear-gradient(110deg, rgba(56,189,248,.2), rgba(56,189,248,.18));
   border-color: rgba(56,189,248,.35); color: #7dd3fc; font-weight: 700;
 }
 body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
@@ -136,7 +136,7 @@ body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
 
 .btn-primary {
   display: inline-flex; align-items: center; gap: 7px;
-  background: linear-gradient(135deg, #0284c7, #6366f1);
+  background: linear-gradient(135deg, #0284c7, #2563eb);
   color: #fff; font-size: 13px; font-weight: 600;
   padding: 8px 16px; border-radius: 8px; border: none;
   cursor: pointer; transition: opacity 0.15s, transform 0.1s;
@@ -183,11 +183,11 @@ label { color: #94a3b8 !important; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(56,189,248,0.45); }
 
 /* ─── Status Pills / Badges ─── */
-.badge-green { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.35); color: #34d399; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 .badge-amber { background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.35); color: #38bdf8; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 .badge-blue  { background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.35); color: #38bdf8; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.badge-red   { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); color: #f87171; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 .badge-slate { background: rgba(100,116,139,0.15); border: 1px solid rgba(100,116,139,0.35); color: #94a3b8; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+.financial-loss { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); color: #f87171; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
 
 /* Modal overlay */
 .modal-overlay {
@@ -214,20 +214,20 @@ label { color: #94a3b8 !important; }
     <span>Each browser session is strictly isolated with up to 10 records per entity.</span>
   </div>
   <div style="font-size:11.5px;color:#94a3b8;">
-    Quota: <span style="color:#34d399;font-weight:700;">10 Max Per Entity</span>
+    Quota: <span style="color:#38bdf8;font-weight:700;">10 Max Per Entity</span>
   </div>
 </div>
 
 @if(session('demo_limit_error'))
 {{-- Limit error toast --}}
-<div id="demoLimitToast" style="position: fixed; top: 24px; right: 24px; z-index: 99999; max-width: 420px; background: rgba(8, 14, 30, 0.95); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 12px; padding: 16px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 20px rgba(248, 113, 113, 0.2); backdrop-filter: blur(16px); color: #f8fafc; display: flex; align-items: flex-start; gap: 14px;">
-  <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(248, 113, 113, 0.15); border: 1px solid rgba(248, 113, 113, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #f87171;">
+<div id="demoLimitToast" style="position: fixed; top: 24px; right: 24px; z-index: 99999; max-width: 420px; background: rgba(8, 14, 30, 0.95); border: 1px solid rgba(56,189,248, 0.4); border-radius: 12px; padding: 16px 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 20px rgba(56,189,248, 0.2); backdrop-filter: blur(16px); color: #f8fafc; display: flex; align-items: flex-start; gap: 14px;">
+  <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(56,189,248, 0.15); border: 1px solid rgba(56,189,248, 0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #38bdf8;">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
     </svg>
   </div>
   <div style="flex: 1;">
-    <div style="font-weight: 700; font-size: 14px; color: #f87171; margin-bottom: 3px;">Demo Limit Reached</div>
+    <div style="font-weight: 700; font-size: 14px; color: #38bdf8; margin-bottom: 3px;">Demo Limit Reached</div>
     <div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.4;">{{ session('demo_limit_error') }}</div>
   </div>
   <button onclick="document.getElementById('demoLimitToast').remove()" style="background: none; border: none; color: #64748b; cursor: pointer; padding: 2px; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
@@ -246,7 +246,7 @@ label { color: #94a3b8 !important; }
 
   {{-- Brand --}}
   <div class="brand-wrap" style="padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:12px;">
-    <div class="brand-logo" style="width:36px;height:36px;background:linear-gradient(135deg,#38bdf8,#6366f1);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 18px rgba(56,189,248,0.4);">
+    <div class="brand-logo" style="width:36px;height:36px;background:linear-gradient(135deg,#38bdf8,#2563eb);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 18px rgba(56,189,248,0.4);">
       <svg width="19" height="19" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M8 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0zM3 5h11l4 7v5h-2m-13 0h.01M3 5v8h15"/>
       </svg>
@@ -383,7 +383,7 @@ label { color: #94a3b8 !important; }
           <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/>
         </svg>
       </button>
-      <div style="width:34px;height:34px;background:linear-gradient(135deg,#38bdf8,#818cf8);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;flex-shrink:0;box-shadow:0 0 12px rgba(56,189,248,0.35);">
+      <div style="width:34px;height:34px;background:linear-gradient(135deg,#38bdf8,#60a5fa);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:800;flex-shrink:0;box-shadow:0 0 12px rgba(56,189,248,0.35);">
         AD
       </div>
     </div>

@@ -6,7 +6,7 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
@@ -68,7 +68,7 @@
     {{-- Status pills --}}
     <div class="flex gap-2 flex-wrap">
       @if($m['active'] > 0)
-        <span class="badge-green">● {{ $m['active'] }} Active</span>
+        <span class="badge-blue">● {{ $m['active'] }} Active</span>
       @endif
       @if($m['maintenance'] > 0)
         <span class="badge-amber">⚠ {{ $m['maintenance'] }} Maintenance</span>
@@ -112,20 +112,20 @@
       @csrf
       <div class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Plate Number <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Plate Number <span class="text-sky-400">*</span></label>
           <input type="text" name="plate_number" placeholder="e.g. KAA-123A" required class="w-full">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Make / Model <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Make / Model <span class="text-sky-400">*</span></label>
           <input type="text" name="make_model" placeholder="e.g. Toyota HiAce" required class="w-full">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Year <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Year <span class="text-sky-400">*</span></label>
             <input type="number" name="year" placeholder="{{ date('Y') }}" min="1990" max="{{ date('Y') }}" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Status <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Status <span class="text-sky-400">*</span></label>
             <select name="status" required class="w-full">
               <option value="active">Active</option>
               <option value="maintenance">Maintenance</option>

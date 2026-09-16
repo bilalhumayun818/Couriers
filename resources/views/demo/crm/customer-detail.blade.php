@@ -68,7 +68,7 @@
           <span>{{ number_format($utilisation, 1) }}%</span>
         </div>
         <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">
-          <div style="height:100%;width:{{ $utilisation }}%;background:{{ $utilisation > 80 ? '#f87171' : ($utilisation > 60 ? '#fbbf24' : '#38bdf8') }};border-radius:4px;transition:width .3s;"></div>
+          <div style="height:100%;width:{{ $utilisation }}%;background:{{ $utilisation > 80 ? '#38bdf8' : ($utilisation > 60 ? '#7dd3fc' : '#38bdf8') }};border-radius:4px;transition:width .3s;"></div>
         </div>
       </div>
     </div>
@@ -102,9 +102,9 @@
             <td class="px-4 py-3 text-right font-semibold text-slate-200">${{ number_format($trip->total_amount,2) }}</td>
             <td class="px-4 py-3 text-center">
               @if($trip->status==='active')
-                <span class="badge-green">Active</span>
+                <span class="badge-blue">Active</span>
               @else
-                <span class="badge-red">Voided</span>
+                <span class="badge-blue">Voided</span>
               @endif
             </td>
           </tr>

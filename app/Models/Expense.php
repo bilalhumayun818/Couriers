@@ -39,10 +39,10 @@ class Expense extends Model
     public function getCategoryColorAttribute(): string
     {
         return match ($this->category) {
-            'Fuel'                  => 'amber',
+            'Fuel'                  => 'sky',
             'Tolls'                 => 'slate',
-            'Spare Parts'           => 'indigo',
-            'Maintenance/Repairs'   => 'red',
+            'Spare Parts'           => 'blue',
+            'Maintenance/Repairs'   => 'sky',
             default                 => 'gray',
         };
     }

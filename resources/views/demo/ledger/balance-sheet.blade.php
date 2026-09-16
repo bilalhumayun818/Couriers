@@ -11,7 +11,7 @@
     <button class="btn-primary text-sm px-3 py-1.5">Generate</button>
     <button class="btn-ghost text-sm px-3 py-1.5">Export CSV</button>
     <button class="btn-ghost text-sm px-3 py-1.5">Export PDF</button>
-    <span class="ml-auto badge-green font-semibold">
+    <span class="ml-auto badge-blue font-semibold">
       ✓ Balanced: Assets = Liabilities + Equity
     </span>
   </div>
@@ -61,18 +61,18 @@
 
     {{-- Equity --}}
     <div class="card overflow-hidden">
-      <div class="px-5 py-3.5" style="background:rgba(16,185,129,0.15);border-bottom:1px solid rgba(16,185,129,0.3);">
-        <h3 class="font-semibold text-emerald-300 text-sm">Equity</h3>
+      <div class="px-5 py-3.5" style="background:rgba(56,189,248,0.15);border-bottom:1px solid rgba(56,189,248,0.3);">
+        <h3 class="font-semibold text-sky-300 text-sm">Equity</h3>
       </div>
       <div>
         <div class="px-5 py-3" style="border-bottom:1px solid rgba(255,255,255,0.06);">
           <p class="text-xs font-bold text-slate-400 uppercase mb-2">Shareholders' Equity</p>
           <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Capital Contributions</span><span class="font-medium text-slate-200">$140,000.00</span></div>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Equity Distributions</span><span class="font-medium text-red-400">−$29,500.00</span></div>
-          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Retained Earnings</span><span class="font-medium text-emerald-400">$32,060.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Equity Distributions</span><span class="font-medium text-sky-400">−$29,500.00</span></div>
+          <div class="flex justify-between text-sm py-1"><span class="text-slate-400">Retained Earnings</span><span class="font-medium text-sky-400">$32,060.00</span></div>
         </div>
         <div class="px-5 py-3.5" style="background:rgba(255,255,255,0.03);">
-          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Equity</span><span class="text-emerald-400 text-base">$142,560.00</span></div>
+          <div class="flex justify-between font-bold"><span class="text-slate-200">Total Equity</span><span class="text-sky-400 text-base">$142,560.00</span></div>
         </div>
       </div>
       <div class="px-5 py-4" style="background:rgba(56,189,248,0.08);border-top:1px solid rgba(56,189,248,0.2);">
@@ -80,7 +80,7 @@
           <span>Liabilities + Equity</span>
           <span class="text-base">$147,260.00</span>
         </div>
-        <p class="text-xs text-emerald-400 mt-1 font-medium">✓ Matches Total Assets</p>
+        <p class="text-xs text-sky-400 mt-1 font-medium">✓ Matches Total Assets</p>
       </div>
     </div>
   </div>

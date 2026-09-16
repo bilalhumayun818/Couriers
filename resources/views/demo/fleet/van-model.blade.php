@@ -6,7 +6,7 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
@@ -32,12 +32,12 @@
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Active</p>
-    <p class="text-2xl font-bold text-emerald-400 mt-1">{{ $stats['active'] }}</p>
+    <p class="text-2xl font-bold text-sky-400 mt-1">{{ $stats['active'] }}</p>
     <p class="text-xs text-slate-500 mt-0.5">in service</p>
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Maintenance</p>
-    <p class="text-2xl font-bold text-amber-400 mt-1">{{ $stats['maintenance'] }}</p>
+    <p class="text-2xl font-bold text-blue-400 mt-1">{{ $stats['maintenance'] }}</p>
     <p class="text-xs text-slate-500 mt-0.5">off road</p>
   </div>
   <div class="card p-4">
@@ -99,7 +99,7 @@
             <td class="px-5 py-3.5 text-slate-400">{{ $van->year }}</td>
             <td class="px-5 py-3.5">
               @if($van->status === 'active')
-                <span class="badge-green capitalize">{{ $van->status }}</span>
+                <span class="badge-blue capitalize">{{ $van->status }}</span>
               @elseif($van->status === 'maintenance')
                 <span class="badge-amber capitalize">{{ $van->status }}</span>
               @else
@@ -109,7 +109,7 @@
             <td class="px-5 py-3.5 text-slate-300">
               {{ $van->driver?->full_name ?? '—' }}
             </td>
-            <td class="px-5 py-3.5 text-xs {{ $serviceSoon ? 'font-semibold text-amber-400' : 'text-slate-400' }}">
+            <td class="px-5 py-3.5 text-xs {{ $serviceSoon ? 'font-semibold text-blue-400' : 'text-slate-400' }}">
               {{ $serviceDate ? $serviceDate->format('d M Y') : '—' }}
               @if($serviceSoon)
                 <span class="ml-1 badge-amber">Due Soon</span>
@@ -123,7 +123,7 @@
               <form method="POST" action="{{ route('fleet.vans.destroy', $van) }}" class="inline"
                     onsubmit="return confirm('Delete {{ $van->plate_number }}?')">
                 @csrf @method('DELETE')
-                <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium">Delete</button>
+                <button type="submit" class="text-xs text-slate-500 hover:text-sky-400 font-medium">Delete</button>
               </form>
             </td>
           </tr>
@@ -156,20 +156,20 @@
       @csrf
       <div class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Plate Number <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Plate Number <span class="text-sky-400">*</span></label>
           <input type="text" name="plate_number" placeholder="e.g. KAA-123A" required class="w-full">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Make / Model <span class="text-red-400">*</span></label>
+          <label class="block text-xs font-semibold text-slate-400 mb-1.5">Make / Model <span class="text-sky-400">*</span></label>
           <input type="text" name="make_model" value="{{ $model }}" required class="w-full">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Year <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Year <span class="text-sky-400">*</span></label>
             <input type="number" name="year" placeholder="{{ date('Y') }}" min="1990" max="{{ date('Y') }}" required class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Status <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Status <span class="text-sky-400">*</span></label>
             <select name="status" required class="w-full">
               <option value="active">Active</option>
               <option value="maintenance">Maintenance</option>

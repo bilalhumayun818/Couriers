@@ -6,12 +6,12 @@
 @section('content')
 
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 @if($errors->any())
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   @foreach($errors->all() as $e)<div>• {{ $e }}</div>@endforeach
 </div>
 @endif
@@ -66,16 +66,16 @@
               {{ $driver->full_name }}
             </a>
             @if($expired)
-              <span class="ml-1 badge-red">Expired</span>
+              <span class="ml-1 badge-blue">Expired</span>
             @elseif($expiringSoon)
               <span class="ml-1 badge-blue">⚠ Expiring</span>
             @endif
           </td>
           <td class="px-5 py-3.5 font-mono text-xs text-slate-400">{{ $driver->licence_number }}</td>
-          <td class="px-5 py-3.5 text-xs {{ $expired ? 'text-red-400 font-semibold' : ($expiringSoon ? 'text-sky-400 font-semibold' : 'text-slate-500') }}">
+          <td class="px-5 py-3.5 text-xs {{ $expired ? 'text-sky-400 font-semibold' : ($expiringSoon ? 'text-sky-400 font-semibold' : 'text-slate-500') }}">
             {{ $expiry->format('d M Y') }}
           </td>
-          <td class="px-5 py-3.5 text-xs font-semibold {{ $expired ? 'text-red-400' : ($expiringSoon ? 'text-sky-400' : ($daysLeft <= 90 ? 'text-slate-400' : 'text-emerald-400')) }}">
+          <td class="px-5 py-3.5 text-xs font-semibold {{ $expired ? 'text-sky-400' : ($expiringSoon ? 'text-sky-400' : ($daysLeft <= 90 ? 'text-slate-400' : 'text-sky-400')) }}">
             {{ $expired ? abs($daysLeft).' days ago' : $daysLeft.' days' }}
           </td>
           <td class="px-5 py-3.5">
@@ -94,7 +94,7 @@
             <form method="POST" action="{{ route('crm.drivers.destroy',$driver) }}" class="inline"
                   onsubmit="return confirm('Delete driver {{ addslashes($driver->full_name) }}?')">
               @csrf @method('DELETE')
-              <button type="submit" class="text-xs text-slate-500 hover:text-red-400 font-medium">Delete</button>
+              <button type="submit" class="text-xs text-slate-500 hover:text-sky-400 font-medium">Delete</button>
             </form>
           </td>
         </tr>
@@ -119,7 +119,7 @@
       @endif
       @foreach($drivers->getUrlRange(max(1,$drivers->currentPage()-2),min($drivers->lastPage(),$drivers->currentPage()+2)) as $page=>$url)
         @if($page==$drivers->currentPage())
-          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#6366f1);border:none;">{{ $page }}</span>
+          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#2563eb);border:none;">{{ $page }}</span>
         @else
           <a href="{{ $url }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">{{ $page }}</a>
         @endif
@@ -150,7 +150,7 @@
       <div class="p-5 space-y-4">
         <div class="grid grid-cols-2 gap-3">
           <div class="col-span-2">
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Full Name <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Full Name <span class="text-sky-400">*</span></label>
             <input type="text" name="full_name" id="df_name" required maxlength="255" class="w-full">
           </div>
           <div>
@@ -158,11 +158,11 @@
             <input type="text" name="national_id" id="df_nid" maxlength="100" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Licence Number <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Licence Number <span class="text-sky-400">*</span></label>
             <input type="text" name="licence_number" id="df_licence" required maxlength="100" class="w-full">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Licence Expiry <span class="text-red-400">*</span></label>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Licence Expiry <span class="text-sky-400">*</span></label>
             <input type="date" name="licence_expiry_date" id="df_expiry" required class="w-full">
           </div>
           <div>

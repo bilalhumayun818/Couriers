@@ -23,7 +23,7 @@
     </div>
     <div class="self-end">
       @if($balanced)
-        <span style="background:rgba(16,185,129,0.12);color:#4ade80;border:1px solid rgba(16,185,129,0.3);"
+        <span style="background:rgba(56,189,248,0.12);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);"
               class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
@@ -31,7 +31,7 @@
           Balanced — Debits = Credits
         </span>
       @else
-        <span style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3);"
+        <span style="background:rgba(56,189,248,0.12);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);"
               class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full">
           <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
@@ -55,10 +55,10 @@
   </div>
   <div class="card p-4">
     <p class="text-xs text-slate-400 uppercase font-semibold tracking-wide">Difference</p>
-    <p class="text-2xl font-bold mt-1 {{ $balanced ? 'text-emerald-400' : 'text-red-400' }}">
+    <p class="text-2xl font-bold mt-1 {{ $balanced ? 'text-sky-400' : 'text-sky-400' }}">
       ${{ number_format(abs($totalDebit - $totalCredit),2) }}
     </p>
-    <p class="text-xs mt-0.5 {{ $balanced ? 'text-emerald-400' : 'text-red-400' }}">
+    <p class="text-xs mt-0.5 {{ $balanced ? 'text-sky-400' : 'text-sky-400' }}">
       {{ $balanced ? '✓ Balanced' : '⚠ Discrepancy' }}
     </p>
   </div>
@@ -82,11 +82,11 @@
       <tbody>
         @php
         $typeColors = [
-          'Revenue'  => 'background:rgba(16,185,129,0.15);color:#4ade80;border:1px solid rgba(16,185,129,0.3);',
+          'Revenue'  => 'background:rgba(56,189,248,0.15);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);',
           'Asset'    => 'background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);',
-          'Expense'  => 'background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);',
-          'Equity'   => 'background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);',
-          'Liability'=> 'background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);',
+          'Expense'  => 'background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);',
+          'Equity'   => 'background:rgba(56,189,248,0.15);color:#93c5fd;border:1px solid rgba(56,189,248,0.3);',
+          'Liability'=> 'background:rgba(56,189,248,0.15);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);',
         ];
         @endphp
         @forelse($accounts as $acc)
@@ -116,14 +116,14 @@
 
       {{-- Totals row --}}
       @if(count($accounts) > 0)
-      <tfoot style="border-top:2px solid {{ $balanced ? 'rgba(16,185,129,0.4)' : 'rgba(239,68,68,0.4)' }};background:{{ $balanced ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)' }};">
+      <tfoot style="border-top:2px solid {{ $balanced ? 'rgba(56,189,248,0.4)' : 'rgba(56,189,248,0.4)' }};background:{{ $balanced ? 'rgba(56,189,248,0.1)' : 'rgba(56,189,248,0.1)' }};">
         <tr>
           <td class="px-5 py-4 font-bold text-slate-100">TOTALS</td>
           <td class="px-5 py-4">
             @if($balanced)
-              <span style="background:rgba(16,185,129,0.15);color:#4ade80;border:1px solid rgba(16,185,129,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">✓ Balanced</span>
+              <span style="background:rgba(56,189,248,0.15);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">✓ Balanced</span>
             @else
-              <span style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">⚠ Unbalanced</span>
+              <span style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">⚠ Unbalanced</span>
             @endif
           </td>
           <td class="px-5 py-4 text-right font-extrabold text-lg text-slate-100 font-mono">

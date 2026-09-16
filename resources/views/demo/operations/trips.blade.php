@@ -7,17 +7,17 @@
 
 {{-- ── Success / Error banners ── --}}
 @if(session('success'))
-<div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✓ {{ session('success') }}
 </div>
 @endif
 @if(session('error'))
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
   ✕ {{ session('error') }}
 </div>
 @endif
 @if($errors->any())
-<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
+<div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;">
   <strong>Please fix the following errors:</strong>
   <ul style="margin:6px 0 0 18px;list-style:disc;">
     @foreach($errors->all() as $error)
@@ -171,9 +171,9 @@
           {{-- Status badge --}}
           <td class="px-5 py-3.5 text-center">
             @if($trip->status === 'active')
-              <span class="badge-green">Active</span>
+              <span class="badge-blue">Active</span>
             @else
-              <span class="badge-red">Voided</span>
+              <span class="badge-blue">Voided</span>
             @endif
           </td>
 
@@ -185,7 +185,7 @@
                   style="display:inline;">
               @csrf
               <button type="submit"
-                      class="text-xs text-slate-500 hover:text-red-400 font-medium transition-colors">
+                      class="text-xs text-slate-500 hover:text-sky-400 font-medium transition-colors">
                 Void
               </button>
             </form>
@@ -228,7 +228,7 @@
       {{-- Page numbers --}}
       @foreach($trips->getUrlRange(max(1, $trips->currentPage()-2), min($trips->lastPage(), $trips->currentPage()+2)) as $page => $url)
         @if($page == $trips->currentPage())
-          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#6366f1);border:none;">{{ $page }}</span>
+          <span class="px-3 py-1.5 rounded-lg text-white font-semibold" style="background:linear-gradient(135deg,#0284c7,#2563eb);border:none;">{{ $page }}</span>
         @else
           <a href="{{ $url }}" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-slate-200 transition-colors" style="border:1px solid rgba(255,255,255,0.1);">{{ $page }}</a>
         @endif
@@ -271,7 +271,7 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1.5">
-              Van (Active only) <span class="text-red-400">*</span>
+              Van (Active only) <span class="text-sky-400">*</span>
             </label>
             <select name="van_id" required class="w-full">
               <option value="">— Select Van —</option>
@@ -284,7 +284,7 @@
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1.5">
-              Trip Date <span class="text-red-400">*</span>
+              Trip Date <span class="text-sky-400">*</span>
             </label>
             <input type="date" name="trip_date" required class="w-full"
                    value="{{ old('trip_date', date('Y-m-d')) }}">
@@ -294,7 +294,7 @@
         {{-- Customer --}}
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1.5">
-            Customer <span class="text-red-400">*</span>
+            Customer <span class="text-sky-400">*</span>
           </label>
           <select name="customer_id" required class="w-full">
             <option value="">— Select Customer —</option>
@@ -310,7 +310,7 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1.5">
-              Origin <span class="text-red-400">*</span>
+              Origin <span class="text-sky-400">*</span>
             </label>
             <input type="text" name="origin" required maxlength="255"
                    placeholder="e.g. Nairobi CBD"
@@ -318,7 +318,7 @@
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1.5">
-              Destination <span class="text-red-400">*</span>
+              Destination <span class="text-sky-400">*</span>
             </label>
             <input type="text" name="destination" required maxlength="255"
                    placeholder="e.g. Mombasa"
@@ -329,7 +329,7 @@
         {{-- Fare amount + live tax preview --}}
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1.5">
-            Fare Amount <span class="text-red-400">*</span>
+            Fare Amount <span class="text-sky-400">*</span>
           </label>
           <input type="number" name="fare_amount" id="fareInput" required
                  min="0.01" max="9999999" step="0.01" placeholder="0.00"
@@ -344,7 +344,7 @@
             </div>
             <div style="display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-bottom:4px;">
               <span>Tax (8%)</span>
-              <span id="previewTax" style="color:#fbbf24;">+ 0.00</span>
+              <span id="previewTax" style="color:#7dd3fc;">+ 0.00</span>
             </div>
             <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#f8fafc;border-top:1px solid rgba(255,255,255,0.08);padding-top:6px;margin-top:4px;">
               <span>Total</span>
