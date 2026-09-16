@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->extend('url', function ($url, $app) {
             $custom = new \App\Services\DemoUrlGenerator(
                 $app['router']->getRoutes(),
-                $app['request']
+                $app['request'],
+                $app['config']['app.asset_url'] ?: $app['config']['app.url']
             );
             $appUrl = config('app.url');
             $urlParts = parse_url($appUrl);
@@ -51,4 +52,3 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
-

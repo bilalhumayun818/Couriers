@@ -33,7 +33,7 @@
         {{-- Van Image --}}
         <div class="md:col-span-6 relative">
           <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900/70 group-hover:border-sky-400/40 transition-all duration-300">
-            <img src="/images/van_ai_card.png" alt="AI Van Analysis" class="w-full h-48 object-cover object-center transform group-hover:scale-105 transition-transform duration-500" />
+            <img src="{{ asset('images/van_ai_card.png') }}" alt="AI Van Analysis" class="w-full h-48 object-cover object-center transform group-hover:scale-105 transition-transform duration-500" />
             <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(4,7,17,0.85) 0%, transparent 60%);"></div>
             <div class="absolute bottom-3 left-3">
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(56,189,248,0.2);backdrop-filter:blur(10px);border:1px solid rgba(56,189,248,0.4);color:#38bdf8;">
@@ -175,7 +175,7 @@
         <div class="glass-card p-2.5 flex items-center justify-between group hover:border-sky-400/40">
           <div class="flex items-center gap-3">
             <div class="w-14 h-10 rounded-lg overflow-hidden flex-shrink-0" style="border:1px solid rgba(255,255,255,0.1);background:#040711;">
-              <img src="{{ $v[5] }}" alt="{{ $v[0] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+              <img src="{{ asset($v[5]) }}" alt="{{ $v[0] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
             </div>
             <div>
               <h4 class="text-xs font-bold text-slate-100 group-hover:text-sky-300 transition-colors">{{ $v[0] }}</h4>

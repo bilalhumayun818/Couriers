@@ -15,7 +15,7 @@ body {
   background-color: #040711;
   background-image:
     linear-gradient(180deg, rgba(4,7,17,0.18) 0%, rgba(4,7,17,0.28) 100%),
-    url('/images/van_hero_bg.png');
+    url('{{ asset('images/van_hero_bg.png') }}');
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
