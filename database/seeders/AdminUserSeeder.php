@@ -9,7 +9,11 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::firstOrCreate(['email' => 'admin@gail.com'], [
+        if (! User::where('email', 'admin@gmail.com')->exists()) {
+            User::where('email', 'admin@gail.com')->update(['email' => 'admin@gmail.com']);
+        }
+
+        User::firstOrCreate(['email' => 'admin@gmail.com'], [
             'name' => 'Administrator',
             'password' => '12345678',
         ]);

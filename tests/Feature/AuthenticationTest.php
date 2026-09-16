@@ -35,7 +35,7 @@ class AuthenticationTest extends TestCase
     {
         $this->seed(AdminUserSeeder::class);
         $this->assertTrue(Hash::check('12345678', User::first()->password));
-        $this->post('/login', ['email' => 'admin@gail.com', 'password' => '12345678'])
+        $this->post('/login', ['email' => 'admin@gmail.com', 'password' => '12345678'])
             ->assertRedirect(route('dashboard'));
         $this->assertAuthenticated();
         $this->get('/dashboard')->assertOk()->assertSee('Sign out');
@@ -50,14 +50,14 @@ class AuthenticationTest extends TestCase
         $this->freezeTime();
         $this->seed(AdminUserSeeder::class);
         for ($i = 0; $i < 5; $i++) {
-            $this->post('/login', ['email' => 'admin@gail.com', 'password' => 'wrong'])
+            $this->post('/login', ['email' => 'admin@gmail.com', 'password' => 'wrong'])
                 ->assertSessionHasErrors('email');
         }
-        $this->post('/login', ['email' => 'admin@gail.com', 'password' => '12345678'])
+        $this->post('/login', ['email' => 'admin@gmail.com', 'password' => '12345678'])
             ->assertSessionHasErrors(['email' => 'Too many attempts. Try again in 60 seconds.']);
         $this->assertGuest();
         $this->travel(61)->seconds();
-        $this->post('/login', ['email' => 'admin@gail.com', 'password' => '12345678'])
+        $this->post('/login', ['email' => 'admin@gmail.com', 'password' => '12345678'])
             ->assertRedirect(route('dashboard'));
         $this->assertAuthenticated();
     }
@@ -86,9 +86,18 @@ class AuthenticationTest extends TestCase
 
     public function test_admin_seeder_does_not_reset_an_existing_password(): void
     {
-        $user = User::factory()->create(['email' => 'admin@gail.com', 'password' => 'changed-password']);
+        $user = User::factory()->create(['email' => 'admin@gmail.com', 'password' => 'changed-password']);
         $this->seed(AdminUserSeeder::class);
         $this->assertTrue(Hash::check('changed-password', $user->fresh()->password));
+    }
+
+    public function test_admin_seeder_corrects_the_old_email_without_replacing_the_account(): void
+    {
+        $user = User::factory()->create(['email' => 'admin@gail.com', 'password' => '12345678']);
+        $this->seed(AdminUserSeeder::class);
+        $this->assertSame('admin@gmail.com', $user->fresh()->email);
+        $this->assertSame(1, User::count());
+        $this->assertTrue(Hash::check('12345678', $user->fresh()->password));
     }
 
     public function test_login_urls_respect_the_deployment_subdirectory(): void
