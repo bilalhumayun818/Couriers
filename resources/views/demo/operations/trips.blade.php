@@ -8,12 +8,12 @@
 {{-- ── Success / Error banners ── --}}
 @if(session('success'))
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ✓ {{ session('success') }}
+  {{ session('success') }}
 </div>
 @endif
 @if(session('error'))
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ✕ {{ session('error') }}
+  {{ session('error') }}
 </div>
 @endif
 @if($errors->any())
@@ -88,7 +88,7 @@
         {{-- Clear filters --}}
         @if(request()->hasAny(['van_id','customer_id','from','to','status']))
         <a href="{{ route('operations.trips') }}"
-           class="btn-ghost text-xs self-end" style="padding:6px 12px;">✕ Clear</a>
+           class="btn-ghost text-xs self-end" style="padding:6px 12px;">Clear</a>
         @endif
       </div>
 

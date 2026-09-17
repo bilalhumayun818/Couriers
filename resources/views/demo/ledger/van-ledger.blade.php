@@ -37,7 +37,7 @@
         <input type="date" name="to" class="text-sm" value="{{ $to->format('Y-m-d') }}" onchange="filterForm.submit()">
       </div>
       @if(request()->hasAny(['van_id','category','from','to']))
-        <a href="{{ route('ledger.van') }}" class="btn-ghost text-xs self-end" style="padding:6px 12px;">✕ Reset</a>
+        <a href="{{ route('ledger.van') }}" class="btn-ghost text-xs self-end" style="padding:6px 12px;">Reset</a>
       @endif
     </div>
     <div class="text-xs text-slate-400 self-end">

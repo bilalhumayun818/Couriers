@@ -7,7 +7,7 @@
 
 @if(session('success'))
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ✓ {{ session('success') }}
+  {{ session('success') }}
 </div>
 @endif
 @if($errors->any())
@@ -35,7 +35,7 @@
         </select>
       </div>
       @if(request()->hasAny(['search','balance']))
-        <a href="{{ route('crm.customers') }}" class="btn-ghost text-xs self-end" style="padding:6px 12px;">✕ Clear</a>
+        <a href="{{ route('crm.customers') }}" class="btn-ghost text-xs self-end" style="padding:6px 12px;">Clear</a>
       @endif
     </form>
     <button onclick="openModal(null)" class="btn-primary self-end">

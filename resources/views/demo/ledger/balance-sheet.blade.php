@@ -12,7 +12,7 @@
     <button class="btn-ghost text-sm px-3 py-1.5">Export CSV</button>
     <button class="btn-ghost text-sm px-3 py-1.5">Export PDF</button>
     <span class="ml-auto badge-blue font-semibold">
-      ✓ Balanced: Assets = Liabilities + Equity
+      Balanced: Assets = Liabilities + Equity
     </span>
   </div>
 
@@ -80,7 +80,7 @@
           <span>Liabilities + Equity</span>
           <span class="text-base">{{ $currencySymbol }}147,260.00</span>
         </div>
-        <p class="text-xs text-sky-400 mt-1 font-medium">✓ Matches Total Assets</p>
+        <p class="text-xs text-sky-400 mt-1 font-medium">Matches Total Assets</p>
       </div>
     </div>
   </div>

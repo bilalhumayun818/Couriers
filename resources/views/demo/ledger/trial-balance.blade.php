@@ -59,7 +59,7 @@
       {{ $currencySymbol }}{{ number_format(abs($totalDebit - $totalCredit),2) }}
     </p>
     <p class="text-xs mt-0.5 {{ $balanced ? 'text-sky-400' : 'text-sky-400' }}">
-      {{ $balanced ? '✓ Balanced' : '⚠ Discrepancy' }}
+      {{ $balanced ? 'Balanced' : 'Discrepancy' }}
     </p>
   </div>
 </div>
@@ -121,9 +121,9 @@
           <td class="px-5 py-4 font-bold text-slate-100">TOTALS</td>
           <td class="px-5 py-4">
             @if($balanced)
-              <span style="background:rgba(56,189,248,0.15);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">✓ Balanced</span>
+              <span style="background:rgba(56,189,248,0.15);color:#7dd3fc;border:1px solid rgba(56,189,248,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">Balanced</span>
             @else
-              <span style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">⚠ Unbalanced</span>
+              <span style="background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);" class="text-xs font-semibold px-2 py-0.5 rounded-full">Unbalanced</span>
             @endif
           </td>
           <td class="px-5 py-4 text-right font-extrabold text-lg text-slate-100 font-mono">

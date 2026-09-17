@@ -8,7 +8,7 @@
 {{-- Success / Error banners --}}
 @if(session('success'))
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ✓ {{ session('success') }}
+  {{ session('success') }}
 </div>
 @endif
 
@@ -23,7 +23,7 @@
 @php $cr = session('confirm_reassign'); @endphp
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
   <p class="text-sm font-semibold text-blue-300 mb-2">
-    ⚠ {{ $cr['driver_name'] }} is currently assigned to <strong>{{ $cr['current_van'] }}</strong>.
+    {{ $cr['driver_name'] }} is currently assigned to <strong>{{ $cr['current_van'] }}</strong>.
     Reassigning will end that assignment. Confirm?
   </p>
   <form method="POST" action="{{ route('fleet.assignments.assign') }}" class="inline">

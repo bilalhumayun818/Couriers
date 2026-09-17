@@ -7,7 +7,7 @@
 
 @if(session('success'))
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ✓ {{ session('success') }}
+  {{ session('success') }}
 </div>
 @endif
 
@@ -15,7 +15,7 @@
 @if(session('negative_warning'))
 @php $nw = session('negative_warning'); @endphp
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:14px 18px;margin-bottom:16px;">
-  <p class="text-sm font-semibold text-blue-300 mb-1">⚠ Negative Net Payout</p>
+  <p class="text-sm font-semibold text-blue-300 mb-1">Negative Net Payout</p>
   <p class="text-xs text-blue-200 mb-3">
     Driver has advances of <strong>{{ $currencySymbol }}{{ number_format($nw['advances'],2) }}</strong> which exceed gross wage of
     <strong>{{ $currencySymbol }}{{ number_format($nw['gross_wage'],2) }}</strong>.

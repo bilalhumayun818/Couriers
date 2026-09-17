@@ -27,25 +27,9 @@
         </span>
       </div>
 
-      {{-- Card Content Grid --}}
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-
-        {{-- Van Image --}}
-        <div class="md:col-span-6 relative">
-          <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-slate-900/70 group-hover:border-sky-400/40 transition-all duration-300">
-            <img src="{{ asset('images/van_ai_card.png') }}" alt="AI Van Analysis" class="w-full h-48 object-cover object-center transform group-hover:scale-105 transition-transform duration-500" />
-            <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(4,7,17,0.85) 0%, transparent 60%);"></div>
-            <div class="absolute bottom-3 left-3">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(56,189,248,0.2);backdrop-filter:blur(10px);border:1px solid rgba(56,189,248,0.4);color:#38bdf8;">
-                <span class="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse"></span>
-                Mercedes Sprinter EV
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {{-- Telematics Specs --}}
-        <div class="md:col-span-6 space-y-2.5 text-xs">
+      {{-- Telematics Specs --}}
+      <div>
+        <div class="space-y-2.5 text-xs">
           <div class="flex justify-between py-2" style="border-bottom:1px solid rgba(255,255,255,0.07);">
             <span class="text-slate-400 font-medium">Departure</span>
             <span class="text-slate-100 font-semibold">Monaco Marina (London Hub)</span>
@@ -439,12 +423,12 @@
         <tbody>
           @php
           $drivers = [
-            ['James Carter','Ocean Majesty','34',$currencySymbol . ' 18,450','★★★★★','text-sky-400'],
-            ['Liam Hassan','Blue Horizon','28',$currencySymbol . ' 14,220','★★★★☆','text-sky-400'],
-            ['Sofia Patel','Royal Escape','21',$currencySymbol . ' 10,800','★★★★★','text-sky-400'],
-            ['David Nguyen','Sea Pearl','18',$currencySymbol . ' 8,960','★★★★☆','text-sky-400'],
-            ['Amara Osei','Azure Dream','15',$currencySymbol . ' 7,340','★★★☆☆','text-slate-400'],
-            ['Raj Mehta','Blue Horizon','12',$currencySymbol . ' 5,670','★★★★☆','text-sky-400'],
+            ['James Carter','Ocean Majesty','34',$currencySymbol . ' 18,450','5/5','text-sky-400'],
+            ['Liam Hassan','Blue Horizon','28',$currencySymbol . ' 14,220','4/5','text-sky-400'],
+            ['Sofia Patel','Royal Escape','21',$currencySymbol . ' 10,800','5/5','text-sky-400'],
+            ['David Nguyen','Sea Pearl','18',$currencySymbol . ' 8,960','4/5','text-sky-400'],
+            ['Amara Osei','Azure Dream','15',$currencySymbol . ' 7,340','3/5','text-slate-400'],
+            ['Raj Mehta','Blue Horizon','12',$currencySymbol . ' 5,670','4/5','text-sky-400'],
           ];
           @endphp
           @foreach($drivers as $d)

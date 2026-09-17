@@ -7,7 +7,7 @@
 
 @if(session('success'))
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ✓ {{ session('success') }}
+  {{ session('success') }}
 </div>
 @endif
 
@@ -77,7 +77,7 @@
           <td class="px-5 py-3.5 text-xs {{ $serviceSoon ? 'font-semibold text-blue-400' : 'text-slate-400' }}">
             {{ $serviceDate ? $serviceDate->format('d M Y') : '—' }}
             @if($serviceSoon)
-              <span class="ml-1 badge-amber">⚠ Soon</span>
+              <span class="ml-1 badge-amber">Soon</span>
             @endif
           </td>
           <td class="px-5 py-3.5 text-right">

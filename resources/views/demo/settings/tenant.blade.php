@@ -87,7 +87,7 @@
   </div>
 
   <p class="text-xs text-slate-400">
-    ⚠ Currency and tax changes apply to <strong>new records only</strong> and will not retroactively alter historical ledger entries.
+    Currency and tax changes apply to <strong>new records only</strong> and will not retroactively alter historical ledger entries.
   </p>
 </div>
 @endsection

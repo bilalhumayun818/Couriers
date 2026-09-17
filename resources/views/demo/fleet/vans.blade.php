@@ -7,7 +7,7 @@
 
 @if(session('success'))
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ✓ {{ session('success') }}
+  {{ session('success') }}
 </div>
 @endif
 
@@ -71,7 +71,7 @@
         <span class="badge-blue">● {{ $m['active'] }} Active</span>
       @endif
       @if($m['maintenance'] > 0)
-        <span class="badge-amber">⚠ {{ $m['maintenance'] }} Maintenance</span>
+        <span class="badge-amber">{{ $m['maintenance'] }} Maintenance</span>
       @endif
       @if($m['leased'] > 0)
         <span class="badge-blue">◆ {{ $m['leased'] }} Leased</span>

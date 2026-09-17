@@ -25,7 +25,7 @@
       </div>
       <button type="submit" class="btn-primary text-xs self-end px-3 py-2">Apply</button>
       @if($search || request()->hasAny(['from','to']))
-        <a href="{{ route('ledger.customer') }}" class="btn-ghost text-xs self-end px-3 py-2">✕ Reset</a>
+        <a href="{{ route('ledger.customer') }}" class="btn-ghost text-xs self-end px-3 py-2">Reset</a>
       @endif
     </div>
     <div class="text-xs text-slate-400 self-end">

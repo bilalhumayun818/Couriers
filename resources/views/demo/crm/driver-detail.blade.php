@@ -18,11 +18,11 @@
 {{-- Alerts --}}
 @if($licenceExpired)
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ⚠ Licence EXPIRED {{ abs($daysToExpiry) }} days ago ({{ \Carbon\Carbon::parse($driver->licence_expiry_date)->format('d M Y') }}) — renewal required.
+  Licence EXPIRED {{ abs($daysToExpiry) }} days ago ({{ \Carbon\Carbon::parse($driver->licence_expiry_date)->format('d M Y') }}) — renewal required.
 </div>
 @elseif($licenceExpiringSoon)
 <div style="background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.3);color:#7dd3fc;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:13px;font-weight:500;">
-  ⚠ Licence expires in {{ abs($daysToExpiry) }} days ({{ \Carbon\Carbon::parse($driver->licence_expiry_date)->format('d M Y') }}).
+  Licence expires in {{ abs($daysToExpiry) }} days ({{ \Carbon\Carbon::parse($driver->licence_expiry_date)->format('d M Y') }}).
 </div>
 @endif
 

@@ -43,7 +43,7 @@ $roleColor = [
             <td class="px-4 py-2 font-medium text-slate-300">{{ $p[0] }}</td>
             @foreach(array_slice($p,1) as $val)
             <td class="px-4 py-2 text-center">
-              @if($val==='Full')<span class="text-sky-400 font-semibold">✓ Full</span>
+              @if($val==='Full')<span class="text-sky-400 font-semibold">Full</span>
               @elseif($val==='Read')<span class="text-sky-400">Read</span>
               @elseif(str_contains($val,'own'))<span class="text-sky-400">Own Only</span>
               @else<span class="text-slate-600">—</span>

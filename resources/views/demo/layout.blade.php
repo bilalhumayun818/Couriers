@@ -97,15 +97,15 @@ body {
 .nav-link {
   display: flex; align-items: center; gap: 10px; flex-shrink: 0;
   min-height: 34px; padding: 7px 10px; border: 1px solid transparent; border-radius: 9px;
-  color: #b4c3d7; font-size: 12px; font-weight: 500; text-decoration: none;
+  color: #fff; font-size: 12px; font-weight: 500; text-decoration: none;
   transition: background .15s, color .15s; white-space: nowrap;
 }
 .nav-link svg { width: 17px; height: 17px; flex-shrink: 0; }
 .nav-link:hover { background: rgba(255,255,255,.08); color: #fff; }
-.nav-link:focus-visible { outline: 2px solid #7dd3fc; outline-offset: -2px; }
+.nav-link:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
 .nav-link.active {
-  background: linear-gradient(110deg, rgba(56,189,248,.2), rgba(56,189,248,.18));
-  border-color: rgba(56,189,248,.35); color: #7dd3fc; font-weight: 700;
+  background: rgba(255,255,255,.14);
+  border-color: rgba(255,255,255,.35); color: #fff; font-weight: 700;
 }
 body { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
 .app-shell { display: flex; flex: 1; min-height: 0; overflow: hidden; position: relative; }
@@ -210,7 +210,7 @@ label { color: #94a3b8 !important; }
 {{-- Demo mode top bar banner --}}
 <div style="background: linear-gradient(90deg, rgba(8,14,30,0.85) 0%, rgba(56,189,248,0.2) 50%, rgba(8,14,30,0.85) 100%); border-bottom: 1px solid rgba(56,189,248,0.3); padding: 8px 20px; font-size: 12.5px; color: #cbd5e1; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); z-index: 100; position: relative;">
   <div style="display:flex;align-items:center;gap:10px;">
-    <span style="background: rgba(56,189,248,0.2); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4); border-radius: 9999px; padding: 2px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">🎯 Demo Mode Active</span>
+    <span style="background: rgba(56,189,248,0.2); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4); border-radius: 9999px; padding: 2px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;">Demo Mode Active</span>
     <span>Each browser session is strictly isolated with up to 10 records per entity.</span>
   </div>
   <div style="font-size:11.5px;color:#94a3b8;">
@@ -341,7 +341,7 @@ label { color: #94a3b8 !important; }
 
     {{-- Sidebar toggle --}}
     <button onclick="toggleSidebar()" id="sidebarToggleBtn" aria-controls="sidebar" aria-expanded="true" aria-label="Collapse navigation"
-      style="width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;color:#cbd5e1;"
+      style="width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;color:#fff;"
       title="Toggle Sidebar">
       <svg id="toggleIconOpen" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
